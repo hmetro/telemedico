@@ -1,0 +1,3 @@
+/app/templates/.compiled/**/*.php
+/Ocrend/Kernel/Config/*.yml
+

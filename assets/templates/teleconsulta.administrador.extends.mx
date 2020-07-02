@@ -1,0 +1,70 @@
+<template id="v-contacto">
+    <div class="media m-contacto" id="%id%" style="cursor: pointer;">
+        <div class="avatar avatar-sm avatar-online">
+            <span class="avatar-initial rounded-circle bg-gray-700" id="inicial-%id%">
+                %inicial%
+            </span>
+        </div>
+        <div class="media-body mg-l-10">
+            <h6 class="tx-13 mg-b-3" id="contacto-%id%">
+                %contacto%
+            </h6>
+            <span class="tx-12" id="correo-%id%">
+                %email%
+            </span>
+        </div>
+        <!-- media-body -->
+        <nav class="d-none">
+            <a href="">
+                <svg class="feather feather-star" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                    </polygon>
+                </svg>
+            </a>
+            <a href="">
+                <svg class="feather feather-edit-2" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="16 3 21 8 8 21 3 21 3 16 16 3">
+                    </polygon>
+                </svg>
+            </a>
+        </nav>
+    </div>
+</template>
+<template id="v-not-contactos">
+    <h6 class="tx-12 tx-semibold tx-spacing-1 tx-uppercase">
+        Sin Contactos
+    </h6>
+    <p class="tx-13 tx-color-03 mg-b-20">
+        No existen contactos.
+    </p>
+</template>
+<template id="v-spinner">
+    <div class="spinner-border spinner-border-sm" role="status">
+    </div>
+    Procesando...
+    <!-- media -->
+</template>
+<template id="v-res-cita">
+    <div class="bg-white d-flex flex-column justify-content-end">
+        <div class="mg-b-25">
+            <svg class="feather feather-airplay" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1">
+                </path>
+                <polygon points="12 15 17 21 7 21 12 15">
+                </polygon>
+            </svg>
+        </div>
+        <h5 class="tx-inverse mg-b-20">
+            Cita Generada con éxito.
+        </h5>
+        <p class="mg-b-20">
+            Click en el siguiente link.
+        </p>
+        <a class="tx-medium" href="%cita_url%" target="_blank">
+            Iniciar Atención
+            <i class="icon ion-md-arrow-forward mg-l-5">
+            </i>
+        </a>
+    </div>
+</template>
+<br/>
