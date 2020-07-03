@@ -49,13 +49,28 @@ class teleconsultaController extends Controllers implements IControllers
         if (!is_null($router->getMethod()) && is_null($router->getId())) {
             switch ($router->getMethod()) {
                 case 'calendario':
-                    $this->template->display('calendario/roles/' . $this->user['rol'] . '/calendario', array(
+
+                    $this->name_template = 'calendario/roles/' . $this->user['rol'] . '/calendario';
+
+                    if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                        Helper\Functions::redir($config['build']['url']);
+                    }
+
+                    $this->template->display($this->name_template, array(
                         'appBodyClass' => 'app-calendar',
                         'teleconsulta' => 'active',
                         'calendario'   => '#0168fa',
                     ));
+
                     break;
                 case 'pacientes':
+
+                    $this->name_template = 'calendario/roles/' . $this->user['rol'] . '/calendario';
+
+                    if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                        Helper\Functions::redir($config['build']['url']);
+                    }
+
                     $this->template->display('pacientes/roles/' . $this->user['rol'] . '/pacientes', array(
                         'appBodyClass' => 'app-contact',
                         'teleconsulta' => 'active',

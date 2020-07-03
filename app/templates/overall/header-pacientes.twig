@@ -1,0 +1,39 @@
+<header class="navbar navbar-header navbar-header-fixed">
+    <a class="burger-menu" href="" id="mainMenuOpen">
+        <i data-feather="menu">
+        </i>
+    </a>
+    <a class="burger-menu d-none" href="" id="contactContentHide">
+        <i data-feather="arrow-left">
+        </i>
+    </a>
+    <div class="navbar-brand">
+        <a class="df-logo" href="{{config.build.url}}">
+            Tele
+            <span>
+                médico
+            </span>
+        </a>
+    </div>
+    <!-- navbar-brand -->
+    <div class="navbar-menu-wrapper" id="navbarMenu">
+        <div class="navbar-menu-header">
+            <a class="df-logo" href="{{config.build.url}}">
+                Tele
+                <span>
+                    médico
+                </span>
+            </a>
+            <a href="" id="mainMenuClose">
+                <i data-feather="x">
+                </i>
+            </a>
+        </div>
+        <!-- navbar-menu-header -->
+        {% include 'overall/navbar-menu' %}
+    </div>
+    <!-- navbar-menu-wrapper -->
+    {% include 'overall/navbar-right' %}
+    {% include 'overall/navbar-search' %}
+</header>
+<!-- navbar -->

@@ -41,6 +41,13 @@ class soporteController extends Controllers implements IControllers
 
         // Para Controladores
         if ($router->getController() == 'soporte' && is_null($router->getMethod()) && is_null($router->getId())) {
+
+            $this->name_template = 'soporte/roles/' . $this->user['rol'] . '/tickets';
+
+            if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                Helper\Functions::redir($config['build']['url']);
+            }
+
             $this->template->display('soporte/roles/' . $this->user['rol'] . '/tickets', array(
                 'appBodyClass' => 'page-profile',
                 'perfil'       => 'active',
@@ -52,16 +59,32 @@ class soporteController extends Controllers implements IControllers
         if (!is_null($router->getMethod()) && is_null($router->getId())) {
             switch ($router->getMethod()) {
                 case 'mis-tickets':
+
+                    $this->name_template = 'soporte/roles/' . $this->user['rol'] . '/tickets';
+
+                    if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                        Helper\Functions::redir($config['build']['url']);
+                    }
+
                     $this->template->display('soporte/roles/' . $this->user['rol'] . '/tickets', array(
                         'appBodyClass' => 'page-profile',
                         'soporte'      => 'active',
                     ));
+
                     break;
                 case 'comentarios-y-sugerencias':
+
+                    $this->name_template = 'soporte/roles/' . $this->user['rol'] . '/tickets';
+
+                    if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                        Helper\Functions::redir($config['build']['url']);
+                    }
+
                     $this->template->display('soporte/roles/' . $this->user['rol'] . '/tickets', array(
                         'appBodyClass' => 'page-profile',
                         'soporte'      => 'active',
                     ));
+
                     break;
                 default:
                     Helper\Functions::redir($config['build']['url'] . 'soporte');

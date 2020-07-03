@@ -235,6 +235,64 @@ class Users extends Models implements IModels
     }
 
     /**
+     * Verifica en la base de datos, el email y contraseña ingresados por el usuario
+     *
+     * @param string $email: Email del usuario que intenta el login
+     * @param string $pass: Contraseña sin encriptar del usuario que intenta el login
+     *
+     * @return bool true: Cuando el inicio de sesión es correcto
+     *              false: Cuando el inicio de sesión no es correcto
+     */
+    private function authenticationSSO(string $user): bool
+    {
+        global $config;
+
+        $user  = $this->db->scape($user);
+        $query = $this->db->select("
+            id,
+            JSON_UNQUOTE(data->'$.email') as email,
+            JSON_UNQUOTE(data->'$.user') as user,
+            JSON_UNQUOTE(data->'$.pass') as pass,
+            JSON_UNQUOTE(data->'$.status') as status,
+            data",
+            'users',
+            null,
+            " data->'$.user'='$user' ",
+            1
+        );
+
+        # Incio de sesión con éxito
+        if (false !== $query) {
+
+            # Verificar activaciond e cuenta
+            if (!filter_var($query[0]['status'], FILTER_VALIDATE_BOOLEAN)) {
+
+                throw new ModelsException('Usuario no confirma su correo electrónico. No se puede ingresar al sistema.');
+
+            }
+
+            # Verificar si ya tiene un perfil asignado
+            $permissions = json_decode($query[0]['data'], true);
+
+            if (empty($permissions['permissions'])) {
+                throw new ModelsException('Usuario no tiene un perfil asignado. No se puede ingresar al sistema.');
+            }
+
+            # Restaurar intentos
+            $this->restoreAttempts($user);
+
+            # Generar la sesión
+            $query[0]['id_user'] = $query[0]['id'];
+
+            $this->generateSession($query[0]);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Establece los intentos recientes desde la variable de sesión acumulativa
      *
      * @return void
@@ -454,6 +512,40 @@ class Users extends Models implements IModels
         }
 
         throw new \RuntimeException('El usuario no está logeado.');
+    }
+
+    /**
+     * Realiza la acción de login dentro del sistema
+     *
+     * @return array : Con información de éxito/falla al inicio de sesión.
+     */
+    public function loginSSO(string $user): array
+    {
+        try {
+
+            global $config;
+
+            # Definir de nuevo el control de intentos
+            $this->setDefaultAttempts();
+
+            # Añadir intentos
+            $this->setNewAttempt($user);
+
+            # Verificar intentos
+            $this->maximumAttempts($user);
+
+            # Autentificar
+            if ($this->authenticationSSO($user)) {
+                Helper\Functions::redir($config['build']['url']);
+            }
+
+            throw new ModelsException('Credenciales incorrectas.');
+
+        } catch (ModelsException $e) {
+
+            throw new ModelsException($e->getMessage());
+
+        }
     }
 
     /**

@@ -31,9 +31,17 @@ class homeController extends Controllers implements IControllers
 
         # Cluster login
         if (count($this->user) == 0) {
-            $this->template->display('login/login', array(
+
+            $this->name_template = 'login/login';
+
+            if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                Helper\Functions::redir($config['build']['url']);
+            }
+
+            $this->template->display($this->name_template, array(
                 'appBodyClass' => '',
             ));
+
         } else {
 
             // Validador de permisos de rol para controller
@@ -41,7 +49,13 @@ class homeController extends Controllers implements IControllers
                 Helper\Functions::redir($config['build']['url']);
             }
 
-            $this->template->display('dashboard/roles/' . $this->user['rol'] . '/dashboard', array(
+            $this->name_template = 'dashboard/roles/' . $this->user['rol'] . '/dashboard';
+
+            if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                Helper\Functions::redir($config['build']['url']);
+            }
+
+            $this->template->display($this->name_template, array(
                 'appBodyClass' => 'page-profile',
                 'dashboard'    => 'active',
             ));

@@ -41,7 +41,14 @@ class perfilController extends Controllers implements IControllers
 
         // Para Controladores
         if ($router->getController() == 'perfil' && is_null($router->getMethod()) && is_null($router->getId())) {
-            $this->template->display('perfil/roles/' . $this->user['rol'] . '/perfil', array(
+
+            $this->name_template = 'perfil/roles/' . $this->user['rol'] . '/perfil';
+
+            if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                Helper\Functions::redir($config['build']['url']);
+            }
+
+            $this->template->display($this->name_template, array(
                 'appBodyClass' => 'page-profile',
                 'perfil'       => 'active',
             ));
@@ -52,16 +59,32 @@ class perfilController extends Controllers implements IControllers
         if (!is_null($router->getMethod()) && is_null($router->getId())) {
             switch ($router->getMethod()) {
                 case 'mis-datos':
-                    $this->template->display('perfil/roles/' . $this->user['rol'] . '/perfil', array(
+
+                    $this->name_template = 'perfil/roles/' . $this->user['rol'] . '/perfil';
+
+                    if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                        Helper\Functions::redir($config['build']['url']);
+                    }
+
+                    $this->template->display($this->name_template, array(
                         'appBodyClass' => 'page-profile',
                         'perfil'       => 'active',
                     ));
+
                     break;
                 case 'contraseña':
-                    $this->template->display('perfil/roles/' . $this->user['rol'] . '/perfil', array(
+
+                    $this->name_template = 'perfil/roles/' . $this->user['rol'] . '/contraseña';
+
+                    if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                        Helper\Functions::redir($config['build']['url']);
+                    }
+
+                    $this->template->display($this->name_template, array(
                         'appBodyClass' => 'page-profile',
                         'perfil'       => 'active',
                     ));
+
                     break;
                 default:
                     Helper\Functions::redir($config['build']['url'] . 'perfil');
