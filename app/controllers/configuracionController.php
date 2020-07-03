@@ -34,6 +34,11 @@ class configuracionController extends Controllers implements IControllers
 
         global $config;
 
+        // Validador de permisos de rol para controller
+        if ($this->user['rol'] > $config['modulos'][$router->getController()]['permisos']) {
+            Helper\Functions::redir($config['build']['url']);
+        }
+
         // Para Controladores
         if ($router->getController() == 'configuracion' && is_null($router->getMethod()) && is_null($router->getId())) {
             $this->template->display('configuracion/roles/' . $this->user['rol'] . '/configuracion', array(
@@ -46,18 +51,28 @@ class configuracionController extends Controllers implements IControllers
         // Para metodos
         if (!is_null($router->getMethod()) && is_null($router->getId())) {
             switch ($router->getMethod()) {
-                case 'calendario':
-                    $this->template->display('calendario/roles/' . $this->user['rol'] . '/calendario', array(
-                        'appBodyClass' => 'app-calendar',
-                        'teleconsulta' => 'active',
-                        'calendario'   => '#0168fa',
+                case 'pacientes':
+                    $this->template->display('configuracion/roles/' . $this->user['rol'] . '/configuracion', array(
+                        'appBodyClass'  => 'page-profile',
+                        'configuracion' => 'active',
                     ));
                     break;
-                case 'pacientes':
-                    $this->template->display('pacientes/roles/' . $this->user['rol'] . '/pacientes', array(
-                        'appBodyClass' => 'app-contact',
-                        'teleconsulta' => 'active',
-                        'pacientes'    => '#0168fa',
+                case 'citas':
+                    $this->template->display('configuracion/roles/' . $this->user['rol'] . '/configuracion', array(
+                        'appBodyClass'  => 'page-profile',
+                        'configuracion' => 'active',
+                    ));
+                    break;
+                case 'usuarios':
+                    $this->template->display('configuracion/roles/' . $this->user['rol'] . '/configuracion', array(
+                        'appBodyClass'  => 'page-profile',
+                        'configuracion' => 'active',
+                    ));
+                    break;
+                case 'facturacion':
+                    $this->template->display('configuracion/roles/' . $this->user['rol'] . '/configuracion', array(
+                        'appBodyClass'  => 'page-profile',
+                        'configuracion' => 'active',
                     ));
                     break;
                 default:

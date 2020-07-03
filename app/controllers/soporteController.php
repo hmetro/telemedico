@@ -34,39 +34,51 @@ class soporteController extends Controllers implements IControllers
 
         global $config;
 
+        // Validador de permisos de rol para controller
+        if ($this->user['rol'] > $config['modulos'][$router->getController()]['permisos']) {
+            Helper\Functions::redir($config['build']['url']);
+        }
+
+        // Para Controladores
         if ($router->getController() == 'soporte' && is_null($router->getMethod()) && is_null($router->getId())) {
+            $this->template->display('soporte/roles/' . $this->user['rol'] . '/tickets', array(
+                'appBodyClass' => 'page-profile',
+                'perfil'       => 'active',
+            ));
 
-            Helper\Functions::redir($config['build']['url'] . 'soporte/tickets');
+        }
 
-        } else {
-
-            // Para metodos
-            if (!is_null($router->getMethod()) && is_null($router->getId())) {
-                switch ($router->getMethod()) {
-                    case 'tickets':
-                        $this->template->display('soporte/roles/' . $this->user['rol'] . '/tickets', array(
-                            'appBodyClass' => 'page-profile',
-                            'soporte'      => 'active',
-                        ));
-                        break;
-                    default:
-                        Helper\Functions::redir($config['build']['url'] . 'soporte/tickets');
-                        break;
-                }
-
+        // Para metodos
+        if (!is_null($router->getMethod()) && is_null($router->getId())) {
+            switch ($router->getMethod()) {
+                case 'mis-tickets':
+                    $this->template->display('soporte/roles/' . $this->user['rol'] . '/tickets', array(
+                        'appBodyClass' => 'page-profile',
+                        'soporte'      => 'active',
+                    ));
+                    break;
+                case 'comentarios-y-sugerencias':
+                    $this->template->display('soporte/roles/' . $this->user['rol'] . '/tickets', array(
+                        'appBodyClass' => 'page-profile',
+                        'soporte'      => 'active',
+                    ));
+                    break;
+                default:
+                    Helper\Functions::redir($config['build']['url'] . 'soporte');
+                    break;
             }
 
-            // Para metodos y ids
-            if (!is_null($router->getMethod()) && !is_null($router->getId())) {
-                switch ($router->getId()) {
-                    case 'zoom':
-                        echo "zoom";
-                        break;
-                    default:
-                        Helper\Functions::redir($config['build']['url'] . 'soporte/tickets');
-                        break;
-                }
+        }
 
+        // Para metodos y ids
+        if (!is_null($router->getMethod()) && !is_null($router->getId())) {
+            switch ($router->getId()) {
+                case 'zoom':
+                    echo "zoom";
+                    break;
+                default:
+                    Helper\Functions::redir($config['build']['url'] . 'soporte');
+                    break;
             }
 
         }

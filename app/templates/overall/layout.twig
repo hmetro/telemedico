@@ -23,17 +23,24 @@
         {% endblock %}
     </head>
     <body class="{{appBodyClass}}">
-    {% block appHeader %}
-    {% endblock %}
-    {% block appBody %}
-    {% endblock %}
-    {% block appFooter %}
-    {% endblock %}
-    <script defer="" src="https://polyfill.io/v3/polyfill.min.js"></script>
-    <script defer="" src="assets/dashforge/lib/jquery/jquery.min.js"></script>
-    <script defer="" src="assets/dashforge/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script defer="" src="assets/dashforge/lib/feather-icons/feather.min.js"></script>
-    {% block appScripts %}
-    {% endblock %}
+        {% block appHeader %}
+        {% endblock %}
+        {% block appBody %}
+        {% endblock %}
+        {% block appFooter %}
+        {% endblock %}
+        <script type="text/javascript">
+            var api_url = '{{config.api.url}}';
+        </script>
+        <script defer="" src="https://polyfill.io/v3/polyfill.min.js">
+        </script>
+        <script defer="" src="assets/dashforge/lib/jquery/jquery.min.js">
+        </script>
+        <script defer="" src="assets/dashforge/lib/bootstrap/js/bootstrap.bundle.min.js">
+        </script>
+        <script defer="" src="assets/dashforge/lib/feather-icons/feather.min.js">
+        </script>
+        {% block appScripts %}
+        {% endblock %}
     </body>
 </html>

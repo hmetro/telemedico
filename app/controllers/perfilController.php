@@ -34,10 +34,15 @@ class perfilController extends Controllers implements IControllers
 
         global $config;
 
+        // Validador de permisos de rol para controller
+        if ($this->user['rol'] > $config['modulos'][$router->getController()]['permisos']) {
+            Helper\Functions::redir($config['build']['url']);
+        }
+
         // Para Controladores
         if ($router->getController() == 'perfil' && is_null($router->getMethod()) && is_null($router->getId())) {
             $this->template->display('perfil/roles/' . $this->user['rol'] . '/perfil', array(
-                'appBodyClass' => 'app-calendar',
+                'appBodyClass' => 'page-profile',
                 'perfil'       => 'active',
             ));
 
@@ -46,18 +51,16 @@ class perfilController extends Controllers implements IControllers
         // Para metodos
         if (!is_null($router->getMethod()) && is_null($router->getId())) {
             switch ($router->getMethod()) {
-                case 'calendario':
-                    $this->template->display('calendario/roles/' . $this->user['rol'] . '/calendario', array(
-                        'appBodyClass' => 'app-calendar',
-                        'teleconsulta' => 'active',
-                        'calendario'   => '#0168fa',
+                case 'mis-datos':
+                    $this->template->display('perfil/roles/' . $this->user['rol'] . '/perfil', array(
+                        'appBodyClass' => 'page-profile',
+                        'perfil'       => 'active',
                     ));
                     break;
-                case 'pacientes':
-                    $this->template->display('pacientes/roles/' . $this->user['rol'] . '/pacientes', array(
-                        'appBodyClass' => 'app-contact',
-                        'teleconsulta' => 'active',
-                        'pacientes'    => '#0168fa',
+                case 'contraseña':
+                    $this->template->display('perfil/roles/' . $this->user['rol'] . '/perfil', array(
+                        'appBodyClass' => 'page-profile',
+                        'perfil'       => 'active',
                     ));
                     break;
                 default:

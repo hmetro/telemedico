@@ -35,6 +35,12 @@ class homeController extends Controllers implements IControllers
                 'appBodyClass' => '',
             ));
         } else {
+
+            // Validador de permisos de rol para controller
+            if ($this->user['rol'] > $config['modulos'][$router->getController()]['permisos']) {
+                Helper\Functions::redir($config['build']['url']);
+            }
+
             $this->template->display('dashboard/roles/' . $this->user['rol'] . '/dashboard', array(
                 'appBodyClass' => 'page-profile',
                 'dashboard'    => 'active',

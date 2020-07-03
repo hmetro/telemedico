@@ -1,6 +1,8 @@
 {% extends 'overall/layout' %}
 {% block appMetaHead %}
-<title>Entrar | {{config.build.name}}</title>
+<title>
+    Entrar | {{config.build.name}}
+</title>
 {% endblock %}
 {% block appHead %}
 <!-- DashForge CSS -->
@@ -11,77 +13,77 @@
 {% endblock %}
 {% block appBody %}
 <div class="content content-fixed content-auth">
-            <div class="container">
-                <div class="media align-items-stretch justify-content-center ht-100p pos-relative">
-                    <div class="media-body align-items-center d-none d-lg-flex">
-                        <div class="mx-wd-500">
-                            <img alt="Telemedico" class="img-fluid" src="assets/dashforge/assets/img/zona-segura-desktop.jpg"/>
-                        </div>
-                    </div>
-                    <!-- media-body -->
-                    <div class="sign-wrapper mg-lg-l-50 mg-xl-l-60">
-                        <div class="wd-100p">
-                            <h3 class="tx-color-01 mg-b-5">
-                                Entrar
-                            </h3>
-                            <p class="tx-color-03 tx-12 mg-b-10">
-                                Bienvenido! Por favor inicie sesión para continuar.
-                            </p>
-                            <form id="login_mx">
-                                {% if (get.resetpass==1) %}
-                                <div class="alert alert-solid alert-success justify-content-start" id="response" role="alert">
-                                    <b>
-                                        Proceso de recuperacion de contraseña exitoso. Inicie sesion con la contraseña temporal que hemos enviado a su correo. Por seguridad actualize en su perfil una nueva contraseña.
-                                    </b>
-                                </div>
-                                {% elseif (get.actived==1) %}
-                                <div class="alert alert-solid alert-success justify-content-start" id="response" role="alert">
-                                    <b>
-                                        Su cuenta fue activada con éxito. Bienvenido!
-                                    </b>
-                                </div>
-                                {% else %}
-                                <div class="alert alert-solid d-none" id="response" role="alert">
-                                </div>
-                                {% endif %}
-                                <div class="form-group">
-                                    <label>
-                                        Usuario o Correo Electrónico
-                                    </label>
-                                    <input autofocus="true" class="form-control" name="user" placeholder="Usuario o Correo Electrónico" type="text">
-                                    </input>
-                                </div>
-                                <div class="form-group">
-                                    <div class="d-flex justify-content-between mg-b-5">
-                                        <label class="mg-b-0-f">
-                                            Contraseña
-                                        </label>
-                                    </div>
-                                    <input class="form-control" name="pass" placeholder="Enter your password" type="password">
-                                    </input>
-                                </div>
-                                <button class="btn btn-brand-02 btn-block" id="login">
-                                    Entrar
-                                </button>
-                            </form>
-                            <div class="tx-13 mg-t-20 tx-center">
-                                ¿No tienes una cuenta?
-                                <a href="{{config.build.url}}registro">
-                                    Crea una cuenta
-                                </a>
-                            </div>
-                            <div class="tx-13 tx-center">
-                                <a class="tx-13" href="{{config.build.url}}recuperar-contraseña">
-                                    ¿Recuperar contraseña?
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- sign-wrapper -->
+    <div class="container">
+        <div class="media align-items-stretch justify-content-center ht-100p pos-relative">
+            <div class="media-body align-items-center d-none d-lg-flex">
+                <div class="mx-wd-500">
+                    <img alt="Telemedico" class="img-fluid" src="assets/dashforge/assets/img/zona-segura-desktop.jpg"/>
                 </div>
-                <!-- media -->
             </div>
-            <!-- container -->
+            <!-- media-body -->
+            <div class="sign-wrapper mg-lg-l-50 mg-xl-l-60">
+                <div class="wd-100p">
+                    <h3 class="tx-color-01 mg-b-5">
+                        Entrar
+                    </h3>
+                    <p class="tx-color-03 tx-12 mg-b-10">
+                        Bienvenido! Por favor inicie sesión para continuar.
+                    </p>
+                    <form id="login_mx">
+                        {% if (get.resetpass==1) %}
+                        <div class="alert alert-solid alert-success justify-content-start" id="response" role="alert">
+                            <b>
+                                Proceso de recuperacion de contraseña exitoso. Inicie sesion con la contraseña temporal que hemos enviado a su correo. Por seguridad actualize en su perfil una nueva contraseña.
+                            </b>
+                        </div>
+                        {% elseif (get.actived==1) %}
+                        <div class="alert alert-solid alert-success justify-content-start" id="response" role="alert">
+                            <b>
+                                Su cuenta fue activada con éxito. Bienvenido!
+                            </b>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-solid d-none" id="response" role="alert">
+                        </div>
+                        {% endif %}
+                        <div class="form-group">
+                            <label>
+                                Usuario o Correo Electrónico
+                            </label>
+                            <input autofocus="true" class="form-control" name="user" placeholder="Usuario o Correo Electrónico" type="text">
+                            </input>
+                        </div>
+                        <div class="form-group">
+                            <div class="d-flex justify-content-between mg-b-5">
+                                <label class="mg-b-0-f">
+                                    Contraseña
+                                </label>
+                            </div>
+                            <input class="form-control" name="pass" placeholder="Enter your password" type="password">
+                            </input>
+                        </div>
+                        <button class="btn btn-brand-02 btn-block" id="login">
+                            Entrar
+                        </button>
+                    </form>
+                    <div class="tx-13 mg-t-20 tx-center">
+                        ¿No tienes una cuenta?
+                        <a href="{{config.build.url}}registro">
+                            Crea una cuenta
+                        </a>
+                    </div>
+                    <div class="tx-13 tx-center">
+                        <a class="tx-13" href="{{config.build.url}}recuperar-contraseña">
+                            ¿Recuperar contraseña?
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- sign-wrapper -->
+        </div>
+        <!-- media -->
+    </div>
+    <!-- container -->
 </div>
 <!-- content -->
 {% endblock %}
@@ -89,13 +91,10 @@
 {% include 'overall/footer' %}
 {% endblock %}
 {% block appScripts %}
-<script type="text/javascript">
-    var api_url = '{{config.api.url}}';
+<script src="assets/dashforge/lib/perfect-scrollbar/perfect-scrollbar.min.js">
 </script>
-<script src="assets/dashforge/lib/jquery/jquery.min.js"></script>
-<script src="assets/dashforge/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="assets/dashforge/lib/feather-icons/feather.min.js"></script>
-<script src="assets/dashforge/lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<script src="assets/dashforge/assets/js/dashforge.js"></script>
-<script src="dist/app/js/login.js"></script>
+<script src="assets/dashforge/assets/js/dashforge.js">
+</script>
+<script src="dist/app/js/login.js">
+</script>
 {% endblock %}
