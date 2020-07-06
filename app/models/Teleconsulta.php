@@ -13,8 +13,10 @@ namespace app\models;
 
 use app\models as Model;
 use GuzzleHttp\Client as GClient;
+use Ocrend\Kernel\Helpers as Helper;
 use Ocrend\Kernel\Models\IModels;
 use Ocrend\Kernel\Models\Models;
+use Ocrend\Kernel\Models\ModelsException;
 use Ocrend\Kernel\Router\IRouter;
 
 /**
@@ -75,12 +77,55 @@ class Teleconsulta extends Models implements IModels
                     "duration" => 15,
                     "password" => "123456",
                     "timezone" => "America/Bogota",
+                    'settings' => [
+                        'auto_recording' => 'cloud',
+                    ],
                 ],
             ]);
 
             $data = json_decode($response->getBody());
 
             return array('status' => true, 'message' => 'Proceso realizado con éxito', 'data' => $data);
+
+        } catch (ModelsException $e) {
+            return array('status' => false, 'message' => $e->getMessage());
+        }
+    }
+
+    public function deleteCallZoom()
+    {
+
+        try {
+
+            global $config, $http;
+
+            $id_call = $http->request->get('id_call');
+
+            # Verificar que no están vacíos
+            if (Helper\Functions::e($id_call)) {
+                throw new ModelsException('Todos los datos son necesarios');
+            }
+
+            $getToken = new Model\Auth;
+
+            $accessToken = $getToken->generateKey()['zoom_token'];
+
+            $client = new GClient(['base_uri' => 'https://api.zoom.us']);
+
+            $response = $client->request('PUT', '/v2/meetings/' . $id_call . '/status', [
+                "headers" => [
+                    "Authorization" => "Bearer $accessToken",
+                ],
+                'json'    => [
+                    "action" => 'end',
+                ],
+            ]);
+
+            return array(
+                'status'        => true,
+                'message'       => 'Proceso realizado con éxito',
+                'getStatusCode' => $response->getStatusCode(),
+            );
 
         } catch (ModelsException $e) {
             return array('status' => false, 'message' => $e->getMessage());

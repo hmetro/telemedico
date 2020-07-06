@@ -12,7 +12,6 @@
 use app\models as Model;
 use Ocrend\Kernel\Helpers as Helper;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 $app->get('/', function () use ($app) {
     global $http;
@@ -144,16 +143,4 @@ $app->get('/contactos', function () use ($app) {
     $u = new Model\Contactos;
     return $app->json($u->AllContacts());
 
-});
-
-/**
- * Serve static js login
- *
- * @return json
- */
-$app->get('/app/js/{path}', function ($path) use ($app) {
-    if (!file_exists('../assets/dashforge/app/js/' . $path)) {
-        return new Response('', 404);
-    }
-    return $app->sendFile('../assets/dashforge/app/js/' . $path);
 });

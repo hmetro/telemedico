@@ -151,3 +151,13 @@ $app->post('/citas', function () use ($app) {
     $m = new Model\Citas;
     return $app->json($m->NewCita());
 });
+
+/**
+ * Eliminar zoom videollamada con mieeting id
+ *
+ * @return json
+ */
+$app->post('/zoom/eliminar', function () use ($app) {
+    $m = new Model\Teleconsulta;
+    return $app->json($m->deleteCallZoom());
+});

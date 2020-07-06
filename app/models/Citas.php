@@ -54,7 +54,7 @@ class Citas extends Models implements IModels
             global $config, $http;
 
             # Obtener los datos $_POST
-            $id_contacto = $this->db->scape($http->request->get('id_contacto'));
+            $id_contacto = time();
 
             // Generar link de zoom
 
@@ -85,6 +85,7 @@ class Citas extends Models implements IModels
                 'status'   => true,
                 'message'  => 'Cita registrada con éxito.',
                 'url'      => 'https:' . $url_zoom,
+                'id_call'  => $resZoom['data']->id,
                 'url_zoom' => $resZoom['data']->join_url,
 
             );

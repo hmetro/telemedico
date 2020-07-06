@@ -56,7 +56,10 @@
                     apiKey: meetConfig.apiKey,
                     passWord: meetConfig.passWord,
                     success: function(res) {
-                        $('.security-option-menu dropup btn-group').hide();
+                        $('#join_meeting').css('display', 'none');
+                        $($('#wc-footer').children('div').get(0)).css('display', 'block');
+                        $($('#wc-footer').children('div').get(1)).css('display', 'none');
+                        $($('#wc-footer').children('div').get(2)).css('display', 'none');
                         console.log('join meeting success');
                     },
                     error: function(res) {

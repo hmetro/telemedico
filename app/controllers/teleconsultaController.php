@@ -48,6 +48,7 @@ class teleconsultaController extends Controllers implements IControllers
         // Para metodos
         if (!is_null($router->getMethod()) && is_null($router->getId())) {
             switch ($router->getMethod()) {
+
                 case 'calendario':
 
                     $this->name_template = 'calendario/roles/' . $this->user['rol'] . '/calendario';
@@ -63,6 +64,7 @@ class teleconsultaController extends Controllers implements IControllers
                     ));
 
                     break;
+
                 case 'pacientes':
 
                     $this->name_template = 'calendario/roles/' . $this->user['rol'] . '/calendario';
@@ -77,6 +79,7 @@ class teleconsultaController extends Controllers implements IControllers
                         'pacientes'    => '#0168fa',
                     ));
                     break;
+
                 default:
                     Helper\Functions::redir($config['build']['url'] . 'teleconsulta/pacientes');
                     break;
@@ -86,13 +89,23 @@ class teleconsultaController extends Controllers implements IControllers
 
         // Para metodos y ids
         if (!is_null($router->getMethod()) && !is_null($router->getId())) {
-            switch ($router->getId()) {
-                case 'zoom':
-                    echo "zoom";
-                    break;
-                default:
-                    Helper\Functions::redir($config['build']['url'] . 'teleconsulta/pacientes');
-                    break;
+
+            // Seteo de rutas
+            if ($router->getMethod() == 'live' && !is_null($router->getId())) {
+
+                $this->name_template = 'pacientes/roles/' . $this->user['rol'] . '/live';
+
+                if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                    Helper\Functions::redir($config['build']['url']);
+                }
+
+                $this->template->display($this->name_template, array(
+                    'id_call'      => $router->getId(),
+                    'id_user_call' => base64_encode($config['zoom']['api_user']),
+                ));
+
+            } else {
+                Helper\Functions::redir($config['build']['url'] . 'teleconsulta/pacientes');
             }
 
         }

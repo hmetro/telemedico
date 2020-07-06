@@ -7,6 +7,7 @@
 {% block appHead %}
 <!-- DashForge CSS -->
 <link href="assets/dashforge/assets/css/dashforge.contacts.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.profile.css" rel="stylesheet"/>
 {% endblock %}
 {% block appHeader %}
 {% include 'overall/header-pacientes' %}
@@ -15,7 +16,7 @@
 <div class="contact-wrapper">
     <div class="contact-navleft">
         <nav class="nav flex-column">
-            <a class="nav-link active" data-toggle="tab" href="#tabContact">
+            <a class="nav-link tabContact active" data-toggle="tab" href="#tabContact">
                 <span data-placement="right" data-toggle="tooltip" title="Todos los Pacientes">
                     <i data-feather="users">
                     </i>
@@ -833,6 +834,9 @@
                 <a class="nav-link" data-toggle="tab" href="#logs">
                     Historial de Actividad
                 </a>
+                <a class="nav-link live-active d-none" data-toggle="tab" href="#live">
+                    Live
+                </a>
             </nav>
             <a class="text-secondary mg-l-auto d-xl-none" href="" id="contactOptions">
                 <i data-feather="more-horizontal">
@@ -842,26 +846,19 @@
         <!-- contact-content-header -->
         <div class="contact-content-body">
             <div class="tab-content">
-                <div class="tab-pane show active pd-20 pd-xl-25" id="contactInformation">
+                <div class="tab-pane show active pd-20 pd-xl-25" id="paciente">
                     <div class="d-flex align-items-center justify-content-between mg-b-25">
                         <h6 class="mg-b-0">
                             Personal Details
                         </h6>
                         <div class="d-flex">
-                            <a class="btn btn-sm btn-white d-flex align-items-center mg-r-5" data-toggle="modal" href="#modalEditContact">
-                                <i data-feather="edit-2">
+                            <button class="btn btn-sm btn-primary text-white d-flex align-items-center mg-r-5" id="initCallZoom">
+                                <i data-feather="video">
                                 </i>
-                                <span class="d-none d-sm-inline mg-l-5">
-                                    Edit
+                                <span class="d-none d-sm-inline mg-l-5" id="t-initCallZoom">
+                                    Iniciar Videollamada
                                 </span>
-                            </a>
-                            <a class="btn btn-sm btn-white d-flex align-items-center" data-toggle="modal" href="#modalDeleteContact">
-                                <i data-feather="trash">
-                                </i>
-                                <span class="d-none d-sm-inline mg-l-5">
-                                    Delete
-                                </span>
-                            </a>
+                            </button>
                         </div>
                     </div>
                     <div class="row">
@@ -1004,26 +1001,458 @@
                             <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
                                 Notes
                             </label>
-                            <p class="tx-13 mg-b-0">
-                                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.
-                            </p>
                         </div>
                     </div>
                     <!-- row -->
                 </div>
-                <div class="tab-pane pd-20 pd-xl-25" id="contactLogs">
+                <div class="tab-pane pd-20 pd-xl-25" id="hc">
                     <div class="d-flex align-items-center justify-content-between mg-b-30">
-                        <h6 class="tx-15 mg-b-0">
-                            Call & Message Logs
-                        </h6>
-                        <a class="btn btn-sm btn-white d-flex align-items-center" href="#">
-                            <i class="icon ion-md-time mg-r-5 tx-16 lh--9">
-                            </i>
-                            Clear History
-                        </a>
+                        <div class="col-sm card mg-b-20 mg-lg-b-25">
+                            <div class="card-header pd-y-15 pd-x-20 d-flex align-items-center justify-content-between">
+                                <h6 class="tx-uppercase tx-semibold mg-b-0">
+                                    Francisco Foyain
+                                </h6>
+                                <nav class="nav nav-with-icon tx-13">
+                                    <a class="nav-link" href="">
+                                        <svg class="feather feather-file" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z">
+                                            </path>
+                                            <polyline points="13 2 13 9 20 9">
+                                            </polyline>
+                                        </svg>
+                                        Ver Detalle
+                                    </a>
+                                </nav>
+                            </div>
+                            <!-- card-header -->
+                            <div class="card-body pd-25">
+                                <div class="media d-block d-sm-flex">
+                                    <div class="wd-80 ht-80 bg-ui-04 rounded d-flex align-items-center justify-content-center">
+                                        <svg class="feather feather-briefcase tx-white-7 wd-40 ht-40" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                            <rect height="14" rx="2" ry="2" width="20" x="2" y="7">
+                                            </rect>
+                                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div class="media-body pd-t-25 pd-sm-t-0 pd-sm-l-25">
+                                        <h5 class="mg-b-5">
+                                            Endocrinología
+                                        </h5>
+                                        <p class="mg-b-3 tx-color-02">
+                                            <span class="tx-medium tx-color-01">
+                                                Expediente Clínico N°:
+                                                <b>
+                                                    2541488
+                                                </b>
+                                            </span>
+                                        </p>
+                                        <span class="d-block tx-13 tx-color-03">
+                                            15 Febrero 2017 - Presente
+                                        </span>
+                                        <ul class="pd-l-10 mg-0 mg-t-20 tx-13">
+                                            <li>
+                                                Paciente inicia proceso para intervención quirúrgica.
+                                            </li>
+                                            <li>
+                                                Paciente cancela la cita
+                                            </li>
+                                            <li>
+                                                Paciente ingresa a emergencias
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- media -->
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- tab-pane -->
+                <div class="tab-pane pd-20 pd-xl-25" id="lab">
+                    <div class="d-flex align-items-center justify-content-between mg-b-30">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        N°
+                                    </th>
+                                    <th scope="col">
+                                        Nombres
+                                    </th>
+                                    <th scope="col">
+                                        Apellidos
+                                    </th>
+                                    <th scope="col">
+                                        Fecha
+                                    </th>
+                                    <th scope="col">
+                                        Opciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">
+                                        1
+                                    </th>
+                                    <td>
+                                        Francisco Javier
+                                    </td>
+                                    <td>
+                                        Foyain Espinosa
+                                    </td>
+                                    <td>
+                                        26/05/2020
+                                    </td>
+                                    <td>
+                                        <a href="{{config.buil.url}}assets/documentos/lab/20200526.pdf" target="_blank">
+                                            Ver Resultado
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        2
+                                    </th>
+                                    <td>
+                                        Francisco Javier
+                                    </td>
+                                    <td>
+                                        Foyain Espinosa
+                                    </td>
+                                    <td>
+                                        15/05/2020
+                                    </td>
+                                    <td>
+                                        <a href="{{config.buil.url}}assets/documentos/lab/20200526.pdf" target="_blank">
+                                            Ver Resultado
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        3
+                                    </th>
+                                    <td>
+                                        Francisco Javier
+                                    </td>
+                                    <td>
+                                        Foyain Espinosa
+                                    </td>
+                                    <td>
+                                        03/05/2020
+                                    </td>
+                                    <td>
+                                        <a href="{{config.buil.url}}assets/documentos/lab/20200526.pdf" target="_blank">
+                                            Ver Resultado
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane pd-20 pd-xl-25" id="lab">
+                    <div class="d-flex align-items-center justify-content-between mg-b-30">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        N°
+                                    </th>
+                                    <th scope="col">
+                                        Nombres
+                                    </th>
+                                    <th scope="col">
+                                        Apellidos
+                                    </th>
+                                    <th scope="col">
+                                        Fecha
+                                    </th>
+                                    <th scope="col">
+                                        Opciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">
+                                        1
+                                    </th>
+                                    <td>
+                                        Francisco Javier
+                                    </td>
+                                    <td>
+                                        Foyain Espinosa
+                                    </td>
+                                    <td>
+                                        26/05/2020
+                                    </td>
+                                    <td>
+                                        <a href="{{config.buil.url}}assets/documentos/imagen/20200526.png" target="_blank">
+                                            Ver Imagen
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        2
+                                    </th>
+                                    <td>
+                                        Francisco Javier
+                                    </td>
+                                    <td>
+                                        Foyain Espinosa
+                                    </td>
+                                    <td>
+                                        15/05/2020
+                                    </td>
+                                    <td>
+                                        <a href="{{config.buil.url}}assets/documentos/imagen/20200526.png" target="_blank">
+                                            Ver Imagen
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        3
+                                    </th>
+                                    <td>
+                                        Francisco Javier
+                                    </td>
+                                    <td>
+                                        Foyain Espinosa
+                                    </td>
+                                    <td>
+                                        03/05/2020
+                                    </td>
+                                    <td>
+                                        <a href="{{config.buil.url}}assets/documentos/imagen/20200526.png" target="_blank">
+                                            Ver Imagen
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane pd-20 pd-xl-25" id="logs">
+                    <div class="d-flex align-items-center justify-content-between mg-b-30">
+                        <div class="container pd-x-0 pd-lg-x-10 pd-xl-x-0">
+                            <div class="media d-block d-lg-flex">
+                                <div class="media-body">
+                                    <div class="timeline-group tx-13">
+                                        <div class="timeline-label">
+                                            Hoy
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-time">
+                                                10:30pm
+                                            </div>
+                                            <div class="timeline-body">
+                                                <h6 class="mg-b-0">
+                                                    Building a Simple User Interface
+                                                </h6>
+                                                <p>
+                                                    <a href="#">
+                                                        Elisse Joson
+                                                    </a>
+                                                    San Francisco, CA
+                                                </p>
+                                                <p>
+                                                    In this lesson, you create a layout in XML that includes a text field and a button. In the next lesson, your app responds when the
+                                                </p>
+                                                <nav class="nav nav-row mg-t-15">
+                                                    <a class="nav-link" href="#">
+                                                        Like
+                                                    </a>
+                                                    <a class="nav-link" href="#">
+                                                        Comment
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                            <!-- timeline-body -->
+                                        </div>
+                                        <!-- timeline-item -->
+                                        <div class="timeline-item">
+                                            <div class="timeline-time">
+                                                08:15pm
+                                            </div>
+                                            <div class="timeline-body">
+                                                <h6 class="mg-b-0">
+                                                    Blueberry Cheesecake Dessert Recipe
+                                                </h6>
+                                                <p>
+                                                    <a href="#">
+                                                        Katherine Lumaad
+                                                    </a>
+                                                    Oakland, CA
+                                                </p>
+                                                <p>
+                                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.
+                                                </p>
+                                                <a class="d-block wd-lg-50p" href="#">
+                                                    <img alt="" class="img-fluid" src="../../assets/img/img36.jpg"/>
+                                                </a>
+                                                <nav class="nav nav-row mg-t-15">
+                                                    <a class="nav-link" href="#">
+                                                        Like
+                                                    </a>
+                                                    <a class="nav-link" href="#">
+                                                        Comment
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                            <!-- timeline-body -->
+                                        </div>
+                                        <!-- timeline-item -->
+                                        <div class="timeline-item">
+                                            <div class="timeline-time">
+                                                03:30pm
+                                            </div>
+                                            <div class="timeline-body">
+                                                <h6 class="mg-b-0">
+                                                    Your Finances Don't Have to Be Perfect to Work
+                                                </h6>
+                                                <p>
+                                                    <a href="#">
+                                                        Elisse Joson
+                                                    </a>
+                                                    San Francisco, CA
+                                                </p>
+                                                <p>
+                                                    In this lesson, you create a layout in XML that includes a text field and a button. In the next lesson, your app responds when the lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.
+                                                </p>
+                                                <nav class="nav nav-row mg-t-15">
+                                                    <a class="nav-link" href="#">
+                                                        Like
+                                                    </a>
+                                                    <a class="nav-link" href="#">
+                                                        Comment
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                            <!-- timeline-body -->
+                                        </div>
+                                        <!-- timeline-item -->
+                                        <div class="timeline-label">
+                                            Yesterday
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-time">
+                                                06:30pm
+                                            </div>
+                                            <div class="timeline-body">
+                                                <h6 class="mg-b-0">
+                                                    An Engineer Explains Why You Should Always Order the Larger Pizza
+                                                </h6>
+                                                <p>
+                                                    <a href="#">
+                                                        Elisse Joson
+                                                    </a>
+                                                    San Francisco, CA
+                                                </p>
+                                                <p>
+                                                    Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.
+                                                </p>
+                                                <div class="row row-xs">
+                                                    <div class="col">
+                                                        <img alt="" class="img-fluid" src="../../assets/img/img26.jpg"/>
+                                                    </div>
+                                                    <div class="col">
+                                                        <img alt="" class="img-fluid" src="../../assets/img/img28.jpg"/>
+                                                    </div>
+                                                </div>
+                                                <nav class="nav nav-row mg-t-15">
+                                                    <a class="nav-link" href="#">
+                                                        Like
+                                                    </a>
+                                                    <a class="nav-link" href="#">
+                                                        Comment
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                            <!-- timeline-body -->
+                                        </div>
+                                        <!-- timeline-item -->
+                                        <div class="timeline-item">
+                                            <div class="timeline-time">
+                                                01:15pm
+                                            </div>
+                                            <div class="timeline-body">
+                                                <h6 class="mg-b-0">
+                                                    The Strange Persistence of First Languages
+                                                </h6>
+                                                <p>
+                                                    <a href="#">
+                                                        Elisse Joson
+                                                    </a>
+                                                    San Francisco, CA
+                                                </p>
+                                                <p>
+                                                    In this lesson, you create a layout in XML that includes a text field and a button. In the next lesson, your app responds when the world.
+                                                </p>
+                                                <nav class="nav nav-row mg-t-15">
+                                                    <a class="nav-link" href="#">
+                                                        Like
+                                                    </a>
+                                                    <a class="nav-link" href="#">
+                                                        Comment
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                            <!-- timeline-body -->
+                                        </div>
+                                        <!-- timeline-item -->
+                                        <div class="timeline-label">
+                                            March 21, 2019
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-time">
+                                                11:45am
+                                            </div>
+                                            <div class="timeline-body">
+                                                <h6 class="mg-b-0">
+                                                    How to Win Your Next Political Argument
+                                                </h6>
+                                                <p>
+                                                    <a href="#">
+                                                        Elisse Joson
+                                                    </a>
+                                                    San Francisco, CA
+                                                </p>
+                                                <p>
+                                                    Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.
+                                                </p>
+                                                <p>
+                                                    In this lesson, you create a layout in XML that includes a text field and a button. In the next lesson, your app responds when the world.
+                                                </p>
+                                                <nav class="nav nav-row mg-t-15">
+                                                    <a class="nav-link" href="#">
+                                                        Like
+                                                    </a>
+                                                    <a class="nav-link" href="#">
+                                                        Comment
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                            <!-- timeline-body -->
+                                        </div>
+                                        <!-- timeline-item -->
+                                    </div>
+                                    <!-- timeline-group -->
+                                </div>
+                                <!-- media-body -->
+                            </div>
+                            <!-- media -->
+                        </div>
+                        <!-- container -->
+                    </div>
+                </div>
+                <div class="tab-pane" id="live">
+                    <iframe id="i-live" src="#!" style="border:none;position:absolute;height:100%;width:100%;">
+                    </iframe>
+                </div>
             </div>
             <!-- tab-content -->
         </div>
@@ -1048,7 +1477,7 @@
             <p class="tx-13 tx-lg-12 tx-xl-13 tx-color-03 mg-b-20">
                 President & CEO - ThemePixels, Inc.
             </p>
-            <nav class="contact-call-nav mg-b-20">
+            <nav class="contact-call-nav mg-b-20 d-none">
                 <a class="nav-call" data-toggle="tooltip" href="#" title="Make a Phone Call">
                     <i data-feather="phone">
                     </i>
@@ -1069,25 +1498,27 @@
             <p class="tx-13 mg-b-0">
                 Gambler, Tea Drinker, Ultimate Piggie, Replacement President of a Major Soft Drink Manufacturer. When I give out candies, I give people the flavour I don't like.
             </p>
+            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10 d-none" id="l-link-teleconsulta">
+                Link Teleconsulta
+            </label>
+            <p class="tx-13 mg-b-0 d-none" id="p-link-teleconsulta">
+                <a href="#!" id="link-teleconsulta">
+                </a>
+            </p>
             <hr class="mg-y-20">
                 <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-15">
-                    Options
+                    Opciones
                 </label>
                 <nav class="nav flex-column contact-content-nav mg-b-25">
-                    <a class="nav-link" href="">
-                        <i data-feather="share">
-                        </i>
-                        Share this Contact
-                    </a>
-                    <a class="nav-link" href="">
-                        <i data-feather="star">
-                        </i>
-                        Add to Favorites
-                    </a>
-                    <a class="nav-link" href="">
+                    <a class="nav-link text-danger close-zoom" href="#!">
                         <i data-feather="slash">
                         </i>
-                        Block this Contact
+                        Cerrar Teleconsulta
+                    </a>
+                    <a class="nav-link" href="#!">
+                        <i data-feather="star">
+                        </i>
+                        Agregar a Favoritos
                     </a>
                 </nav>
             </hr>
@@ -1355,5 +1786,7 @@
 <script defer="" src="assets/dashforge/assets/js/dashforge.js">
 </script>
 <script defer="" src="assets/dashforge/assets/js/dashforge.contacts.js">
+</script>
+<script defer="" src="dist/app/js/teleconsulta.js?{{ date().timestamp }}">
 </script>
 {% endblock %}
