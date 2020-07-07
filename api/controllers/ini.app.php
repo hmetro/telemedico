@@ -10,6 +10,7 @@
  * file that was distributed with this source code.
  */
 
+use app\models as Model;
 use Ocrend\Kernel\Models\ModelsException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +32,10 @@ $app->before(function () use ($app) {
             $data = json_decode($http->getContent(), true);
             $http->request->replace(is_array($data) ? $data : array());
         }
+
+        # Save Logs
+        $logs = new Model\Logs;
+        $logs->insertLogs();
 
     } catch (ModelsException $e) {
         return $app->json(array(
