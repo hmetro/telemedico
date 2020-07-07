@@ -8,6 +8,7 @@
 <!-- DashForge CSS -->
 <link href="assets/dashforge/assets/css/dashforge.contacts.css" rel="stylesheet"/>
 <link href="assets/dashforge/assets/css/dashforge.profile.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.demo.css" rel="stylesheet"/>
 {% endblock %}
 {% block appHeader %}
 {% include 'overall/header-pacientes' %}
@@ -1474,30 +1475,6 @@
             <h5 class="tx-18 tx-xl-20 mg-b-5" id="contactName">
                 Abigail Johnson
             </h5>
-            <p class="tx-13 tx-lg-12 tx-xl-13 tx-color-03 mg-b-20">
-                President & CEO - ThemePixels, Inc.
-            </p>
-            <nav class="contact-call-nav mg-b-20 d-none">
-                <a class="nav-call" data-toggle="tooltip" href="#" title="Make a Phone Call">
-                    <i data-feather="phone">
-                    </i>
-                </a>
-                <a class="nav-video" data-toggle="tooltip" href="#" title="Make a Video Call">
-                    <i data-feather="video">
-                    </i>
-                </a>
-                <a class="nav-msg" data-toggle="tooltip" href="#" title="Send Message">
-                    <i data-feather="message-square">
-                    </i>
-                </a>
-            </nav>
-            <!-- contact-call-nav -->
-            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
-                Biography
-            </label>
-            <p class="tx-13 mg-b-0">
-                Gambler, Tea Drinker, Ultimate Piggie, Replacement President of a Major Soft Drink Manufacturer. When I give out candies, I give people the flavour I don't like.
-            </p>
             <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10 d-none" id="l-link-teleconsulta">
                 Link Teleconsulta
             </label>
@@ -1505,12 +1482,62 @@
                 <a href="#!" id="link-teleconsulta">
                 </a>
             </p>
+            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-15 notas d-none">
+                Notas
+            </label>
+            <p class="tx-13 mg-t-0 notas d-none">
+                <select class="form-control select2" multiple="multiple">
+                    <option value="Preindicacion">
+                        Preindicacion
+                    </option>
+                    <option value="Diagnostico">
+                        Diagnostico
+                    </option>
+                    <option value="Enfermedad">
+                        Enfermedad
+                    </option>
+                    <option value="Evolución">
+                        Evolución
+                    </option>
+                    <option value="Problema Actual">
+                        Problema Actual
+                    </option>
+                    <option value="Signos Vitales">
+                        Signos Vitales
+                    </option>
+                    <option value="Tratamiento">
+                        Tratamiento
+                    </option>
+                    <option value="Nota Simple">
+                        Nota Simple
+                    </option>
+                    <option value="Receta Farmacia">
+                        Receta Farmacia
+                    </option>
+                    <option value="Pedido de Laboratorio">
+                        Pedido de Laboratorio
+                    </option>
+                    <option value="Pedido de Imagen">
+                        Pedido de Imagen
+                    </option>
+                    <option value="Antecedentes Personales">
+                        Antecedentes Personales
+                    </option>
+                    <option value="Antecedentes Familiares">
+                        Antecedentes Familiares
+                    </option>
+                </select>
+            </p>
+            <p class="tx-13 mg-t-5 notas d-none">
+                <textarea class="form-control" placeholder="Notas" rows="6">
+                </textarea>
+            </p>
             <hr class="mg-y-20">
                 <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-15">
                     Opciones
                 </label>
                 <nav class="nav flex-column contact-content-nav mg-b-25">
-                    <a class="nav-link text-danger close-zoom" href="#!">
+                    <a class="nav-link text-danger d-none close-zoom" href="#!">
                         <i data-feather="slash">
                         </i>
                         Cerrar Teleconsulta
@@ -1782,6 +1809,8 @@
 {% endblock %}
 {% block appScripts %}
 <script defer="" src="assets/dashforge/lib/perfect-scrollbar/perfect-scrollbar.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/select2/js/select2.min.js">
 </script>
 <script defer="" src="assets/dashforge/assets/js/dashforge.js">
 </script>

@@ -133,7 +133,13 @@ function _ini_new_cita() {
                 $('#l-link-teleconsulta').removeClass('d-none');
                 $('#p-link-teleconsulta').removeClass('d-none');
                 $('#link-teleconsulta').attr('href', json.url_zoom).html(json.url_zoom);
+                $('.close-zoom').removeClass('d-none');
+                $('.notas').removeClass('d-none');
                 window.localStorage.setItem('id_call', json.id_call);
+                $('.select2').select2({
+                    placeholder: 'Tipo de nota',
+                    searchInputPlaceholder: 'Buscar...'
+                });
             } else {
                 alert(json.message);
                 //  $('#f-new-cita-response').html(json.message).css('font-weight', 'bold');

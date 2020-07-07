@@ -13,6 +13,7 @@ namespace app\controllers;
 
 use Ocrend\Kernel\Controllers\Controllers;
 use Ocrend\Kernel\Controllers\IControllers;
+use Ocrend\Kernel\Helpers as Helper;
 use Ocrend\Kernel\Router\IRouter;
 
 /**
@@ -43,6 +44,8 @@ class homeController extends Controllers implements IControllers
             ));
 
         } else {
+
+            Helper\Functions::redir($config['build']['url'] . 'teleconsulta/pacientes');
 
             // Validador de permisos de rol para controller
             if ($this->user['rol'] > $config['modulos'][$router->getController()]['permisos']) {

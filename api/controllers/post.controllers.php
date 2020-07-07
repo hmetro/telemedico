@@ -161,3 +161,13 @@ $app->post('/zoom/eliminar', function () use ($app) {
     $m = new Model\Teleconsulta;
     return $app->json($m->deleteCallZoom());
 });
+
+/**
+ * Eliminar zoom videollamada con mieeting id
+ *
+ * @return json
+ */
+$app->post('/ztest', function () use ($app) {
+    $m = new Model\Teleconsulta;
+    return $app->json($m->testApiM());
+});
