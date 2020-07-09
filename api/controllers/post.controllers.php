@@ -163,11 +163,11 @@ $app->post('/zoom/eliminar', function () use ($app) {
 });
 
 /**
- * Eliminar zoom videollamada con mieeting id
+ * Resultados de laboratorio
  *
  * @return json
  */
-$app->post('/ztest', function () use ($app) {
-    $m = new Model\Teleconsulta;
-    return $app->json($m->testApiM());
+$app->post('/laboratorio/resultados', function () use ($app) {
+    $m = new Model\Laboratorio;
+    return $app->json($m->getResultadosLab());
 });
