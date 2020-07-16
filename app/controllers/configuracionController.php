@@ -72,20 +72,40 @@ class configuracionController extends Controllers implements IControllers
                     ));
 
                     break;
-                case 'citas':
+                case 'horarios':
 
-                    $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/configuracion';
+                    # Configuración de Citas para rol de Administrador, Medico, y Gestionador
+
+                    $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/horarios';
 
                     if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
                         Helper\Functions::redir($config['build']['url']);
                     }
 
-                    $this->template->display('configuracion/roles/' . $this->user['rol'] . '/configuracion', array(
+                    $this->template->display($this->name_template, array(
                         'appBodyClass'  => 'page-profile',
                         'configuracion' => 'active',
                     ));
 
                     break;
+
+                case 'nuevo-horario':
+
+                    # Configuración de Citas para rol de Administrador, Medico, y Gestionador
+
+                    $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/nuevo-horario';
+
+                    if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                        Helper\Functions::redir($config['build']['url']);
+                    }
+
+                    $this->template->display($this->name_template, array(
+                        'appBodyClass'  => 'page-profile',
+                        'configuracion' => 'active',
+                    ));
+
+                    break;
+
                 case 'usuarios':
 
                     $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/configuracion';

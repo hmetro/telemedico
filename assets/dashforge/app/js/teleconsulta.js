@@ -14,6 +14,11 @@ $(function() {
             _del_call_zoom();
         }
     });
+    // Collapse content
+    $('#accordion2').accordion({
+        heightStyle: 'content',
+        collapsible: true
+    });
 });
 // function desplega datapicker
 function dataPickersMX() {

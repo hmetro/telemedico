@@ -1,7 +1,7 @@
 {% extends 'overall/layout' %}
 {% block appMetaHead %}
 <title>
-    Configuración | {{config.build.name}}
+    Configuración de Horarios | {{config.build.name}}
 </title>
 {% endblock %}
 {% block appHead %}
@@ -15,116 +15,92 @@
 <div class="content content-fixed content-profile">
     <div class="container pd-x-0 pd-lg-x-10 pd-xl-x-0">
         <div class="media d-block d-lg-flex">
-            <div class="media-body mg-t-40 mg-lg-t-0 pd-lg-x-10">
-                <div class="card card-profile-interest">
-                    <div class="card-header pd-y-15 pd-x-20 d-flex align-items-center justify-content-between">
-                        <h6 class="tx-uppercase tx-semibold mg-b-0">
-                            Configuración
-                        </h6>
-                    </div>
-                    <!-- card-header -->
-                    <div class="card-body pd-25">
-                        <div class="row">
-                            <div class="col-sm col-lg-12 col-xl">
-                                <div class="media">
-                                    <div class="wd-45 ht-45 bg-primary rounded d-flex align-items-center justify-content-center">
-                                        <i class="tx-white-7 wd-20 ht-20" data-feather="users">
-                                        </i>
-                                    </div>
-                                    <div class="media-body pd-l-25">
-                                        <h6 class="tx-color-01 mg-b-5">
-                                            Pacientes
-                                        </h6>
-                                        <p class="tx-12 mg-b-10">
-                                            Configura las diferentes categorias de tus pacientes.
-                                            <br/>
-                                            <a href="{{config.build.url}}configuracion/pacientes">
-                                                Ver Mas
-                                            </a>
-                                        </p>
-                                        <span class="tx-12 tx-color-03">
-                                            Últimos cambios: 12/12/2020
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- media -->
-                                <div class="media">
-                                    <div class="wd-45 ht-45 bg-warning rounded d-flex align-items-center justify-content-center">
-                                        <i class="tx-white-7 wd-20 ht-20" data-feather="calendar">
-                                        </i>
-                                    </div>
-                                    <div class="media-body pd-l-25">
-                                        <h6 class="tx-color-01 mg-b-5">
-                                            Horarios
-                                        </h6>
-                                        <p class="tx-12 mg-b-10">
-                                            Configura los tipos de citas: sus horarios y tiempos.
-                                            <br/>
-                                            <a href="{{config.build.url}}configuracion/horarios">
-                                                Ver Mas
-                                            </a>
-                                        </p>
-                                        <span class="tx-12 tx-color-03">
-                                            Últimos cambios: 12/12/2020
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- media -->
-                            </div>
-                            <!-- col -->
-                            <div class="col-sm col-lg-12 col-xl mg-t-25 mg-sm-t-0 mg-lg-t-25 mg-xl-t-0">
-                                <div class="media">
-                                    <div class="wd-45 ht-45 bg-primary rounded d-flex align-items-center justify-content-center">
-                                        <i class="tx-white-7 wd-20 ht-20" data-feather="users">
-                                        </i>
-                                    </div>
-                                    <div class="media-body pd-l-25">
-                                        <h6 class="tx-color-01 mg-b-5">
-                                            Usuarios
-                                        </h6>
-                                        <p class="tx-12 mg-b-10">
-                                            Configura los accesos de tus usuarios.
-                                            <br/>
-                                            <a href="{{config.build.url}}configuracion/usuarios">
-                                                Ver Mas
-                                            </a>
-                                        </p>
-                                        <span class="tx-12 tx-color-03">
-                                            Últimos cambios: 12/12/2020
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- media -->
-                                <div class="media">
-                                    <div class="wd-45 ht-45 bg-pink rounded d-flex align-items-center justify-content-center">
-                                        <i class="tx-white-7 wd-20 ht-20" data-feather="briefcase">
-                                        </i>
-                                    </div>
-                                    <div class="media-body pd-l-25">
-                                        <h6 class="tx-color-01 mg-b-5">
-                                            Facturación y Pagos
-                                        </h6>
-                                        <p class="tx-12 mg-b-10">
-                                            Gestiona tus datos de facturación y pagos.
-                                            <br/>
-                                            <a href="{{config.build.url}}configuracion/facturacion">
-                                                Ver Mas
-                                            </a>
-                                        </p>
-                                        <span class="tx-12 tx-color-03">
-                                            Últimos cambios: 12/12/2020
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- media -->
-                            </div>
-                            <!-- col -->
-                        </div>
-                        <!-- row -->
-                    </div>
-                    <!-- card-body -->
+            <div class="card col-sm-10 col-md-10 col-lg-10 mg-b-20 mg-lg-b-25">
+                <div class="card-header pd-y-15 pd-x-20 d-flex align-items-center justify-content-between">
+                    <h6 class="tx-uppercase tx-semibold mg-b-0">
+                        Mis Horarios:
+                    </h6>
+                    <nav class="nav nav-with-icon tx-13">
+                        <a class="nav-link" href="{{config.build.url}}configuracion/nuevo-horario">
+                            <i data-feather="plus">
+                            </i>
+                            Nuevo Horario
+                        </a>
+                    </nav>
                 </div>
-                <!-- card -->
+                <!-- card-header -->
+                <div class="card-body pd-25">
+                    <div class="table-responsive">
+                        <table class="table table-striped mg-b-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        Id. Horario
+                                    </th>
+                                    <th scope="col">
+                                        Nombre:
+                                    </th>
+                                    <th scope="col">
+                                        Desde:
+                                    </th>
+                                    <th scope="col">
+                                        Hasta:
+                                    </th>
+                                    <th scope="col">
+                                        Dias:
+                                    </th>
+                                    <th scope="col">
+                                        Duración:
+                                    </th>
+                                    <th scope="col">
+                                        Valor Consulta:
+                                    </th>
+                                    <th scope="col">
+                                        Opciones:
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">
+                                        154681
+                                    </th>
+                                    <td>
+                                        TELECONSULTA
+                                    </td>
+                                    <td>
+                                        01-11-2020
+                                    </td>
+                                    <td>
+                                        30-11-2020
+                                    </td>
+                                    <td>
+                                        LUN,MAR,MIE,JUE,VIE
+                                    </td>
+                                    <td>
+                                        00:20
+                                    </td>
+                                    <td>
+                                        40.00 USD
+                                    </td>
+                                    <td>
+                                        <div aria-label="Opciones de Horarios" class="btn-group" role="group">
+                                            <button class="btn btn-xs btn-primary" title="Editar" type="button">
+                                                <i data-feather="edit-3">
+                                                </i>
+                                            </button>
+                                            <button class="btn btn-xs btn-danger" title="Eliminar" type="button">
+                                                <i data-feather="trash-2">
+                                                </i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- media -->
+                </div>
             </div>
             <!-- media-body -->
             <div class="profile-sidebar mg-t-40 mg-lg-t-0 pd-lg-l-25">

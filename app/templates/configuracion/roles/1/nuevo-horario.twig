@@ -1,7 +1,7 @@
 {% extends 'overall/layout' %}
 {% block appMetaHead %}
 <title>
-    Configuración | {{config.build.name}}
+    Nuevo Horario | {{config.build.name}}
 </title>
 {% endblock %}
 {% block appHead %}
@@ -15,116 +15,116 @@
 <div class="content content-fixed content-profile">
     <div class="container pd-x-0 pd-lg-x-10 pd-xl-x-0">
         <div class="media d-block d-lg-flex">
-            <div class="media-body mg-t-40 mg-lg-t-0 pd-lg-x-10">
-                <div class="card card-profile-interest">
-                    <div class="card-header pd-y-15 pd-x-20 d-flex align-items-center justify-content-between">
-                        <h6 class="tx-uppercase tx-semibold mg-b-0">
-                            Configuración
-                        </h6>
-                    </div>
-                    <!-- card-header -->
-                    <div class="card-body pd-25">
-                        <div class="row">
-                            <div class="col-sm col-lg-12 col-xl">
-                                <div class="media">
-                                    <div class="wd-45 ht-45 bg-primary rounded d-flex align-items-center justify-content-center">
-                                        <i class="tx-white-7 wd-20 ht-20" data-feather="users">
-                                        </i>
-                                    </div>
-                                    <div class="media-body pd-l-25">
-                                        <h6 class="tx-color-01 mg-b-5">
-                                            Pacientes
-                                        </h6>
-                                        <p class="tx-12 mg-b-10">
-                                            Configura las diferentes categorias de tus pacientes.
-                                            <br/>
-                                            <a href="{{config.build.url}}configuracion/pacientes">
-                                                Ver Mas
-                                            </a>
-                                        </p>
-                                        <span class="tx-12 tx-color-03">
-                                            Últimos cambios: 12/12/2020
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- media -->
-                                <div class="media">
-                                    <div class="wd-45 ht-45 bg-warning rounded d-flex align-items-center justify-content-center">
-                                        <i class="tx-white-7 wd-20 ht-20" data-feather="calendar">
-                                        </i>
-                                    </div>
-                                    <div class="media-body pd-l-25">
-                                        <h6 class="tx-color-01 mg-b-5">
-                                            Horarios
-                                        </h6>
-                                        <p class="tx-12 mg-b-10">
-                                            Configura los tipos de citas: sus horarios y tiempos.
-                                            <br/>
-                                            <a href="{{config.build.url}}configuracion/horarios">
-                                                Ver Mas
-                                            </a>
-                                        </p>
-                                        <span class="tx-12 tx-color-03">
-                                            Últimos cambios: 12/12/2020
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- media -->
-                            </div>
-                            <!-- col -->
-                            <div class="col-sm col-lg-12 col-xl mg-t-25 mg-sm-t-0 mg-lg-t-25 mg-xl-t-0">
-                                <div class="media">
-                                    <div class="wd-45 ht-45 bg-primary rounded d-flex align-items-center justify-content-center">
-                                        <i class="tx-white-7 wd-20 ht-20" data-feather="users">
-                                        </i>
-                                    </div>
-                                    <div class="media-body pd-l-25">
-                                        <h6 class="tx-color-01 mg-b-5">
-                                            Usuarios
-                                        </h6>
-                                        <p class="tx-12 mg-b-10">
-                                            Configura los accesos de tus usuarios.
-                                            <br/>
-                                            <a href="{{config.build.url}}configuracion/usuarios">
-                                                Ver Mas
-                                            </a>
-                                        </p>
-                                        <span class="tx-12 tx-color-03">
-                                            Últimos cambios: 12/12/2020
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- media -->
-                                <div class="media">
-                                    <div class="wd-45 ht-45 bg-pink rounded d-flex align-items-center justify-content-center">
-                                        <i class="tx-white-7 wd-20 ht-20" data-feather="briefcase">
-                                        </i>
-                                    </div>
-                                    <div class="media-body pd-l-25">
-                                        <h6 class="tx-color-01 mg-b-5">
-                                            Facturación y Pagos
-                                        </h6>
-                                        <p class="tx-12 mg-b-10">
-                                            Gestiona tus datos de facturación y pagos.
-                                            <br/>
-                                            <a href="{{config.build.url}}configuracion/facturacion">
-                                                Ver Mas
-                                            </a>
-                                        </p>
-                                        <span class="tx-12 tx-color-03">
-                                            Últimos cambios: 12/12/2020
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- media -->
-                            </div>
-                            <!-- col -->
-                        </div>
-                        <!-- row -->
-                    </div>
-                    <!-- card-body -->
+            <div class="card col-sm-10 col-md-10 col-lg-10 mg-b-20 mg-lg-b-25">
+                <div class="card-header pd-y-15 pd-x-20 d-flex align-items-center justify-content-between">
+                    <h6 class="tx-uppercase tx-semibold mg-b-0">
+                        Nuevo Horario:
+                    </h6>
                 </div>
-                <!-- card -->
+                <!-- card-header -->
+                <div class="card-body pd-25">
+                    <form>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="inputEmail3">
+                                Nombre:
+                            </label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="inputEmail3" placeholder="Nombre" type="text">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="inputEmail3">
+                                Desde:
+                            </label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="inputEmail3" placeholder="Desde" type="date">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="inputEmail3">
+                                Hasta:
+                            </label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="inputEmail3" placeholder="Hasta" type="date">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                Dias:
+                            </div>
+                            <div class="col-sm-10">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="Lunes" type="checkbox">
+                                        <label class="custom-control-label" for="Lunes">
+                                            Lunes
+                                        </label>
+                                    </input>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="Martes" type="checkbox">
+                                        <label class="custom-control-label" for="Martes">
+                                            Martes
+                                        </label>
+                                    </input>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="Miercoles" type="checkbox">
+                                        <label class="custom-control-label" for="Miercoles">
+                                            Miércoles
+                                        </label>
+                                    </input>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="Jueves" type="checkbox">
+                                        <label class="custom-control-label" for="Jueves">
+                                            Jueves
+                                        </label>
+                                    </input>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="Viernes" type="checkbox">
+                                        <label class="custom-control-label" for="Viernes">
+                                            Viernes
+                                        </label>
+                                    </input>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="Sábado" type="checkbox">
+                                        <label class="custom-control-label" for="Sábado">
+                                            Sábado
+                                        </label>
+                                    </input>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="Domingo" type="checkbox">
+                                        <label class="custom-control-label" for="Domingo">
+                                            Domingo
+                                        </label>
+                                    </input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="inputEmail3">
+                                Duración:
+                            </label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="inputEmail3" placeholder="Duración" type="time">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group row mg-b-0">
+                            <div class="col-sm-10">
+                                <button class="btn btn-primary" type="submit">
+                                    Crear Horario
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
             <!-- media-body -->
             <div class="profile-sidebar mg-t-40 mg-lg-t-0 pd-lg-l-25">
