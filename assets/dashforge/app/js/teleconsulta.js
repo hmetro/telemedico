@@ -462,7 +462,11 @@ function _loadHistoriasClinicas() {
         $('#load-lists-hc').addClass('d-none');
         if (data.status) {
             $.each(data.data, function(index, value) {
-                $('#lists-hc').append(template($('#v-h-clinicas').html(), value));
+                if (value.esTeleconsulta == 'S') {
+                    $('#lists-hc').append(template($('#v-h-tel-clinicas').html(), value));
+                } else {
+                    $('#lists-hc').append(template($('#v-h-clinicas').html(), value));
+                }
             });
             $('#lists-hc').removeClass('d-none');
             $('.detalle-hc').click(function(e) {
