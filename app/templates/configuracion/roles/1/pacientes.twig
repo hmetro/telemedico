@@ -1,0 +1,131 @@
+{% extends 'overall/layout' %}
+{% block appMetaHead %}
+<title>
+    Todas las Categorías | {{config.build.name}}
+</title>
+{% endblock %}
+{% block appHead %}
+<!-- DashForge CSS -->
+<link href="assets/dashforge/lib/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet"/>
+<link href="assets/dashforge/lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.profile.css" rel="stylesheet"/>
+{% endblock %}
+{% block appHeader %}
+{% include 'overall/header' %}
+{% endblock %}
+{% block appBody %}
+<div class="content content-fixed bd-b">
+    <div class="container pd-x-0 pd-lg-x-10 pd-xl-x-0">
+        <div class="d-sm-flex align-items-center justify-content-between">
+            <div>
+                <h4 class="mg-b-5">
+                    Categorias de Pacientes
+                </h4>
+                <p class="mg-b-0 tx-color-03">
+                    Configura las diferentes categorias de tus pacientes.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- container -->
+</div>
+<!-- content -->
+<div class="content">
+    <div class="container pd-x-0 pd-lg-x-10 pd-xl-x-0">
+        <div class="row">
+            <!-- col -->
+            <div class="col-sm-12 col-lg-12 col-xl-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-style1 mg-b-10">
+                        <li class="breadcrumb-item">
+                            <a href="#">
+                                Configuración
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">
+                                <span class="d-sm-none">
+                                    ...
+                                </span>
+                                <span class="d-none d-sm-inline">
+                                    Categorias de Pacientes
+                                </span>
+                            </a>
+                        </li>
+                        <li aria-current="page" class="breadcrumb-item active">
+                            Todas las Categorías
+                        </li>
+                    </ol>
+                </nav>
+                <h3>
+                    Todas las Categorías:
+                </h3>
+                <div class="row">
+                    <div class="col-sm-12 mg-b-20">
+                        <div class="d-flex flex-row-reverse">
+                            <div>
+                                <a class="btn btn-outline-primary" href="{{config.build.url}}configuracion/categorias-pacientes/nueva">
+                                    <i data-feather="plus">
+                                    </i>
+                                    Nueva Categoría
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped mg-b-0" id="categorias" width="100%">
+                            </table>
+                            <div class="placeholder-paragraph" id="v-loader">
+                                <div class="line">
+                                </div>
+                                <div class="line">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- row -->
+            </div>
+            <!-- col -->
+        </div>
+    </div>
+</div>
+<!-- content -->
+<template id="btn-table-opc">
+    <div class="btn-group" role="group">
+        <a class="btn btn-xs btn-outline-primary" href="{{config.build.url}}configuracion/categorias-pacientes/editar/?id=%idCategoria%" role="button" title="Actualizar">
+            <i class="icon ion-md-create">
+            </i>
+            Editar
+        </a>
+        <a class="btn btn-xs btn-outline-danger" href="{{config.build.url}}configuracion/categorias-pacientes/eliminar/?id=%idCategoria%" role="button" title="Eliminar">
+            <i class="icon ion-md-trash">
+            </i>
+            Eliminar
+        </a>
+    </div>
+</template>
+<!-- content -->
+{% endblock %}
+{% block appFooter %}
+{% endblock %}
+{% block appScripts %}
+<script defer="" src="assets/dashforge/lib/perfect-scrollbar/perfect-scrollbar.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net/js/jquery.dataTables.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net-dt/js/dataTables.dataTables.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net-responsive/js/dataTables.responsive.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js">
+</script>
+<script defer="" src="assets/dashforge/assets/js/dashforge.js">
+</script>
+<script defer="" src="dist/app/js/categorias.js?{{ date().timestamp }}">
+</script>
+{% endblock %}

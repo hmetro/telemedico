@@ -89,7 +89,7 @@ class Laboratorio extends Models implements IModels
 
     }
 
-    public function getResultadosLab()
+    public function getResultadosLab($hcpte)
     {
 
         try {
@@ -104,7 +104,7 @@ class Laboratorio extends Models implements IModels
 
             $this->length = (int) $http->query->get('length');
 
-            $this->cod_paciente = 79964401;
+            $this->cod_paciente = $hcpte;
 
             if ($this->start >= 10) {
                 $this->length = $this->start + 10;

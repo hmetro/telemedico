@@ -1,7 +1,8 @@
 $(function() {
     'use strict'
+    initDashforge();
     // Initialize tooltip
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
     // Sidebar calendar
     $('#calendarInline').datepicker({
         showOtherMonths: true,
@@ -42,7 +43,7 @@ $(function() {
             editable: true,
             nowIndicator: true,
             defaultView: 'listMonth',
-            defaultDate: moment('2021-01-01'),
+            defaultDate: moment(_hoyCalendar_),
             views: {
                 agenda: {
                     columnHeaderHtml: function(mom) {
@@ -159,13 +160,12 @@ $(function() {
 function getCitasMedico() {
     var arrCitas = [];
     var formData = new FormData();
-    formData.append('codigoMedico', '681');
-    formData.append('startDate', '01-01-2020');
-    formData.append('endDate', '31-12-2021');
+    formData.append('codigoMedico', _codMedico_);
+    formData.append('endDate', '31-12-2030');
     formData.append('tipoHorario', 2);
     formData.append('start', 0);
-    formData.append('length', 10);
-    fetch('https://api.hospitalmetropolitano.org/teleconsulta/beta/v1/medicos/agenda', {
+    formData.append('length', 100);
+    fetch(epCitasAgendaPendientes, {
         method: "POST",
         body: formData,
         contentType: false,

@@ -23,32 +23,45 @@
                 </div>
                 <!-- card-header -->
                 <div class="card-body pd-25">
-                    <form>
+                    <form id="f-nuevo-horario">
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label" for="inputEmail3">
-                                Nombre:
+                            <label class="col-sm-2">
                             </label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="inputEmail3" placeholder="Nombre" type="text">
-                                </input>
+                            <div class="alert alert-solid d-none col-sm-10" id="response" role="alert">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label" for="inputEmail3">
-                                Desde:
+                            <label class="col-sm-2 col-form-label">
+                                Fecha Desde:
                             </label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="inputEmail3" placeholder="Desde" type="date">
-                                </input>
+                                <input class="form-control wd-300 d-inline" id="desde" max="2030-12-31" min="2020-01-01" placeholder="dd-mm-yyyy" type="date"/>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label" for="inputEmail3">
-                                Hasta:
+                            <label class="col-sm-2 col-form-label">
+                                Fecha Hasta:
                             </label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="inputEmail3" placeholder="Hasta" type="date">
-                                </input>
+                                <input class="form-control wd-300 d-inline" id="hasta" type="date"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">
+                                Hora Inicial:
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control wd-100 d-inline" id="horaInicial">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">
+                                Hora Final:
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control wd-100 d-inline" id="horaFinal">
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -57,50 +70,50 @@
                             </div>
                             <div class="col-sm-10">
                                 <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" id="Lunes" type="checkbox">
-                                        <label class="custom-control-label" for="Lunes">
+                                    <input class="custom-control-input" id="lunes" type="checkbox">
+                                        <label class="custom-control-label" for="lunes">
                                             Lunes
                                         </label>
                                     </input>
                                 </div>
                                 <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" id="Martes" type="checkbox">
-                                        <label class="custom-control-label" for="Martes">
+                                    <input class="custom-control-input" id="martes" type="checkbox">
+                                        <label class="custom-control-label" for="martes">
                                             Martes
                                         </label>
                                     </input>
                                 </div>
                                 <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" id="Miercoles" type="checkbox">
-                                        <label class="custom-control-label" for="Miercoles">
+                                    <input class="custom-control-input" id="miercoles" type="checkbox">
+                                        <label class="custom-control-label" for="miercoles">
                                             Miércoles
                                         </label>
                                     </input>
                                 </div>
                                 <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" id="Jueves" type="checkbox">
-                                        <label class="custom-control-label" for="Jueves">
+                                    <input class="custom-control-input" id="jueves" type="checkbox">
+                                        <label class="custom-control-label" for="jueves">
                                             Jueves
                                         </label>
                                     </input>
                                 </div>
                                 <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" id="Viernes" type="checkbox">
-                                        <label class="custom-control-label" for="Viernes">
+                                    <input class="custom-control-input" id="viernes" type="checkbox">
+                                        <label class="custom-control-label" for="viernes">
                                             Viernes
                                         </label>
                                     </input>
                                 </div>
                                 <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" id="Sábado" type="checkbox">
-                                        <label class="custom-control-label" for="Sábado">
+                                    <input class="custom-control-input" id="sabado" type="checkbox">
+                                        <label class="custom-control-label" for="sabado">
                                             Sábado
                                         </label>
                                     </input>
                                 </div>
                                 <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" id="Domingo" type="checkbox">
-                                        <label class="custom-control-label" for="Domingo">
+                                    <input class="custom-control-input" id="domingo" type="checkbox">
+                                        <label class="custom-control-label" for="domingo">
                                             Domingo
                                         </label>
                                     </input>
@@ -108,17 +121,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label" for="inputEmail3">
+                            <label class="col-sm-2 col-form-label">
                                 Duración:
                             </label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="inputEmail3" placeholder="Duración" type="time">
-                                </input>
+                                <select class="form-control wd-100 d-inline" id="dura" name="dura">
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row mg-b-0">
                             <div class="col-sm-10">
-                                <button class="btn btn-primary" type="submit">
+                                <button class="btn btn-primary" id="send">
                                     Crear Horario
                                 </button>
                             </div>
@@ -127,7 +140,7 @@
                 </div>
             </div>
             <!-- media-body -->
-            <div class="profile-sidebar mg-t-40 mg-lg-t-0 pd-lg-l-25">
+            <div class="profile-sidebar mg-t-40 mg-lg-t-0 pd-lg-l-25 d-none">
                 <div class="row">
                     <div class="col-sm-6 col-md-5 col-lg">
                         <div class="d-flex align-items-center justify-content-between mg-b-20">
@@ -252,6 +265,13 @@
 {% block appScripts %}
 <script defer="" src="assets/dashforge/lib/perfect-scrollbar/perfect-scrollbar.min.js">
 </script>
+<script defer="" src="assets/dashforge/lib/moment/min/moment.min.js">
+</script>
 <script defer="" src="assets/dashforge/assets/js/dashforge.js">
+</script>
+<script type="text/javascript">
+    var epNuevoHorarioMedico = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.nuevoHorario}}';
+</script>
+<script defer="" src="dist/app/js/nuevo-horario.js?{{ date().timestamp }}">
 </script>
 {% endblock %}

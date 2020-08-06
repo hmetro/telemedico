@@ -1,8 +1,28 @@
 $(function() {
-    // loadContactos();
-    $('#initCallZoom').click(function(e) {
+    initDashforge();
+    initDashforgeContacts();
+    getNotificaciones();
+    loadContactos();
+    searchContacts();
+    $('[data-toggle="tab"]').click(function(e) {
         e.preventDefault();
-        initCallZoom();
+        var panel = $(this).attr('data-panel');
+        if (panel == 'tabCitasHoy') {
+            loadContactos();
+        }
+        if (panel == 'tabCitasRecientes') {
+            loadContactosPasados();
+        }
+    });
+    $('[data-toggle="tooltip"]').click(function(e) {
+        e.preventDefault();
+        var panel = $(this).attr('data-panel');
+        if (panel == 'tabCitasHoy') {
+            loadContactos();
+        }
+        if (panel == 'tabCitasRecientes') {
+            loadContactosPasados();
+        }
     });
     $('.tabContact').click(function(e) {
         e.preventDefault();
@@ -14,12 +34,187 @@ $(function() {
             _del_call_zoom();
         }
     });
-    // Collapse content
-    $('#accordion2').accordion({
-        heightStyle: 'content',
-        collapsible: true
+    $('.accordion').accordion({
+        heightStyle: 'content'
     });
+    $('[data-toggle="tooltip"]').tooltip();
 });
+
+function setInsertHistoriaClinica() {
+    var motivoConsulta = new Quill('#motivoConsulta', {
+        modules: {
+            toolbar: []
+        },
+        bounds: '#motivoConsulta',
+        scrollingContainer: '#scrolling-container-motivoConsulta',
+        placeholder: 'Escribir...',
+        theme: 'bubble'
+    });
+    motivoConsulta.on('text-change', function(delta, oldDelta, source) {
+        if (source == 'api') {
+            console.log("An API call triggered this change.");
+        } else if (source == 'user') {
+            var text_motivo, itext_motivo;
+            text_motivo = motivoConsulta.getContents();
+            itext_motivo = text_motivo.ops[0].insert;
+            localStorage.setItem('hcmotivoConsulta', itext_motivo);
+            $('.save-1').removeClass('d-none');
+            setTimeout(function() {
+                $('.save-1').addClass('d-none');
+                $('.check-1').removeClass('d-none');
+            }, 3000);
+            setTimeout(function() {
+                $('.check-1').addClass('d-none');
+            }, 6000);
+        }
+    });
+    var antecedentes = new Quill('#antecedentes', {
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{
+                    'header': 1
+                }, {
+                    'header': 2
+                }, 'blockquote'],
+                ['link', 'image', 'code-block'],
+            ]
+        },
+        bounds: '#antecedentes',
+        scrollingContainer: '#scrolling-container-antecedentes',
+        placeholder: 'Escribir...',
+        theme: 'bubble'
+    });
+    antecedentes.on('text-change', function(delta, oldDelta, source) {
+        if (source == 'api') {
+            console.log("An API call triggered this change.");
+        } else if (source == 'user') {
+            var text_antecedentes, itext_antecedentes;
+            text_antecedentes = antecedentes.getContents();
+            itext_antecedentes = text_antecedentes.ops[0].insert;
+            localStorage.setItem('hcantecedentes', itext_antecedentes);
+            $('.save-2').removeClass('d-none');
+            setTimeout(function() {
+                $('.save-2').addClass('d-none');
+                $('.check-2').removeClass('d-none');
+            }, 3000);
+            setTimeout(function() {
+                $('.check-2').addClass('d-none');
+            }, 6000);
+            console.log("A user action triggered this change.");
+        }
+    });
+    var evoluciones = new Quill('#evoluciones', {
+        modules: {
+            toolbar: []
+        },
+        bounds: '#evoluciones',
+        scrollingContainer: '#scrolling-container-evoluciones',
+        placeholder: 'Escribir...',
+        theme: 'bubble'
+    });
+    evoluciones.on('text-change', function(delta, oldDelta, source) {
+        if (source == 'api') {
+            console.log("An API call triggered this change.");
+        } else if (source == 'user') {
+            var text_evoluciones, itext_evoluciones;
+            text_evoluciones = evoluciones.getContents();
+            itext_evoluciones = text_evoluciones.ops[0].insert;
+            localStorage.setItem('hcevoluciones', itext_evoluciones);
+            $('.save-4').removeClass('d-none');
+            setTimeout(function() {
+                $('.save-4').addClass('d-none');
+                $('.check-4').removeClass('d-none');
+            }, 3000);
+            setTimeout(function() {
+                $('.check-4').addClass('d-none');
+            }, 6000);
+            console.log("A user action triggered this change.");
+        }
+    });
+    var preescripciones = new Quill('#preescripciones', {
+        modules: {
+            toolbar: []
+        },
+        bounds: '#preescripciones',
+        scrollingContainer: '#scrolling-container-preescripciones',
+        placeholder: 'Escribir...',
+        theme: 'bubble'
+    });
+    preescripciones.on('text-change', function(delta, oldDelta, source) {
+        if (source == 'api') {
+            console.log("An API call triggered this change.");
+        } else if (source == 'user') {
+            var text_preescripciones, itext_preescripciones;
+            text_preescripciones = preescripciones.getContents();
+            itext_preescripciones = text_preescripciones.ops[0].insert;
+            localStorage.setItem('hcpreescripciones', itext_preescripciones);
+            $('.save-5').removeClass('d-none');
+            setTimeout(function() {
+                $('.save-5').addClass('d-none');
+                $('.check-5').removeClass('d-none');
+            }, 3000);
+            setTimeout(function() {
+                $('.check-5').addClass('d-none');
+            }, 6000);
+            console.log("A user action triggered this change.");
+        }
+    });
+}
+// SET ACTIVE DATA CITA
+function setActiveCita() {
+    $('.ver-cita').click(function(e) {
+        e.preventDefault();
+        var idpte = $(this).attr('data-idpte');
+        var hcpte = $(this).attr('data-hcpte');
+        var nombresPaciente = $(this).attr('data-nombpte');
+        var idH = $(this).attr('data-idh');
+        var idT = $(this).attr('data-idt');
+        var timestampCita = $(this).attr('data-timestamp');
+        var timestampFinCita = $(this).attr('data-timestampfin');
+        var numAdm = $(this).attr('data-numadm');
+        localStorage.setItem('idpte', idpte);
+        localStorage.setItem('hcpte', hcpte);
+        localStorage.setItem('nombpte', nombresPaciente);
+        localStorage.setItem('idh', idH);
+        localStorage.setItem('idt', idT);
+        localStorage.setItem('tipoCita', 'Futura');
+        localStorage.setItem('timestampCita', timestampCita);
+        localStorage.setItem('timestampFinCita', timestampFinCita);
+        localStorage.setItem('numAdm', numAdm);
+        _loadPTE();
+        _loadHistoriasClinicas();
+        _loadLogs();
+        tableLaboratorio();
+        $('.contact-content-body').scrollTop(0);
+    });
+    $('.ver-cita-pasada').click(function(e) {
+        e.preventDefault();
+        var idpte = $(this).attr('data-idpte');
+        var hcpte = $(this).attr('data-hcpte');
+        var nombresPaciente = $(this).attr('data-nombpte');
+        var idH = $(this).attr('data-idh');
+        var idT = $(this).attr('data-idt');
+        var timestampCita = $(this).attr('data-timestamp');
+        var timestampFinCita = $(this).attr('data-timestampfin');
+        var numAdm = $(this).attr('data-numadm');
+        localStorage.setItem('idpte', idpte);
+        localStorage.setItem('hcpte', hcpte);
+        localStorage.setItem('nombpte', nombresPaciente);
+        localStorage.setItem('idh', idH);
+        localStorage.setItem('idt', idT);
+        localStorage.setItem('tipoCita', 'Pasada');
+        localStorage.setItem('timestampCita', timestampCita);
+        localStorage.setItem('timestampFinCita', timestampFinCita);
+        localStorage.setItem('numAdm', numAdm);
+        _loadPTE();
+        _loadHistoriasClinicas();
+        _loadLogs();
+        tableLaboratorio();
+        $('.contact-content-body').scrollTop(0);
+        // Eliminar boton zoom
+    });
+}
 // function desplega datapicker
 function dataPickersMX() {
     // setdefault para español
@@ -50,48 +245,467 @@ function dataPickersMX() {
     });
 }
 
-function loadContactos() {
-    $('#allContacts').html(template($('#v-spinner').html(), {}));
-    fetch('api/contactos', {
-        method: "GET",
+function loadContactosPasados() {
+    $('#allPtesHoy').parent().removeClass('active show');
+    $('#allPtesRecientes').parent().addClass('active show');
+    $('#allSearchPtes').parent().removeClass('active show');
+    var formData = new FormData();
+    formData.append('codigoMedico', _codMedico_);
+    formData.append('tipoHorario', '2');
+    formData.append('startDate', '01-01-2019');
+    formData.append('start', 0);
+    formData.append('length', 10);
+    $('#allPtesRecientes').html(template($('#v-loader').html(), {}));
+    fetch(epCitasAgendaPasadas, {
+        method: "POST",
+        body: formData,
+        contentType: false,
+        processData: false,
     }).then(function(response) {
         return response.json();
     }).then(function(data) {
         console.log('data = ', data);
-        $('#allContacts').html('');
+        $('#allPtesRecientes').html('');
+        $('#allPtesRecientes').append(template($('#l-citasAnteriores').html(), {}));
         // Llamada creada
         if (data.status) {
-            $.each(data.customData, function(index, value) {
-                $('#allContacts').append(template($('#v-contacto').html(), {
-                    id: value.id,
-                    inicial: value.contacto.charAt(0),
-                    contacto: value.contacto,
-                    email: value.correo,
+            $.each(data.data, function(index, value) {
+                var timestamp = moment(moment(value.fecha + ' ' + value.horaInicio).format('DD-MM-YYYY HH:mm')).unix();
+                var timestampFin = moment(moment(value.fecha + ' ' + value.horaFin).format('DD-MM-YYYY HH:mm')).unix();
+                $('#allPtesRecientes').append(template($('#v-cita-pasada').html(), {
+                    id: value.codigoPersonaPaciente,
+                    inicial: value.nombresPaciente.charAt(0),
+                    pte: value.nombresPaciente + ' ' + value.apellidosPaciente,
+                    hora: value.horaInicio,
+                    fecha: value.fecha,
+                    horaFin: value.horaFin,
+                    nhc: value.numeroHistoriaClinica,
+                    idh: value.codigoHorario,
+                    idt: value.numeroTurno,
+                    asistio: value.asistio,
+                    numAdm: value.numeroAdmision,
+                    timestamp: timestamp,
+                    timestampFin: timestampFin,
                 }));
+                if (value.asistio == 'S') {
+                    $('#asistio-' + value.codigoHorario + '-' + value.numeroTurno).addClass(' avatar-online').attr('title', 'Cita Asistida.');
+                } else {
+                    $('#asistio-' + value.codigoHorario + '-' + value.numeroTurno).addClass(' avatar-offline').attr('title', 'Cita No Asistida.');
+                }
             });
-            $('.m-contacto').click(function(e) {
-                e.preventDefault();
-                localStorage.setItem('id_contacto', this.id);
-                localStorage.setItem('contacto', $('#contacto-' + this.id).text());
-                localStorage.setItem('correo', $('#correo-' + this.id).text());
-                $('#v-contacto-inicial').html($('#inicial-' + this.id).text());
-                $('#v-contacto-contacto').html($('#contacto-' + this.id).text());
-                $('#v-contacto-correo').html($('#correo-' + this.id).text());
-                $('.contact-content-sidebar').removeClass('d-none');
-                $('.contact-content-header').css('right', '690px');
-                $('.contact-content-body').css('right', '690px');
-            });
-            $('#initCall').click(function(e) {
-                e.preventDefault();
-                $('#modalInitCall').modal('show');
-                initCallZoom();
-            });
+            initDashforgeContacts();
+            setActiveCita();
         } else {
-            $('#allContacts').html(template($('#v-not-contactos').html(), {}));
+            $('#allPtesRecientes').html(template($('#v-not-results-sidebar').html(), {}));
         }
     }).catch(function(err) {
         console.error(err);
     });
+}
+
+function loadContactos() {
+    $('#allPtesHoy').parent().addClass('active show');
+    $('#allPtesRecientes').parent().removeClass('active show');
+    $('#allSearchPtes').parent().removeClass('active show');
+    var formData = new FormData();
+    formData.append('codigoMedico', _codMedico_);
+    formData.append('tipoHorario', '2');
+    formData.append('endDate', _diaPosterior_);
+    formData.append('start', 0);
+    formData.append('length', 100);
+    $('#allPtesHoy').html(template($('#v-loader').html(), {}));
+    fetch(epCitasAgendaPendientes, {
+        method: "POST",
+        body: formData,
+        contentType: false,
+        processData: false,
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        console.log('data = ', data);
+        $('#allPtesHoy').html('');
+        $('#allPtesHoy').append(template($('#l-citasHoy').html(), {}));
+        // Llamada creada
+        if (data.status) {
+            $.each(data.data.reverse(), function(index, value) {
+                moment.invalid();
+                // value.fecha = '04-08-2020';
+                if (value.fecha === '05-08-2020') {
+                    // value.horaInicio = moment().format("HH:mm");
+                    var timestamp = moment(moment(value.fecha + ' ' + value.horaInicio).format('DD-MM-YYYY HH:mm')).unix();
+                    var timestampFin = moment(moment(value.fecha + ' ' + value.horaFin).format('DD-MM-YYYY HH:mm')).unix();
+                    var timestampFinTemp = moment.unix(timestamp).add(1, 'minutes').unix();
+                    $('#allPtesHoy').append(template($('#v-cita').html(), {
+                        id: value.codigoPersonaPaciente,
+                        inicial: value.nombresPaciente.charAt(0),
+                        pte: value.nombresPaciente + ' ' + value.apellidosPaciente,
+                        hora: value.horaInicio,
+                        horaFin: value.horaFin,
+                        fecha: value.fecha,
+                        nhc: value.numeroHistoriaClinica,
+                        idh: value.codigoHorario,
+                        idt: value.numeroTurno,
+                        asistio: value.asistio,
+                        numAdm: value.numeroAdmision,
+                        timestamp: timestamp,
+                        timestampFin: timestampFinTemp,
+                    }));
+                    console.log(value.fecha + ' ' + value.horaInicio);
+                    console.log(timestamp);
+                    if (value.asistio == 'S') {
+                        $('#asistio-' + value.codigoHorario + '-' + value.numeroTurno).addClass(' avatar-online').attr('title', 'Cita Asistida.');
+                    } else {
+                        $('#asistio-' + value.codigoHorario + '-' + value.numeroTurno).addClass(' avatar-offline').attr('title', 'Cita Pendiente o No Asistida.');
+                    }
+                } else {
+                    var timestamp = moment(moment(value.fecha + ' ' + value.horaInicio).format('DD-MM-YYYY HH:mm')).unix();
+                    var timestampFin = moment(moment(value.fecha + ' ' + value.horaFin).format('DD-MM-YYYY HH:mm')).unix();
+                    $('#allPtesHoy').append(template($('#v-cita').html(), {
+                        id: value.codigoPersonaPaciente,
+                        inicial: value.nombresPaciente.charAt(0),
+                        pte: value.nombresPaciente + ' ' + value.apellidosPaciente,
+                        hora: value.horaInicio,
+                        fecha: value.fecha,
+                        horaFin: value.horaFin,
+                        nhc: value.numeroHistoriaClinica,
+                        idh: value.codigoHorario,
+                        idt: value.numeroTurno,
+                        numAdm: value.numeroAdmision,
+                        asistio: value.asistio,
+                        timestamp: timestamp,
+                        timestampFin: timestampFin,
+                    }));
+                    console.log(value.fecha + ' ' + value.horaInicio);
+                    console.log(timestamp);
+                    if (value.asistio == 'S') {
+                        $('#asistio-' + value.codigoHorario + '-' + value.numeroTurno).addClass(' avatar-online').attr('title', 'Cita Asistida.');
+                    } else {
+                        $('#asistio-' + value.codigoHorario + '-' + value.numeroTurno).addClass(' avatar-offline').attr('title', 'Cita Pendiente o No Asistida.');
+                    }
+                }
+            });
+            initDashforgeContacts();
+            setActiveCita();
+        } else {
+            $('#allPtesHoy').html(template($('#v-not-results-sidebar').html(), {}));
+        }
+    }).catch(function(err) {
+        console.error(err);
+    });
+}
+
+function _loadPTE() {
+    var formData = new FormData();
+    formData.append('codigoPersona', localStorage.idpte);
+    $('#paciente').html(template($('#v-loader').html(), {}));
+    fetch(epDatosPaciente, {
+        method: "POST",
+        body: formData,
+        contentType: false,
+        processData: false,
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        console.log('data = ', data);
+        $('#paciente').html('');
+        // Set Medios de contacto
+        var arrMediosContacto = data.data[0].mediosContacto;
+        var textMediosContacto = '';
+        $.each(arrMediosContacto, function(key, value) {
+            textMediosContacto += '<b>' + value.tipo + '</b> ' + value.valor + ' - ';
+        });
+        data.data[0]['textMediosContacto'] = textMediosContacto;
+        // Set Direcciones
+        var arrDirecciones = data.data[0].direcciones;
+        var textDirecciones = '';
+        $.each(arrDirecciones, function(key, value) {
+            textDirecciones += value.tipoDireccion + ': ' + value.calle + ' ' + value.numero + ' ' + value.interseccion + ' ' + value.referencia + ' <br/> ';
+        });
+        data.data[0]['textDirecciones'] = textDirecciones;
+        $('#paciente').append(template($('#v-paciente').html(), data.data[0]));
+        // validar si esta dentro de los 15 minutos antes para  conectarse a la reunion zoom
+        // se suma 5 minutos a la hora de la cita como tiempo de conexion
+        var time = moment(moment().format("DD-MM-YYYY HH:mm"), 'DD-MM-YYYY HH:mm').unix();
+        var timeCita = moment.unix(parseInt(localStorage.timestampCita, 10)).add(5, 'minutes').unix();
+        var cita_menos_15 = moment.unix(parseInt(localStorage.timestampCita, 10)).subtract(15, 'minutes').unix();
+        console.log('El tiempo => ' + moment.unix(time).format("DD-MM-YYYY HH:mm"));
+        console.log('Hora de cita menos 15 min. => ' + moment.unix(cita_menos_15).format("DD-MM-YYYY HH:mm"));
+        console.log('Hora de cita. => ' + moment.unix(timeCita).format("DD-MM-YYYY HH:mm"));
+        console.log(moment().format("DD-MM-YYYY HH:mm"));
+        if (time >= cita_menos_15 && time <= timeCita) {
+            $('#t-initCallZoom').click(function(e) {
+                e.preventDefault();
+                initCallZoom();
+            });
+        } else {
+            $('#t-initCallZoom').parent().remove();
+        }
+    }).catch(function(err) {
+        console.error(err);
+    });
+};
+
+function _loadHistoriasClinicas() {
+    $('#lists-hc').html('');
+    $('#load-lists-hc').removeClass('d-none');
+    var formData = new FormData();
+    formData.append('numeroHistoriaClinica', localStorage.hcpte);
+    fetch(epHistoriasClinicasAnteriores, {
+        method: "POST",
+        body: formData,
+        contentType: false,
+        processData: false,
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        console.log('data = ', data);
+        $('#load-lists-hc').addClass('d-none');
+        if (data.status) {
+            $.each(data.data, function(index, value) {
+                $('#lists-hc').append(template($('#v-h-clinicas').html(), value));
+            });
+            $('#lists-hc').removeClass('d-none');
+            $('.detalle-hc').click(function(e) {
+                e.preventDefault();
+                var adm = $(this).attr('data-adm');
+                var fechaHC = $(this).attr('data-fechahc');
+                localStorage.setItem('adm', adm);
+                localStorage.setItem('fechaHC', fechaHC);
+                initViewHC();
+            });
+        } else {
+            $('#lists-hc').html(template($('#v-not-results').html(), {}));
+            $('#lists-hc').removeClass('d-none');
+        }
+    }).catch(function(err) {
+        console.error(err);
+    });
+}
+
+function setViewHC(json) {
+    // DATOS MOTIVO CONSULTA
+    var arrMotivoConsulta = json.data.motivoConsulta;
+    if (Object.keys(arrMotivoConsulta).length > 0) {
+        $('#motivo').html(template($('#v-motivo-consulta').html(), {
+            motivoConsulta: json.data.motivoConsulta['motivoConsulta'],
+            antecedentesPersonales: json.data.motivoConsulta['antecedentesPersonales'],
+            enfermedadActual: json.data.motivoConsulta['enfermedadActual'],
+        }));
+    } else {
+        $('#motivo').html(template($('#v-not-data').html(), {}));
+    }
+    // DATOS REVISION DE ORGANOS
+    var arrRevisionOrganos = json.data.revisionOrganos;
+    var textRevision = '';
+    $.each(arrRevisionOrganos, function(key, value) {
+        if (key == 'cardioVascular') {
+            textRevision += ' Cardiovascular: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+        }
+        if (key == 'digestivo') {
+            textRevision += ' Digestivo: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+        }
+        if (key == 'endocrino') {
+            textRevision += ' Endócrino: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+        }
+        if (key == 'genital') {
+            textRevision += ' Genital: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+        }
+        if (key == 'hemoLinfatico') {
+            textRevision += ' Hemolinfatico: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+        }
+        if (key == 'muscEsqueletico') {
+            textRevision += ' Musc. Esqueletico: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+        }
+        if (key == 'nervioso') {
+            textRevision += ' Nervioso: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+        }
+        if (key == 'respiratorio') {
+            textRevision += ' Respiratorio: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+        }
+        if (key == 'sentidos') {
+            textRevision += ' Sentidos: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+        }
+        if (key == 'urinario') {
+            textRevision += ' Uriniario: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+        }
+    });
+    $('#organos').html(template($('#v-revision-organos').html(), {
+        revisionOrganos: textRevision
+    }));
+    //Anteceentes familiares
+    var arrAntecedentesFamiliares = json.data.antecedentesFamiliares;
+    var textAntecedentes = '';
+    $.each(arrAntecedentesFamiliares, function(key, value) {
+        if (key == 'cancer') {
+            textAntecedentes += ' Cáncer: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+        }
+        if (key == 'cardiopatia') {
+            textAntecedentes += ' Cardiopatía: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+        }
+        if (key == 'diabetes') {
+            textAntecedentes += ' Diabetes: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+        }
+        if (key == 'enfermedadInfecciosa') {
+            textAntecedentes += ' E. Infecciosas: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+        }
+        if (key == 'enfermedadVascular') {
+            textAntecedentes += ' E. Vascular: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+        }
+        if (key == 'enfermendadMental') {
+            textAntecedentes += ' E. Mental: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+        }
+        if (key == 'hipertension') {
+            textAntecedentes += ' Hipertensión: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+        }
+        if (key == 'malformacion') {
+            textAntecedentes += ' Malformación: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+        }
+        if (key == 'tuberculosis') {
+            textAntecedentes += ' Tuberculosis: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+        }
+        if (key == 'otro') {
+            textAntecedentes += ' Otros: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+        }
+    });
+    $('#ante').html(template($('#v-antecedentes').html(), {
+        ante: textAntecedentes
+    }));
+    // Signos Vitales
+    var arrSignosVitales = json.data.signosVitales;
+    var textSignos = '';
+    if (Object.keys(arrSignosVitales).length > 0) {
+        $('#signos').html(template($('#v-signos').html(), {}));
+        $.each(arrSignosVitales, function(key, value) {
+            $('#detalle-signos').append(template($('#v-signos-detalle').html(), value));
+        });
+    } else {
+        $('#signos').html(template($('#v-not-data').html(), {}));
+    }
+    // Examen Físico
+    var arrExamenFisico = json.data.examenFisico;
+    if (Object.keys(arrExamenFisico).length > 0) {
+        $('#examen').html(template($('#v-examen').html(), {
+            abdomen4R: arrExamenFisico['abdomen4R'],
+            cabeza1R: arrExamenFisico['cabeza1R'],
+            cuello2R: arrExamenFisico['cuello2R'],
+            extremidades6R: arrExamenFisico['extremidades6R'],
+            pelvis5R: arrExamenFisico['pelvis5R'],
+            planTratamiento: arrExamenFisico['planTratamiento'],
+            torax3R: arrExamenFisico['torax3R'],
+        }));
+    } else {
+        $('#examen').html(template($('#v-not-data').html(), {}));
+    }
+    // Diagnosticos
+    var arrDiagnosticos = json.data.diagnosticos;
+    if (Object.keys(arrDiagnosticos).length > 0) {
+        $('#diagnosticos').html(template($('#v-diagnosticos').html(), {}));
+        $.each(arrDiagnosticos, function(key, value) {
+            $('#detalle-diag').append(template($('#v-diag-detalle').html(), value));
+        });
+    } else {
+        $('#diagnosticos').html(template($('#v-not-data').html(), {}));
+    }
+    // Evoluciones
+    var arrEvoluciones = json.data.evoluciones;
+    if (Object.keys(arrEvoluciones).length > 0) {
+        $('#evoluciones').html(template($('#v-evoluciones').html(), {
+            codigo: arrEvoluciones['codigo'],
+            descripcion: arrEvoluciones['descripcion'],
+        }));
+    } else {
+        $('#evoluciones').html(template($('#v-not-data').html(), {}));
+    }
+    // Preecripciones
+    var arrPreecripciones = json.data.prescripciones;
+    if (Object.keys(arrPreecripciones).length > 0) {
+        $('#prees').html(template($('#v-prees').html(), {}));
+        $.each(arrPreecripciones, function(key, value) {
+            $('#detalle-prees').append(template($('#v-prees-detalle').html(), value));
+        });
+    } else {
+        $('#prees').html(template($('#v-not-data').html(), {}));
+    }
+}
+
+function _loadHC() {
+    $('#load-view-hc').removeClass('d-none');
+    var formData = new FormData();
+    formData.append('numeroHistoriaClinica', localStorage.hcpte);
+    formData.append('numeroAdmision', localStorage.adm);
+    fetch(epHistoriasClinicasConsultar, {
+        method: "POST",
+        body: formData,
+        contentType: false,
+        processData: false,
+    }).then(function(response) {
+        return response.json();
+    }).then(function(json) {
+        console.log('data = ', json);
+        if (json.status) {
+            $('.contact-content-body').scrollTop(0);
+            $('#load-view-hc').addClass('d-none');
+            $('#view-hc').removeClass('d-none');
+            $('#view-hc').html(template($('#v-hc-detalle').html(), {}));
+            $('#fechaHC').html('<b>FECHA:</b> ' + localStorage.fechaHC);
+            $('#nPaciente').html(' <b>PTE:</b> ' + json.data.primerNombrePaciente + ' ' + json.data.segundoNombrePaciente + ' ' + json.data.primerApellidoPaciente + ' ' + json.data.segundoApellidoPaciente);
+            $('#nhcPaciente').html(' <b>NHC:</b> ' + json.data.numeroHistoriaClinica);
+            $('#admPaciente').html(' <b>ADM:</b> ' + json.data.numeroAdmision);
+            setViewHC(json);
+            $('.reset-render-hc').click(function(e) {
+                e.preventDefault();
+                $('.contact-sidebar').removeClass('d-none');
+                $('.contact-content').css('left', '340px');
+                $('.contact-content-header').css('right', '290px');
+                $('.contact-content-body').css('right', '290px');
+                $('#lists-hc').removeClass('d-none');
+                $('#view-hc').addClass('d-none').html('');
+            });
+        } else {
+            resetRenderHC();
+        }
+    }).catch(function(err) {
+        console.error(err);
+    });
+};
+
+function resetRenderHC() {
+    setTimeout(function() {
+        $('.contact-sidebar').removeClass('d-none');
+        $('.contact-content').css('left', '340px');
+        $('.contact-content-header').css('right', '290px');
+        $('.contact-content-body').css('right', '290px');
+        $('#lists-hc').removeClass('d-none');
+        $('#load-view-hc').addClass('d-none');
+        $('#view-hc').addClass('d-none').html('');
+    }, 8000);
+}
+
+function resetViewHC() {
+    $('.contact-sidebar').addClass('d-none');
+    $('.contact-content').css('left', '60px');
+    $('.contact-content-header').css('right', '300px');
+    $('.contact-content-body').css('right', '300px');
+    $('.contact-content-sidebar').addClass('d-none');
+    $('.contact-content-header').removeClass('wd-100p');
+    $('.contact-content-body').removeClass('wd-100p');
+    $('#lists-hc').addClass('d-none');
+    $('#view-file-hc').removeClass('d-none');
+    $('#view-file-hc').html(template($('#v-hc-detalle').html(), {}));
+}
+
+function initViewHC() {
+    $('.contact-sidebar').addClass('d-none');
+    $('.contact-content').css('left', '60px');
+    $('.contact-content-header').css('right', '300px');
+    $('.contact-content-body').css('right', '300px');
+    $('.contact-content-header').addClass('wd-100p');
+    $('.contact-content-body').addClass('wd-100p');
+    $('.contact-content-sidebar').addClass('d-none');
+    $('#lists-hc').addClass('d-none');
+    $('#view-file-hc').removeClass('d-none');
+    $('#view-file-hc').html(template($('#v-loader').html(), {}));
+    _loadHC();
 }
 
 function resetCallZoom() {
@@ -100,6 +714,9 @@ function resetCallZoom() {
     $('.contact-content-header').css('right', '290px');
     $('.contact-content-body').css('right', '290px');
     $('.contact-content-sidebar').css('width', '290px');
+    $('.contact-content-sidebar').addClass('d-none');
+    $('.contact-content-header').removeClass('wd-100p');
+    $('.contact-content-body').removeClass('wd-100p');
 }
 
 function initCallZoom() {
@@ -108,13 +725,19 @@ function initCallZoom() {
     $('.contact-content-header').css('right', '600px');
     $('.contact-content-body').css('right', '600px');
     $('.contact-content-sidebar').css('width', '600px');
+    $('.contact-content-sidebar').removeClass('d-none');
+    $('.contact-content-header').removeClass('wd-100p');
+    $('.contact-content-body').removeClass('wd-100p');
+    $('#s-nombresPte').html('<i class="icon ion-md-person"></i> ' + localStorage.nombpte);
+    $('#s-nhcPte').html('<b>NHC:</b>' + localStorage.hcpte);
+    setInsertHistoriaClinica();
     _ini_new_cita();
 }
 // Updated 28 October 2011: Now allows 0, NaN, false, null and undefined in output. 
 function template(templateid, data) {
     return templateid.replace(/%(\w*)%/g, // or /{(\w*)}/g for "{this} instead of %this%"
         function(m, key) {
-            return data.hasOwnProperty(key) ? data[key] : "";
+            return data.hasOwnProperty(key) ? (data[key] != null) ? data[key] : '<code><i class="icon ion-md-close-circle-outline"></i></code>' : "";
         });
 }
 
@@ -123,47 +746,73 @@ function MaysPrimera(string) {
 }
 
 function _ini_new_cita() {
+    /*
+    $('#t-initCallZoom').hide();
+    $('#i-live').attr('src', urlhome + 'blank');
+    $('.live-active').removeClass('d-none').click();
+    $('.paciente').removeClass('active');
+    $('#live').addClass('show active');
+    // links teleconsultas
+    $('.close-zoom').removeClass('d-none');
+    $('.notas').removeClass('d-none');
+    window.localStorage.setItem('id_call', '#!');
+    $('#t-initCallZoom').parent().remove();
+    // Status conexion participantes
+    localStorage.setItem('online', '1');
+    statusParticipantes();
+    */
     $('#t-initCallZoom').html('Procesando...');
     $('#t-initCallZoom').attr('disabled', true);
-    $.ajax({
-        type: "POST",
-        url: "api/citas",
-        success: function(json) {
-            if (json.status) {
-                $('#i-live').attr('src', json.url);
-                $('.live-active').removeClass('d-none').click();
-                $('.paciente').removeClass('active');
-                $('#live').addClass('show active');
-                // links teleconsultas
-                $('#l-link-teleconsulta').removeClass('d-none');
-                $('#p-link-teleconsulta').removeClass('d-none');
-                $('#link-teleconsulta').attr('href', json.url_zoom).html(json.url_zoom);
-                $('.close-zoom').removeClass('d-none');
-                $('.notas').removeClass('d-none');
-                window.localStorage.setItem('id_call', json.id_call);
-                $('.select2').select2({
-                    placeholder: 'Tipo de nota',
-                    searchInputPlaceholder: 'Buscar...'
-                });
-            } else {
-                alert(json.message);
-                //  $('#f-new-cita-response').html(json.message).css('font-weight', 'bold');
-                //  $("#f-new-cita-response").removeClass('alert-warning');
-                //  $("#f-new-cita-response").addClass('alert-danger');
-                //  $('#f-new-cita-send').removeAttr('disabled');
-                //  $('#f-new-cita-send').html('Generar');
-            }
-        },
-        error: function() {
-            window.alert('#Request Error!');
+    var formData = new FormData();
+    formData.append('idH', localStorage.idh);
+    formData.append('idT', localStorage.idt);
+    formData.append('nhcPte', localStorage.hcpte);
+    fetch(apiCitas, {
+        method: "POST",
+        body: formData,
+        contentType: false,
+        processData: false,
+    }).then(function(response) {
+        return response.json();
+    }).then(function(json) {
+        if (json.status) {
+            $('#t-initCallZoom').hide();
+            $('#i-live').attr('src', json.url);
+            $('.live-active').removeClass('d-none').click();
+            $('.paciente').removeClass('active');
+            $('#live').addClass('show active');
+            // links teleconsultas
+            $('.close-zoom').removeClass('d-none');
+            $('.notas').removeClass('d-none');
+            window.localStorage.setItem('id_call', json.id_call);
+            $('#t-initCallZoom').parent().remove();
+            // Status conexion participantes
+            localStorage.setItem('online', '0');
+            setInterval(function() {
+                statusParticipantes();
+            }, 1000);
+        } else {
+            alert(json.message);
+            //  $('#f-new-cita-response').html(json.message).css('font-weight', 'bold');
+            //  $("#f-new-cita-response").removeClass('alert-warning');
+            //  $("#f-new-cita-response").addClass('alert-danger');
+            //  $('#f-new-cita-send').removeAttr('disabled');
+            //  $('#f-new-cita-send').html('Generar');
         }
+    }).catch(function(err) {
+        console.error(err);
     });
 };
 
 function _del_call_zoom() {
+    /*
+    createHC();
+    // _send_factura_zoom();
+    /*
+    */
     var formData = new FormData();
     formData.append('id_call', localStorage.id_call);
-    fetch('api/zoom/eliminar', {
+    fetch(apiZoomEliminar, {
         method: "POST",
         body: formData,
         contentType: false,
@@ -174,9 +823,182 @@ function _del_call_zoom() {
     }).then(function(data) {
         console.log('data = ', data);
         if (data.getStatusCode == 204) {
+            createHC();
+        }
+    }).catch(function(err) {
+        console.error(err);
+    });
+};
+
+function _send_factura_zoom() {
+    var formData = new FormData();
+    formData.append('numeroHistoriaClinica', localStorage.hcpte);
+    formData.append('numeroAdmision', localStorage.numAdm);
+    formData.append('codigoHorario', localStorage.idh);
+    formData.append('numeroTurno', localStorage.idt);
+    fetch(epFacturarAtencion, {
+        method: "POST",
+        body: formData,
+        contentType: false,
+        processData: false,
+    }).then(function(response) {
+        return response.json();
+    }).then(function(json) {
+        if (json.status) {
             window.location.reload();
         }
     }).catch(function(err) {
         console.error(err);
     });
 };
+
+function statusParticipantes() {
+    /*
+    localStorage.setItem('online', '1');
+    localStorage.setItem('timeOnline', moment(moment().format("DD-MM-YYYY HH:mm"), 'DD-MM-YYYY HH:mm').unix());
+    // Contador hacia atras de cita
+    countDownCita();
+    $('#s-statusConnectPte').hide();
+    $('#statusConnectPte').html(template($('#v-time-cita').html(), {}));
+    */
+    if (localStorage.online === '0') {
+        var formData = new FormData();
+        formData.append('id_call', localStorage.id_call);
+        fetch(apiStatusPartcipantes, {
+            method: "POST",
+            body: formData,
+            contentType: false,
+            processData: false,
+        }).then(function(response) {
+            return response.json();
+        }).then(function(json) {
+            console.log('json = ', json);
+            if (json.status) {
+                if (json.totalRecords === 2) {
+                    localStorage.setItem('online', '1');
+                    localStorage.setItem('timeOnline', moment(moment().format("DD-MM-YYYY HH:mm"), 'DD-MM-YYYY HH:mm').unix());
+                    // Contador hacia atras de cita
+                    countDownCita();
+                    $('#s-statusConnectPte').hide();
+                    $('#statusConnectPte').html(template($('#v-time-cita').html(), {}));
+                }
+            } else {
+                alert(json.message);
+            }
+        }).catch(function(err) {
+            console.error(err);
+        });
+    } else {
+        console.log('Call Online');
+    }
+};
+
+function countDownCita() {
+    console.log(localStorage.timestampFinCita);
+    console.log(parseInt(localStorage.timestampFinCita, 10));
+    var eventTime = parseInt(localStorage.timestampFinCita, 10);
+    var currentTime = parseInt(localStorage.timeOnline, 10);
+    var diffTime = eventTime - currentTime;
+    var duration = moment.duration(diffTime * 1000, 'milliseconds');
+    var interval = 1000;
+    setInterval(function() {
+        duration = moment.duration(duration - interval, 'milliseconds');
+        console.log(duration.minutes());
+        if (duration.hours() <= 0 && duration.minutes() <= 0 && duration.seconds() <= 0) {
+            $('#opcClose').removeClass('d-none');
+            $('.countdown').text('00:00:00');
+            throw "Teleconsulta Finalizada";
+        } else {
+            $('.countdown').text(((duration.hours() < 10) ? '0' + duration.hours() : duration.hours()) + ":" + ((duration.minutes() < 10) ? '0' + duration.minutes() : duration.minutes()) + ":" + ((duration.seconds() < 10) ? '0' + duration.seconds() : duration.seconds()));
+        }
+    }, interval);
+}
+
+function searchContacts() {
+    setTimeout(function() {
+        $("#searchCitas").keyup(function() {
+            var search = $(this).val();
+            if (search != "") {
+                $('#allPtesHoy').parent().removeClass('active show');
+                $('#allPtesRecientes').parent().removeClass('active show');
+                $('#allSearchPtes').parent().addClass('active show');
+                var formData = new FormData();
+                formData.append('codigoMedico', _codMedico_);
+                formData.append('nombresPaciente', search);
+                formData.append('tipoHorario', '2');
+                formData.append('start', 0);
+                formData.append('length', 10);
+                $('#allSearchPtes').html(template($('#v-loader').html(), {}));
+                fetch(epCitasNombres, {
+                    method: "POST",
+                    body: formData,
+                    contentType: false,
+                    processData: false,
+                }).then(function(response) {
+                    return response.json();
+                }).then(function(data) {
+                    console.log('data = ', data);
+                    $('#allSearchPtes').html('');
+                    $('#allSearchPtes').append(template($('#l-citasHoy').html(), {}));
+                    // Llamada creada
+                    if (data.status) {
+                        $.each(data.data.reverse(), function(index, value) {
+                            moment.invalid();
+                            var timestamp = moment(moment(value.fecha + ' ' + value.horaInicio).format('DD-MM-YYYY HH:mm')).unix();
+                            var timestampFin = moment(moment(value.fecha + ' ' + value.horaFin).format('DD-MM-YYYY HH:mm')).unix();
+                            $('#allSearchPtes').append(template($('#v-cita').html(), {
+                                id: value.codigoPersonaPaciente,
+                                inicial: value.nombresPaciente.charAt(0),
+                                pte: value.nombresPaciente + ' ' + value.apellidosPaciente,
+                                hora: value.horaInicio,
+                                horaFin: value.horaFin,
+                                fecha: value.fecha,
+                                nhc: value.numeroHistoriaClinica,
+                                idh: value.codigoHorario,
+                                idt: value.numeroTurno,
+                                asistio: value.asistio,
+                                timestamp: timestamp,
+                                numAdm: value.numeroAdmision,
+                                timestampFin: timestampFin,
+                            }));
+                            console.log(value.fecha + ' ' + value.horaInicio + ':00');
+                            console.log(timestamp);
+                            if (value.asistio == 'S') {
+                                $('#asistio-' + value.codigoHorario + '-' + value.numeroTurno).addClass(' avatar-online').attr('title', 'Cita Asistida.');
+                            } else {
+                                $('#asistio-' + value.codigoHorario + '-' + value.numeroTurno).addClass(' avatar-offline').attr('title', 'Cita Pendiente o No Asistida.');
+                            }
+                        });
+                        initDashforgeContacts();
+                        setActiveCita();
+                    } else {
+                        $('#allPtesHoy').html(template($('#v-not-results-sidebar').html(), {}));
+                    }
+                }).catch(function(err) {
+                    console.error(err);
+                });
+            }
+        });
+    }, 900);
+}
+
+function createHC() {
+    var jsonBody = '{"numeroHistoriaClinica":"' + localStorage.hcpte + '","numeroAdmision":"' + localStorage.numAdm + '","usuarioCrea":"GEMA","usuarioModifica":null,"primerApellidoPaciente":"CHANG","segundoApellidoPaciente":"CHAVEZ","primerNombrePaciente":"MARTIN","segundoNombrePaciente":"FRANCISCO","motivoConsulta":{"motivoConsulta":"PRUEBA 3 MOTIVO CONSULTA","antecedentesPersonales":"PRUEBA 3 ANTECEDENTES PERSONALES","enfermedadActual":"PRUEBA 3 ENFERMEDAD ACTUAL"},"revisionOrganos":{"sentidos":"PRUEBA 3 SENTIDOS","cardioVascular":"PRUEBA 3 CARDIO VASCULAR","genital":"PRUEBA 3 GENITAL","muscEsqueletico":"PRUEBA 3 MUSCULO ESQUELETICO","hemoLinfatico":"PRUEBA 3 HEMO LINFATICO","respiratorio":"PRUEBA 3 RESPIRATORIO","digestivo":"PRUEBA 3 DIGESTIVO","urinario":"PRUEBA 3 URINARIO","endocrino":"PRUEBA 3 ENDOCRINO","nervioso":"PRUEBA 3 NERVIOSO"},"antecedentesFamiliares":{"cardiopatia":"PRUEBA 3 ANTECEDENTES CARDIOPATIA","diabetes":"PRUEBA 3 ANTECEDENTES DIABETES","enfermedadVascular":"PRUEBA 3 ANTECEDENTES VASCULAR","hipertension":"PRUEBA 3 ANTECEDENTES HIPERTENSION","cancer":"PRUEBA 3 ANTECEDENTES CANCER","tuberculosis":"PRUEBA 3 ANTECEDENTES TUBERCULOSIS","enfermendadMental":"PRUEBA 3 ANTECEDENTES ENFERMEDAD MENTAL","enfermedadInfecciosa":"PRUEBA 3 ANTECEDENTES ENFERMEDAD INFECCIOSA","malformacion":"PRUEBA 3 ANTECEDENTES MALFORMACION","otro":"PRUEBA 3 ANTECEDENTES OTRO"},"signosVitales":[{"fecha":"15-07-2020 11:04","temperaturaBucal":"37","temperaturaAxiliar":"38","temperaturaRectal":"39","taSistolica":"120","taDiastolica":"80","pulso":"60","frecuenciaRespiratoria":"30","perimetroCef":"80","peso":"72","talla":"172","imc":"24,34"}],"examenFisico":{"cabeza1R":"PRUEBA 3 EXAMEN CABEZA","cuello2R":"PRUEBA 3 EXAMEN CUELLO","torax3R":"PRUEBA 3 EXAMEN TORAX","abdomen4R":"PRUEBA 3 EXAMEN ABDOMEN","pelvis5R":"PRUEBA 3 EXAMEN PELVIS","extremidades6R":"PRUEBA 3 EXAMEN EXTREMIDADES","planTratamiento":"PRUEBA 3 EL PLAN DE TRATAMIENTO"},"diagnosticos":[{"numeroDiagnostico":"1","codigo":"V30","grupo":"V30-V39","descripcion":"OCUPANTE DE VEHICULO DE MOTOR DE TRES RUEDAS LESIONADO POR COLISION CON PEATON O ANIMAL","tipo":"PRESUNTIVO","clasificacionDiagnostico":"INGRESO","principal":"SI"},{"numeroDiagnostico":"2","codigo":"V31","grupo":"V30-V39","descripcion":"OCUPANTE DE VEHICULO DE MOTOR DE TRES RUEDAS LESIONADO POR COLISION CON VEHICULO DE PEDAL","tipo":"DEFINITIVO","clasificacionDiagnostico":"EGRESO","principal":"SI"}],"evoluciones":{"codigo":"1","descripcion":"PRUEBA 3 DE PRIMERA NOTA DE EVOLUCION MCHANG"},"prescripciones":[{"codigo":"1","descripcion":"PRUEBA 3 DE PRESCRIPCI MCHANG"}]}';
+    fetch(epCrearHC, {
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify(JSON.parse(jsonBody))
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        console.log('data = ', data);
+        if (data.status) {
+            _send_factura_zoom();
+        }
+    }).catch(function(err) {
+        console.error(err);
+    });
+}

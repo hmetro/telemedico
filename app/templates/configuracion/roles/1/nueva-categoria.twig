@@ -1,0 +1,183 @@
+{% extends 'overall/layout' %}
+{% block appMetaHead %}
+<title>
+    Nueva Categoría | {{config.build.name}}
+</title>
+{% endblock %}
+{% block appHead %}
+<!-- DashForge CSS -->
+<link href="assets/dashforge/assets/css/dashforge.profile.css" rel="stylesheet"/>
+{% endblock %}
+{% block appHeader %}
+{% include 'overall/header' %}
+{% endblock %}
+{% block appBody %}
+<div class="content content-fixed content-profile">
+    <div class="container pd-x-0 pd-lg-x-10 pd-xl-x-0">
+        <div class="media d-block d-lg-flex">
+            <div class="card col-sm-10 col-md-10 col-lg-10 mg-b-20 mg-lg-b-25">
+                <div class="card-header pd-y-15 pd-x-20 d-flex align-items-center justify-content-between">
+                    <h6 class="tx-uppercase tx-semibold mg-b-0">
+                        Nueva Categoría:
+                    </h6>
+                </div>
+                <!-- card-header -->
+                <div class="card-body pd-25">
+                    <form id="f-nueva-categoria">
+                        <div class="form-group row">
+                            <label class="col-sm-2">
+                            </label>
+                            <div class="alert alert-solid d-none col-sm-10" id="response" role="alert">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">
+                                Nombre:
+                            </label>
+                            <div class="col-sm-10">
+                                <input class="form-control d-inline" id="nombre-categoria" placeholder="Nombre de Categoría" type="text"/>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row-reverse">
+                            <div class="d-flex flex-row-reverse">
+                                <button class="btn btn-primary" id="send">
+                                    Crear Categoría
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- media-body -->
+            <div class="profile-sidebar mg-t-40 mg-lg-t-0 pd-lg-l-25">
+                <div class="row">
+                    <div class="col-sm-6 col-md-5 col-lg">
+                        <div class="d-flex align-items-center justify-content-between mg-b-20">
+                            <h6 class="tx-13 tx-spacng-1 tx-uppercase tx-semibold mg-b-0">
+                                Cambios Recientes
+                            </h6>
+                        </div>
+                        <ul class="list-unstyled media-list mg-b-15">
+                            <li class="media align-items-center">
+                                <a href="">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-initial rounded-circle bg-dark">
+                                            S
+                                        </span>
+                                    </div>
+                                </a>
+                                <div class="media-body pd-l-15">
+                                    <p class="tx-medium mg-b-0">
+                                        <a class="link-01" href="">
+                                            Socrates Itumay
+                                        </a>
+                                    </p>
+                                    <span class="tx-12 tx-color-03">
+                                        2 hours ago
+                                    </span>
+                                </div>
+                            </li>
+                            <li class="media align-items-center">
+                                <a href="">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-initial rounded-circle bg-primary">
+                                            I
+                                        </span>
+                                    </div>
+                                </a>
+                                <div class="media-body pd-l-15">
+                                    <p class="tx-medium mg-b-0">
+                                        <a class="link-01" href="">
+                                            Isidore Dilao
+                                        </a>
+                                    </p>
+                                    <span class="tx-12 tx-color-03">
+                                        5 hours ago
+                                    </span>
+                                </div>
+                            </li>
+                            <li class="media align-items-center">
+                                <a href="">
+                                    <div class="avatar avatar-offline">
+                                        <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
+                                    </div>
+                                </a>
+                                <div class="media-body pd-l-15">
+                                    <p class="tx-medium mg-b-0">
+                                        <a class="link-01" href="">
+                                            Angeline Mercado
+                                        </a>
+                                    </p>
+                                    <span class="tx-12 tx-color-03">
+                                        1 day ago
+                                    </span>
+                                </div>
+                            </li>
+                            <li class="media align-items-center">
+                                <a href="">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-initial rounded-circle bg-info">
+                                            K
+                                        </span>
+                                    </div>
+                                </a>
+                                <div class="media-body pd-l-15">
+                                    <p class="tx-medium mg-b-0">
+                                        <a class="link-01" href="">
+                                            Kirby Avendula
+                                        </a>
+                                    </p>
+                                    <span class="tx-12 tx-color-03">
+                                        2 days ago
+                                    </span>
+                                </div>
+                            </li>
+                            <li class="media align-items-center">
+                                <a href="">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-initial rounded-circle bg-dark">
+                                            S
+                                        </span>
+                                    </div>
+                                </a>
+                                <div class="media-body pd-l-15">
+                                    <p class="tx-medium mg-b-0">
+                                        <a class="link-01" href="">
+                                            Socrates Itumay
+                                        </a>
+                                    </p>
+                                    <span class="tx-12 tx-color-03">
+                                        2 hours ago
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                        <a class="link-03 d-inline-flex align-items-center" href="">
+                            See more stories
+                            <i class="icon ion-ios-arrow-down mg-l-5 mg-t-3 tx-12">
+                            </i>
+                        </a>
+                    </div>
+                </div>
+                <!-- row -->
+            </div>
+            <!-- profile-sidebar -->
+        </div>
+        <!-- media -->
+    </div>
+    <!-- container -->
+</div>
+<!-- content -->
+{% endblock %}
+{% block appFooter %}
+{% endblock %}
+{% block appScripts %}
+<script defer="" src="assets/dashforge/lib/perfect-scrollbar/perfect-scrollbar.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/moment/min/moment.min.js">
+</script>
+<script defer="" src="assets/dashforge/assets/js/dashforge.js">
+</script>
+<script defer="" src="dist/app/js/nueva-categoria.js?{{ date().timestamp }}">
+</script>
+{% endblock %}

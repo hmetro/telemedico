@@ -1,16 +1,16 @@
 $(function() {
-    table();
+    tableLaboratorio();
     // Select2
     $('.dataTables_length select').select2({
         minimumResultsForSearch: Infinity
     });
 });
 
-function table() {
+function tableLaboratorio() {
     $.fn.dataTable.ext.errMode = 'none';
     var table = $('#resultados-lab').DataTable({
         "ajax": {
-            url: "api/laboratorio/resultados",
+            url: "api/laboratorio/resultados/" + localStorage.hcpte,
             dataSrc: "customData",
             serverSide: true,
         },
@@ -140,18 +140,6 @@ function table() {
     });
     $('.dataTables_length select').select2({
         minimumResultsForSearch: Infinity
-    });
-    $('#button-buscar-t').click(function(e) {
-        e.preventDefault();
-        $('#loader').show();
-        $('#v-v-table').hide();
-        table.search($('#_dt_search_text').val()).draw();
-    });
-    $('#filtrar').click(function(e) {
-        e.preventDefault();
-        $('#loader').show();
-        $('#v-v-table').hide();
-        table.search('fechas-' + $('#desde').val() + '-' + $('#hasta').val()).draw();
     });
     return table;
 }

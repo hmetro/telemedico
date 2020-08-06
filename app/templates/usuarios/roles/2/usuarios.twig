@@ -11,7 +11,7 @@
         <!-- Favicon -->
         <link href="assets/dashforge/assets/img/favicon.png" rel="shortcut icon" type="image/x-icon"/>
         <title>
-            Dashboard | {{config.build.name}}
+            Usuarios | {{config.build.name}}
         </title>
         <!-- vendor css -->
         <link href="assets/dashforge/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet"/>
@@ -34,9 +34,9 @@
         </a>
         <div class="navbar-brand">
             <a class="df-logo" href="{{config.build.url}}">
-                Metrolab |
+                Teleconsulta |
                 <span style="margin-left: 0.4rem">
-                    Convenios
+                    HMetro
                 </span>
             </a>
         </div>
@@ -44,9 +44,9 @@
         <div class="navbar-menu-wrapper" id="navbarMenu">
             <div class="navbar-menu-header">
                 <a class="df-logo" href="{{config.build.url}}">
-                    Metrolab |
+                    Teleconsulta|
                     <span style="margin-left: 0.4rem">
-                        Convenios
+                        HMetro
                     </span>
                 </a>
                 <a href="#" id="mainMenuClose">
@@ -75,7 +75,7 @@
                                             Usuarios
                                         </a>
                                     </li>
-                                    <li aria-current="page" class="breadcrumb-item active">
+                                    <li aria-current="page" class="breadcrumb-item active" id="active-page">
                                         Ver Usuarios
                                     </li>
                                 </ol>
@@ -89,8 +89,6 @@
                     </div>
                     <div class="row row-xs">
                         <div class="col-lg-12 col-xl-12" id="content">
-                            <table class="table table-condensed" id="table">
-                            </table>
                         </div>
                     </div>
                     <!-- row -->
@@ -102,38 +100,40 @@
     </div>
     <!-- content -->
     {% include 'overall/footer' %}
-    {% include 'usuarios/' ~ owner_user.name_rol ~ '/extends' %}
-    <script src="assets/dashforge/lib/jquery/jquery.min.js">
-    </script>
-    <script src="assets/dashforge/lib/bootstrap/js/bootstrap.bundle.min.js">
-    </script>
-    <script src="assets/dashforge/lib/feather-icons/feather.min.js">
-    </script>
-    <script src="assets/dashforge/lib/perfect-scrollbar/perfect-scrollbar.min.js">
-    </script>
-    <script src="assets/dashforge/lib/prismjs/prism.js">
-    </script>
-    <script src="assets/dashforge/lib/datatables.net/js/jquery.dataTables.min.js">
-    </script>
-    <script src="assets/dashforge/lib/datatables.net-dt/js/dataTables.dataTables.min.js">
-    </script>
-    <script src="assets/dashforge/lib/datatables.net-responsive/js/dataTables.responsive.min.js">
-    </script>
-    <script src="assets/dashforge/lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js">
-    </script>
-    <script src="assets/dashforge/lib/liveajax/liveajax.js">
-    </script>
-    <script src="assets/dashforge/lib/select2/js/select2.min.js">
-    </script>
-    <script src="assets/dashforge/assets/js/dashforge.js">
-    </script>
-    <script src="assets/dashforge/lib/navigo/navigo.min.js?{{ date().timestamp }}">
-    </script>
-    <script src="assets/dashforge/lib/navigo/navigo.js?{{ date().timestamp }}">
-    </script>
     <script type="text/javascript">
+        {% set user = owner_user.name_rol %}
+        {% set temp = ocrend_encode('assets/templates/usuarios.' ~ owner_user.name_rol|lower ~ '.extends.mx', 'temp')  %}
         var urlhome = '{{config.build.url}}';
+        var mx = '{{temp}}';
     </script>
-    <script src="assets/dashforge/app/js/usuarios/{{owner_user.name_rol|lower}}.usuarios.js?{{ date().timestamp }}">
+    <script defer="" src="assets/dashforge/lib/jquery/jquery.min.js">
+    </script>
+    <script defer="" src="assets/dashforge/lib/bootstrap/js/bootstrap.bundle.min.js">
+    </script>
+    <script defer="" src="assets/dashforge/lib/feather-icons/feather.min.js">
+    </script>
+    <script defer="" src="assets/dashforge/lib/perfect-scrollbar/perfect-scrollbar.min.js">
+    </script>
+    <script defer="" src="assets/dashforge/lib/prismjs/prism.js">
+    </script>
+    <script defer="" src="assets/dashforge/lib/datatables.net/js/jquery.dataTables.min.js">
+    </script>
+    <script defer="" src="assets/dashforge/lib/datatables.net-dt/js/dataTables.dataTables.min.js">
+    </script>
+    <script defer="" src="assets/dashforge/lib/datatables.net-responsive/js/dataTables.responsive.min.js">
+    </script>
+    <script defer="" src="assets/dashforge/lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js">
+    </script>
+    <script defer="" src="assets/dashforge/lib/liveajax/liveajax.js">
+    </script>
+    <script defer="" src="assets/dashforge/lib/select2/js/select2.min.js">
+    </script>
+    <script defer="" src="assets/dashforge/assets/js/dashforge.js">
+    </script>
+    <script defer="" src="assets/dashforge/lib/navigo/navigo.min.js?{{ date().timestamp }}">
+    </script>
+    <script defer="" src="assets/dashforge/lib/navigo/navigo.js?{{ date().timestamp }}">
+    </script>
+    <script defer="" src="assets/dashforge/app/js/usuarios/{{owner_user.name_rol|lower}}.usuarios.js?{{ date().timestamp }}">
     </script>
 </body>

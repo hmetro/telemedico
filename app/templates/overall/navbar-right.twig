@@ -7,98 +7,19 @@
         <a class="dropdown-link new-indicator" data-toggle="dropdown" href="">
             <i data-feather="bell">
             </i>
-            <span>
-                2
+            <span class="d-none" id="count-notify">
+                0
             </span>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
             <div class="dropdown-header">
                 Notificaciones
             </div>
-            <a class="dropdown-item" href="">
-                <div class="media">
-                    <div class="avatar avatar-sm avatar-online">
-                        <img alt="" class="rounded-circle" src="https://via.placeholder.com/350"/>
-                    </div>
-                    <div class="media-body mg-l-15">
-                        <p>
-                            Congratulate
-                            <strong>
-                                Socrates Itumay
-                            </strong>
-                            for work anniversaries
-                        </p>
-                        <span>
-                            Mar 15 12:32pm
-                        </span>
-                    </div>
-                    <!-- media-body -->
-                </div>
-                <!-- media -->
-            </a>
-            <a class="dropdown-item" href="">
-                <div class="media">
-                    <div class="avatar avatar-sm avatar-online">
-                        <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
-                    </div>
-                    <div class="media-body mg-l-15">
-                        <p>
-                            <strong>
-                                Joyce Chua
-                            </strong>
-                            just created a new blog post
-                        </p>
-                        <span>
-                            Mar 13 04:16am
-                        </span>
-                    </div>
-                    <!-- media-body -->
-                </div>
-                <!-- media -->
-            </a>
-            <a class="dropdown-item" href="">
-                <div class="media">
-                    <div class="avatar avatar-sm avatar-online">
-                        <img alt="" class="rounded-circle" src="https://via.placeholder.com/600"/>
-                    </div>
-                    <div class="media-body mg-l-15">
-                        <p>
-                            <strong>
-                                Althea Cabardo
-                            </strong>
-                            just created a new blog post
-                        </p>
-                        <span>
-                            Mar 13 02:56am
-                        </span>
-                    </div>
-                    <!-- media-body -->
-                </div>
-                <!-- media -->
-            </a>
-            <a class="dropdown-item" href="">
-                <div class="media">
-                    <div class="avatar avatar-sm avatar-online">
-                        <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
-                    </div>
-                    <div class="media-body mg-l-15">
-                        <p>
-                            <strong>
-                                Adrian Monino
-                            </strong>
-                            added new comment on your photo
-                        </p>
-                        <span>
-                            Mar 12 10:40pm
-                        </span>
-                    </div>
-                    <!-- media-body -->
-                </div>
-                <!-- media -->
-            </a>
+            <div id="app_notify">
+            </div>
             <div class="dropdown-footer">
                 <a href="">
-                    View all Notifications
+                    Ver Todas las Notificaciones
                 </a>
             </div>
         </div>
@@ -117,12 +38,12 @@
                 <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
             </div>
             <h6 class="tx-semibold mg-b-5">
-                Katherine Pechon
+                Telemedico
             </h6>
             <p class="mg-b-25 tx-12 tx-color-03">
-                Administrator
+                Hospital Metropolitano
             </p>
-            <a class="dropdown-item" href="{{config.build.url}}perfil">
+            <a class="dropdown-item d-none" href="{{config.build.url}}perfil">
                 <i data-feather="user">
                 </i>
                 Mi Perfil
@@ -145,3 +66,22 @@
     <!-- dropdown -->
 </div>
 <!-- navbar-right -->
+<template id="v-notify">
+    <a class="dropdown-item" href="#">
+        <div class="media">
+            <div class="avatar avatar-sm avatar-online">
+                <img alt="" class="rounded-circle" src="https://via.placeholder.com/350"/>
+            </div>
+            <div class="media-body mg-l-15">
+                <p>
+                    %message%
+                </p>
+                <span id="n-timestamp">
+                    %timestamp%
+                </span>
+            </div>
+            <!-- media-body -->
+        </div>
+        <!-- media -->
+    </a>
+</template>

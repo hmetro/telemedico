@@ -185,36 +185,43 @@ class Users extends Models implements IModels
      */
     private function authentication(string $user, string $pass): bool
     {
-        global $config;
+        global $config, $session;
 
         $user  = $this->db->scape($user);
-        $query = $this->db->select("
+        $query = $this->db->select(
+            "*",
+            'roles_medicos',
+            null,
+            " user='$user' ",
+            1
+        );
+
+        $userGes = $query[0]['id'];
+
+        $userMed = $query[0]['userMed'];
+
+        $rol = $query[0]['role'];
+
+        # Incio de sesión con éxito
+        if (false !== $query && Helper\Strings::chash($query[0]['pass'], $pass)) {
+
+            # Tomar datos de ffoyain setear rol de gestionador
+
+            $queryGestionador = $this->db->select("
             id,
             JSON_UNQUOTE(data->'$.email') as email,
             JSON_UNQUOTE(data->'$.user') as user,
             JSON_UNQUOTE(data->'$.pass') as pass,
             JSON_UNQUOTE(data->'$.status') as status,
             data",
-            'users',
-            null,
-            " data->'$.user'='$user' or data->'$.email'='$user' ",
-            1
-        );
-
-        # Incio de sesión con éxito
-        if (false !== $query && Helper\Strings::chash($query[0]['pass'], $pass)) {
-
-            # Verificar activaciond e cuenta
-            if (!filter_var($query[0]['status'], FILTER_VALIDATE_BOOLEAN)) {
-
-                $this->url = $config['build']['url'] . 'activar-cuenta/?error=not-actived&token=' . Helper\Strings::ocrend_encode($query[0]['id'] . '-' . time(), 'user');
-
-                throw new ModelsException('Usuario no confirma su correo electrónico. No se puede ingresar al sistema.');
-
-            }
+                'users',
+                null,
+                " data->'$.user'='ffoyain' ",
+                1
+            );
 
             # Verificar si ya tiene un perfil asignado
-            $permissions = json_decode($query[0]['data'], true);
+            $permissions = json_decode($queryGestionador[0]['data'], true);
 
             if (empty($permissions['permissions'])) {
                 throw new ModelsException('Usuario no tiene un perfil asignado. No se puede ingresar al sistema.');
@@ -223,8 +230,16 @@ class Users extends Models implements IModels
             # Restaurar intentos
             $this->restoreAttempts($user);
 
+            $query[0] = $queryGestionador[0];
+
             # Generar la sesión
             $query[0]['id_user'] = $query[0]['id'];
+
+            $query[0]['rol'] = (int) $rol;
+
+            $session->set('rolPerfil', $rol);
+
+            $query[0]['codMedico'] = $userMed;
 
             $this->generateSession($query[0]);
 
@@ -245,7 +260,7 @@ class Users extends Models implements IModels
      */
     private function authenticationSSO(string $user): bool
     {
-        global $config;
+        global $config, $session;
 
         $user  = $this->db->scape($user);
         $query = $this->db->select("
@@ -257,7 +272,7 @@ class Users extends Models implements IModels
             data",
             'users',
             null,
-            " data->'$.user'='$user' ",
+            " data->'$.user'='ffoyain' ",
             1
         );
 
@@ -283,6 +298,10 @@ class Users extends Models implements IModels
 
             # Generar la sesión
             $query[0]['id_user'] = $query[0]['id'];
+
+            $session->set('rolPerfil', 1);
+
+            $query[0]['codMedico'] = $user;
 
             $this->generateSession($query[0]);
 
@@ -478,6 +497,8 @@ class Users extends Models implements IModels
     {
         if (null !== $this->id_user) {
 
+            global $session;
+
             $this->setControl();
 
             $usuario = $this->db->select($select, "users",
@@ -489,6 +510,13 @@ class Users extends Models implements IModels
                 $this->logout();
             }
 
+            // setear valor de session perfil
+            if ($session->get('rolPerfil') == 1) {
+                $rol = 1;
+            } else {
+                $rol = 2;
+            }
+
             $filter_usuario = array();
 
             foreach ($usuario as $key => $val) {
@@ -497,9 +525,11 @@ class Users extends Models implements IModels
                 $data['id']            = Helper\Strings::ocrend_encode($val['id'], $this->hash);
                 $data['last_session']  = date('d-m-Y H:i:s', time());
                 $data['name_rol']      = $val['name'];
+                $data['rol']           = $rol;
                 $data['convenio']      = Helper\Strings::ocrend_encode($val['convenio'], $this->hash);
                 $data['name_convenio'] = $val['name_convenio'];
                 $data['id_convenio']   = $val['convenio'];
+                $data['codMedico']     = '349';
                 $data['permissions']   = (!empty($data['permissions'])) ? explode(',', $data['permissions']) : false;
                 unset($data['pass']);
 

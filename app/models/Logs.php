@@ -44,6 +44,29 @@ class Logs extends Models implements IModels
 
     }
 
+    public function getLogs($nhc)
+    {
+
+        $logs = $this->db->select('*', "logs", null, "nhc='" . $nhc . "'");
+
+        # No hay resultados
+        #
+
+        if (false == $logs) {
+
+            return array(
+                'status'     => false,
+                'customData' => false,
+            );
+
+        }
+
+        return array(
+            'status'     => true,
+            'customData' => $logs,
+        );
+    }
+
     /**
      * __construct()
      */

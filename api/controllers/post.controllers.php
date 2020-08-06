@@ -163,6 +163,16 @@ $app->post('/zoom/eliminar', function () use ($app) {
 });
 
 /**
+ * Zoom status participantes
+ *
+ * @return json
+ */
+$app->post('/zoom/participantes', function () use ($app) {
+    $m = new Model\Teleconsulta;
+    return $app->json($m->getParticipantesCall());
+});
+
+/**
  * Resultados de laboratorio
  *
  * @return json
@@ -170,4 +180,49 @@ $app->post('/zoom/eliminar', function () use ($app) {
 $app->post('/laboratorio/resultados', function () use ($app) {
     $m = new Model\Laboratorio;
     return $app->json($m->getResultadosLab());
+});
+
+/**
+ * Crea una nueva categoría de pacientes por userMedico
+ *
+ * @return json
+ */
+$app->post('/pacientes/categorias', function () use ($app) {
+    $u = new Model\Pacientes;
+    return $app->json($u->NuevaCategoria());
+
+});
+
+/**
+ * Crea una nueva categoría de pacientes por userMedico
+ *
+ * @return json
+ */
+$app->post('/medicos/usuarios', function () use ($app) {
+    $u = new Model\Usuarios;
+    return $app->json($u->NuevoUsuario());
+
+});
+
+/**
+ * Status de live para cita
+ *
+ * @return json
+ */
+$app->post('/live', function () use ($app) {
+    $u = new Model\Citas;
+    return $app->json($u->statusCita());
+});
+
+/**
+ *
+ * Devulve las agendas del médico según las citas credassegun
+ *
+ * @return json
+ *
+ */
+
+$app->post('/medicos/agendas/nueva', function () use ($app) {
+    $u = new Model\Agendas;
+    return $app->json($u->statusCita());
 });

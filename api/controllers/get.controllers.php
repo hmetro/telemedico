@@ -36,9 +36,9 @@ $app->get('/usuario', function () use ($app) {
     return $app->json($m->getUserById());
 });
 
-$app->get('/laboratorio/resultados', function () use ($app) {
+$app->get('/laboratorio/resultados/{hcpte}', function ($hcpte) use ($app) {
     $m = new Model\Laboratorio;
-    return $app->json($m->getResultadosLab());
+    return $app->json($m->getResultadosLab($hcpte));
 });
 
 $app->get('/laboratorio/resultado', function () use ($app) {
@@ -143,4 +143,67 @@ $app->get('/contactos', function () use ($app) {
     $u = new Model\Contactos;
     return $app->json($u->AllContacts());
 
+});
+
+/**
+ * Devuelve todas las categorias creadas del userMedico
+ *
+ * @return json
+ */
+$app->get('/pacientes/categorias', function () use ($app) {
+
+    $u = new Model\Pacientes;
+    return $app->json($u->AllCategorias());
+
+});
+
+/**
+ * Devuelve todas las categorias creadas del userMedico
+ *
+ * @return json
+ */
+$app->get('/pacientes/categorias/{idCategoria}', function ($idCategoria) use ($app) {
+    $u = new Model\Pacientes;
+    return $app->json($u->getCategoryById($idCategoria));
+});
+
+/**
+ * Devuelve todas las usuarios del meico por roles
+ *
+ * @return json
+ */
+$app->get('/medicos/usuarios', function () use ($app) {
+    $u = new Model\Usuarios;
+    return $app->json($u->AllUsuarios());
+
+});
+
+/**
+ * Devuelve todas las categorias creadas del userMedico
+ *
+ * @return json
+ */
+$app->get('/medicos/usuarios/{idUser}', function ($idUser) use ($app) {
+    $u = new Model\Usuarios;
+    return $app->json($u->getUserById($idUser));
+});
+
+/**
+ * Devuelve todas las agendas creadas por el médico
+ *
+ * @return json
+ */
+$app->get('/medicos/agendas', function () use ($app) {
+    $u = new Model\Agendas;
+    return $app->json($u->getAgendas());
+});
+
+/**
+ * Devuelve todas las agendas creadas por el médico
+ *
+ * @return json
+ */
+$app->get('/logs/{nhc}', function ($nhc) use ($app) {
+    $u = new Model\Logs;
+    return $app->json($u->getLogs($nhc));
 });

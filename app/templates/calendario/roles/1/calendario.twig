@@ -17,213 +17,11 @@
 {% endblock %}
 {% block appBody %}
 <div class="calendar-wrapper">
-    <div class="calendar-sidebar">
-        <div class="calendar-sidebar-header">
-            <i data-feather="search">
-            </i>
-            <div class="search-form">
-                <input class="form-control" placeholder="Search calendar" type="search">
-                </input>
-            </div>
-            <a class="btn btn-sm btn-primary btn-icon calendar-add" href="">
-                <div data-toggle="tooltip" title="Create New Event">
-                    <i data-feather="plus">
-                    </i>
-                </div>
-            </a>
-            <!-- calendar-add -->
-        </div>
-        <!-- calendar-sidebar-header -->
-        <div class="calendar-sidebar-body" id="calendarSidebarBody">
-            <div class="calendar-inline">
-                <div id="calendarInline">
-                </div>
-            </div>
-            <!-- calendar-inline -->
-            <div class="pd-y-20 pd-x-15">
-                <label class="tx-uppercase tx-sans tx-10 tx-medium tx-spacing-1 tx-color-03 pd-l-10 mg-b-10">
-                    My Calendar
-                </label>
-                <nav class="calendar-nav">
-                    <a class="calendar show" href="">
-                        <span>
-                        </span>
-                        Calendar Events
-                    </a>
-                    <a class="birthday show" href="">
-                        <span>
-                        </span>
-                        Birthday Events
-                    </a>
-                    <a class="holiday show" href="">
-                        <span>
-                        </span>
-                        Holiday Calendar
-                    </a>
-                    <a class="discover show" href="">
-                        <span>
-                        </span>
-                        Discovered Events
-                    </a>
-                    <a class="meetup show" href="">
-                        <span>
-                        </span>
-                        Meetup Events
-                    </a>
-                    <a class="other show" href="">
-                        <span>
-                        </span>
-                        Other Events
-                    </a>
-                </nav>
-            </div>
-            <div class="pd-20 mg-b-20">
-                <label class="tx-uppercase tx-sans tx-10 tx-medium tx-spacing-1 tx-color-03 mg-b-15">
-                    Upcoming Events
-                </label>
-                <div class="schedule-group">
-                    <a class="schedule-item bd-l bd-2 bd-danger" href="#">
-                        <h6>
-                            Company Standup Meeting
-                        </h6>
-                        <span>
-                            8:00am - 9:00am, Engineering Room
-                        </span>
-                    </a>
-                    <!-- schedule-item -->
-                    <a class="schedule-item bd-l bd-2 bd-success" href="#">
-                        <h6>
-                            Start Dashboard Concept
-                        </h6>
-                        <span>
-                            9:30am - 11:30am, Office Desk
-                        </span>
-                    </a>
-                    <!-- schedule-item -->
-                    <a class="schedule-item bd-l bd-2 bd-primary" href="#">
-                        <h6>
-                            Chat Design Presentation
-                        </h6>
-                        <span>
-                            2:30pm - 3:00pm, Visual Room
-                        </span>
-                    </a>
-                    <!-- schedule-item -->
-                </div>
-                <!-- schedule-group -->
-            </div>
-        </div>
-        <!-- calendar-sidebar-body -->
-    </div>
-    <!-- calendar-sidebar -->
-    <div class="calendar-content">
-        <div class="calendar-content-body" id="calendar">
+    <div class="calendar-content wd-auto" style="left: 0px;">
+        <div class="calendar-content-body wd-auto" id="calendar">
         </div>
     </div>
     <!-- calendar-content -->
-</div>
-<!-- calendar-wrapper -->
-<div aria-hidden="true" class="modal calendar-modal-create fade effect-scale" id="modalCreateEvent" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-body pd-20 pd-sm-30">
-                <button aria-label="Close" class="close pos-absolute t-20 r-20" data-dismiss="modal" type="button">
-                    <span aria-hidden="true">
-                        <i data-feather="x">
-                        </i>
-                    </span>
-                </button>
-                <h5 class="tx-18 tx-sm-20 mg-b-20 mg-sm-b-30">
-                    Create New Event
-                </h5>
-                <form action="app-calendar.html" id="formCalendar" method="post">
-                    <div class="form-group">
-                        <input class="form-control" placeholder="Add title" type="text">
-                        </input>
-                    </div>
-                    <!-- form-group -->
-                    <div class="form-group d-flex align-items-center">
-                        <div class="custom-control custom-radio">
-                            <input checked="" class="custom-control-input" id="customRadio1" name="customRadio" type="radio">
-                                <label class="custom-control-label" for="customRadio1">
-                                    Event
-                                </label>
-                            </input>
-                        </div>
-                        <div class="custom-control custom-radio mg-l-20">
-                            <input checked="" class="custom-control-input" id="customRadio2" name="customRadio" type="radio">
-                                <label class="custom-control-label" for="customRadio2">
-                                    Reminder
-                                </label>
-                            </input>
-                        </div>
-                    </div>
-                    <!-- form-group -->
-                    <div class="form-group mg-t-30">
-                        <label class="tx-uppercase tx-sans tx-11 tx-medium tx-spacing-1 tx-color-03">
-                            Inicio:
-                        </label>
-                        <div class="row row-xs">
-                            <div class="col-7">
-                                <input class="form-control" id="eventStartDate" placeholder="Select date" type="text" value="">
-                                </input>
-                            </div>
-                            <!-- col-7 -->
-                            <div class="col-5">
-                                <select class="custom-select">
-                                    <option selected="">
-                                        Select Time
-                                    </option>
-                                </select>
-                            </div>
-                            <!-- col-5 -->
-                        </div>
-                        <!-- row -->
-                    </div>
-                    <!-- form-group -->
-                    <div class="form-group">
-                        <label class="tx-uppercase tx-sans tx-11 tx-medium tx-spacing-1 tx-color-03">
-                            End Date
-                        </label>
-                        <div class="row row-xs">
-                            <div class="col-7">
-                                <input class="form-control" id="eventEndDate" placeholder="Select date" type="text" value="">
-                                </input>
-                            </div>
-                            <!-- col-7 -->
-                            <div class="col-5">
-                                <select class="custom-select">
-                                    <option selected="">
-                                        Select Time
-                                    </option>
-                                </select>
-                            </div>
-                            <!-- col-5 -->
-                        </div>
-                        <!-- row -->
-                    </div>
-                    <!-- form-group -->
-                    <div class="form-group">
-                        <textarea class="form-control" placeholder="Write some description (optional)" rows="2">
-                        </textarea>
-                    </div>
-                    <!-- form-group -->
-                </form>
-            </div>
-            <!-- modal-body -->
-            <div class="modal-footer">
-                <button class="btn btn-primary mg-r-5" type="submit">
-                    Add Event
-                </button>
-                <a class="btn btn-secondary" data-dismiss="modal" href="">
-                    Discard
-                </a>
-            </div>
-            <!-- modal-footer -->
-        </div>
-        <!-- modal-content -->
-    </div>
-    <!-- modal-dialog -->
 </div>
 <!-- modal -->
 <div aria-hidden="true" class="modal calendar-modal-event fade effect-scale" id="modalCalendarEvent" role="dialog">
@@ -232,12 +30,12 @@
             <div class="modal-header">
                 <h6 class="event-title">
                 </h6>
-                <nav class="nav nav-modal-event">
-                    <a class="nav-link" href="#">
+                <nav class="nav nav-modal-event ">
+                    <a class="nav-link d-none" href="#">
                         <i data-feather="external-link">
                         </i>
                     </a>
-                    <a class="nav-link" href="#">
+                    <a class="nav-link d-none" href="#">
                         <i data-feather="trash-2">
                         </i>
                     </a>
@@ -272,9 +70,6 @@
                 </label>
                 <p class="event-desc tx-gray-900 mg-b-40">
                 </p>
-                <a class="btn btn-secondary pd-x-20" data-dismiss="modal" href="">
-                    Cerrar
-                </a>
             </div>
             <!-- modal-body -->
         </div>
@@ -303,6 +98,9 @@
 <script defer="" src="assets/dashforge/assets/js/dashforge.js">
 </script>
 <script defer="" src="assets/dashforge/assets/js/calendar-events.js">
+</script>
+<script type="text/javascript">
+    var epCitasAgendaPendientes = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.citasAgendaPendientes}}';
 </script>
 <script defer="" src="dist/app/js/calendario.js">
 </script>

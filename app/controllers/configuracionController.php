@@ -32,7 +32,7 @@ class configuracionController extends Controllers implements IControllers
             'users_logged' => true,
         ));
 
-        global $config;
+        global $http, $config;
 
         // Validador de permisos de rol para controller
         if ($this->user['rol'] > $config['modulos'][$router->getController()]['permisos']) {
@@ -57,21 +57,24 @@ class configuracionController extends Controllers implements IControllers
 
         // Para metodos
         if (!is_null($router->getMethod()) && is_null($router->getId())) {
-            switch ($router->getMethod()) {
-                case 'pacientes':
 
-                    $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/configuracion';
+            switch ($router->getMethod()) {
+
+                case 'categorias-pacientes':
+
+                    $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/pacientes';
 
                     if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
                         Helper\Functions::redir($config['build']['url']);
                     }
 
-                    $this->template->display('configuracion/roles/' . $this->user['rol'] . '/configuracion', array(
+                    $this->template->display($this->name_template, array(
                         'appBodyClass'  => 'page-profile',
                         'configuracion' => 'active',
                     ));
 
                     break;
+
                 case 'horarios':
 
                     # Configuración de Citas para rol de Administrador, Medico, y Gestionador
@@ -89,11 +92,9 @@ class configuracionController extends Controllers implements IControllers
 
                     break;
 
-                case 'nuevo-horario':
+                case 'usuarios':
 
-                    # Configuración de Citas para rol de Administrador, Medico, y Gestionador
-
-                    $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/nuevo-horario';
+                    $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/usuarios';
 
                     if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
                         Helper\Functions::redir($config['build']['url']);
@@ -106,29 +107,15 @@ class configuracionController extends Controllers implements IControllers
 
                     break;
 
-                case 'usuarios':
-
-                    $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/configuracion';
-
-                    if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
-                        Helper\Functions::redir($config['build']['url']);
-                    }
-
-                    $this->template->display('configuracion/roles/' . $this->user['rol'] . '/configuracion', array(
-                        'appBodyClass'  => 'page-profile',
-                        'configuracion' => 'active',
-                    ));
-
-                    break;
                 case 'facturacion':
 
-                    $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/configuracion';
+                    $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/pagos';
 
                     if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
                         Helper\Functions::redir($config['build']['url']);
                     }
 
-                    $this->template->display('configuracion/roles/' . $this->user['rol'] . '/configuracion', array(
+                    $this->template->display($this->name_template, array(
                         'appBodyClass'  => 'page-profile',
                         'configuracion' => 'active',
                     ));
@@ -143,13 +130,136 @@ class configuracionController extends Controllers implements IControllers
 
         // Para metodos y ids
         if (!is_null($router->getMethod()) && !is_null($router->getId())) {
-            switch ($router->getId()) {
-                case 'zoom':
-                    echo "zoom";
-                    break;
-                default:
-                    Helper\Functions::redir($config['build']['url'] . 'configuracion');
-                    break;
+
+            // Seteo de rutas
+            if ($router->getMethod() == 'horarios' && !is_null($router->getId()) && $router->getId() == 'nuevo') {
+
+                # Configuración de Citas para rol de Administrador, Medico, y Gestionador
+                $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/nuevo-horario';
+
+                if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                    Helper\Functions::redir($config['build']['url']);
+                }
+
+                $this->template->display($this->name_template, array(
+                    'appBodyClass'  => 'page-profile',
+                    'configuracion' => 'active',
+                ));
+
+            } elseif ($router->getMethod() == 'horarios' && !is_null($router->getId()) && $router->getId() == 'editar') {
+
+                # Configuración de Citas para rol de Administrador, Medico, y Gestionador
+                $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/editar-horario';
+
+                if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                    Helper\Functions::redir($config['build']['url']);
+                }
+
+                $this->template->display($this->name_template, array(
+                    'appBodyClass'  => 'page-profile',
+                    'configuracion' => 'active',
+                ));
+
+            } elseif ($router->getMethod() == 'horarios' && !is_null($router->getId()) && $router->getId() == 'eliminar') {
+
+                # Configuración de Citas para rol de Administrador, Medico, y Gestionador
+                $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/eliminar-horario';
+
+                if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                    Helper\Functions::redir($config['build']['url']);
+                }
+
+                $this->template->display($this->name_template, array(
+                    'appBodyClass'  => 'page-profile',
+                    'configuracion' => 'active',
+                ));
+
+            } elseif ($router->getMethod() == 'categorias-pacientes' && !is_null($router->getId()) && $router->getId() == 'nueva') {
+
+                # Agregar una nueva categoria de pacientes
+                $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/nueva-categoria';
+
+                if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                    Helper\Functions::redir($config['build']['url']);
+                }
+
+                $this->template->display($this->name_template, array(
+                    'appBodyClass'  => 'page-profile',
+                    'configuracion' => 'active',
+                ));
+
+            } elseif ($router->getMethod() == 'categorias-pacientes' && !is_null($router->getId()) && $router->getId() == 'editar') {
+
+                # Agregar una nueva categoria de pacientes
+                $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/editar-categoria';
+
+                if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                    Helper\Functions::redir($config['build']['url']);
+                }
+
+                $this->template->display($this->name_template, array(
+                    'appBodyClass'  => 'page-profile',
+                    'configuracion' => 'active',
+                ));
+
+            } elseif ($router->getMethod() == 'categorias-pacientes' && !is_null($router->getId()) && $router->getId() == 'eliminar') {
+
+                # Agregar una nueva categoria de pacientes
+                $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/eliminar-categoria';
+
+                if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                    Helper\Functions::redir($config['build']['url']);
+                }
+
+                $this->template->display($this->name_template, array(
+                    'appBodyClass'  => 'page-profile',
+                    'configuracion' => 'active',
+                ));
+
+            } elseif ($router->getMethod() == 'usuarios' && !is_null($router->getId()) && $router->getId() == 'nuevo') {
+
+                # Agregar una nueva categoria de pacientes
+                $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/nuevo-usuario';
+
+                if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                    Helper\Functions::redir($config['build']['url']);
+                }
+
+                $this->template->display($this->name_template, array(
+                    'appBodyClass'  => 'page-profile',
+                    'configuracion' => 'active',
+                ));
+
+            } elseif ($router->getMethod() == 'usuarios' && !is_null($router->getId()) && $router->getId() == 'editar') {
+
+                # Agregar una nueva categoria de pacientes
+                $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/editar-usuario';
+
+                if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                    Helper\Functions::redir($config['build']['url']);
+                }
+
+                $this->template->display($this->name_template, array(
+                    'appBodyClass'  => 'page-profile',
+                    'configuracion' => 'active',
+                ));
+
+            } elseif ($router->getMethod() == 'usuarios' && !is_null($router->getId()) && $router->getId() == 'eliminar') {
+
+                # Agregar una nueva categoria de pacientes
+                $this->name_template = 'configuracion/roles/' . $this->user['rol'] . '/eliminar-usuario';
+
+                if (!file_exists('./app/templates/' . $this->name_template . '.twig')) {
+                    Helper\Functions::redir($config['build']['url']);
+                }
+
+                $this->template->display($this->name_template, array(
+                    'appBodyClass'  => 'page-profile',
+                    'configuracion' => 'active',
+                ));
+
+            } else {
+                Helper\Functions::redir($config['build']['url'] . 'configuracion');
             }
 
         }

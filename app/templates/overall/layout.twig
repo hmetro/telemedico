@@ -30,9 +30,16 @@
         {% endblock %}
         {% block appFooter %}
         {% endblock %}
+        {% set date = "now"|date("Y-m-d") %}
         <script type="text/javascript">
             var api_url = '{{config.api.url}}';
             var urlhome = '{{config.build.url}}';
+            var _codMedico_ = '{{owner_user.codMedico}}';
+            var _hoyCalendar_ = '{{"now"|date("Y-m-d")}}';
+            var _dia_ = '{{"now"|date("d")}}';
+            var _mes_ = '{{"now"|date("m")}}';
+            var _anio_ = '{{"now"|date("Y")}}';
+            var _diaPosterior_ = '{{date|date_modify("+15 day")|date("d-m-Y")}}';
         </script>
         <script defer="" src="https://polyfill.io/v3/polyfill.min.js">
         </script>
@@ -40,9 +47,9 @@
         </script>
         <script defer="" src="assets/dashforge/lib/bootstrap/js/bootstrap.bundle.min.js">
         </script>
-        <script defer="" src="assets/dashforge/lib/jqueryui/jquery-ui.min.js">
-        </script>
         <script defer="" src="assets/dashforge/lib/feather-icons/feather.min.js">
+        </script>
+        <script defer="" src="assets/dashforge/lib/jqueryui/jquery-ui.min.js">
         </script>
         {% block appScripts %}
         {% endblock %}

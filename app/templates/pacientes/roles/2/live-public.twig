@@ -1,0 +1,86 @@
+{% extends 'overall/layout' %}
+{% block appMetaHead %}
+<title>
+    Live Telemédico | {{config.build.name}}
+</title>
+{% endblock %}
+{% block appHead %}
+<!-- DashForge CSS -->
+<link href="assets/dashforge/lib/quill/quill.core.css" rel="stylesheet"/>
+<link href="assets/dashforge/lib/quill/quill.snow.css" rel="stylesheet"/>
+<link href="assets/dashforge/lib/quill/quill.bubble.css" rel="stylesheet"/>
+<link href="assets/dashforge/lib/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet"/>
+<link href="assets/dashforge/lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.contacts.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.profile.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.demo.css" rel="stylesheet"/>
+{% endblock %}
+{% block appBody %}
+<div class="content content-fixed content-auth-alt">
+    <div class="container ht-100p tx-center">
+        <div class="ht-100p d-flex flex-column align-items-center justify-content-center">
+            <div class="wd-70p wd-sm-250 wd-lg-300 mg-b-15">
+                <img alt="" class="img-fluid" src="https://via.placeholder.com/1260x840"/>
+            </div>
+            <h1 class="tx-color-01 tx-24 tx-sm-32 tx-lg-36 mg-xl-b-5">
+                500 Internal Server Error
+            </h1>
+            <h5 class="tx-16 tx-sm-18 tx-lg-20 tx-normal mg-b-20">
+                Oopps. There was an error, please try again later.
+            </h5>
+            <p class="tx-color-03 mg-b-30">
+                The server encountered an internal server error and was unable to complete your request.
+            </p>
+            <div class="mg-b-40">
+                <button class="btn btn-white pd-x-30">
+                    Back to Home
+                </button>
+            </div>
+            <span class="tx-12 tx-color-03">
+                Error page concept with laptop vector is created by
+                <a href="https://www.freepik.com/free-photos-vectors/business">
+                    freepik (freepik.com)
+                </a>
+            </span>
+        </div>
+    </div>
+    <!-- container -->
+</div>
+<!-- content -->
+{% endblock %}
+{% block appFooter %}
+{% include 'overall/footer' %}
+{% include 'pacientes/roles/1/templates' %}
+{% endblock %}
+{% block appScripts %}
+<script defer="" src="assets/dashforge/lib/perfect-scrollbar/perfect-scrollbar.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net/js/jquery.dataTables.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net-dt/js/dataTables.dataTables.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net-responsive/js/dataTables.responsive.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/moment/min/moment.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/select2/js/select2.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/quill/quill.min.js">
+</script>
+<script defer="" src="assets/dashforge/assets/js/dashforge.js">
+</script>
+<script defer="" src="assets/dashforge/assets/js/dashforge.contacts.js">
+</script>
+<script defer="" src="//mozilla.github.io/pdf.js/build/pdf.js">
+</script>
+<script type="text/javascript">
+    var epCitasAgenda = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.citasAgenda}}';
+</script>
+<script defer="" src="dist/app/js/teleconsulta.js?{{ date().timestamp }}">
+</script>
+<script defer="" src="dist/app/js/laboratorio.js?{{ date().timestamp }}">
+</script>
+{% endblock %}

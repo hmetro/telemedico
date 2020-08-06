@@ -132,27 +132,39 @@ class Teleconsulta extends Models implements IModels
         }
     }
 
-    public function testApiM()
+    public function getParticipantesCall()
     {
 
         try {
 
-            global $config;
+            global $config, $http;
 
-            $client = new GClient(['base_uri' => 'https://api.telemedicina.metrored.med.ec']);
+            $id_call = $http->request->get('id_call');
 
-            $response = $client->request('POST', '/v1/expedientes/beta/uploads', [
+            # Verificar que no están vacíos
+            if (Helper\Functions::e($id_call)) {
+                throw new ModelsException('Todos los datos son necesarios. => Id_call es necesario.');
+            }
 
-                'nhc'  => '54126',
-                'adm'  => '2',
-                'urls' => [
-                    'https://mtr-images-prod.s3.amazonaws.com/telemedicoFiles/chat-90f29a72-c14b-4ab9-ae16-15378d8c798a-0-message.chat.log.pdf.pdf',
+            $getToken = new Model\Auth;
+
+            $accessToken = $getToken->generateKey()['zoom_token'];
+
+            $client = new GClient(['base_uri' => 'https://api.zoom.us']);
+
+            $response = $client->request('GET', '/v2/metrics/meetings/' . $id_call . '/participants?page_size=30&type=live', [
+                "headers" => [
+                    "Authorization" => "Bearer $accessToken",
                 ],
             ]);
 
+            $data = json_decode($response->getBody());
+
             return array(
-                'status'  => true,
-                'message' => $response,
+                'status'       => true,
+                'message'      => 'Request éxito',
+                'data'         => $data,
+                'totalRecords' => $data->total_records,
             );
 
         } catch (ModelsException $e) {
