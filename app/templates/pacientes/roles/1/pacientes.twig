@@ -36,10 +36,9 @@
 {% include 'overall/header-pacientes' %}
 {% endblock %}
 {% block appBody %}
-
 <div class="contact-wrapper">
     <div class="contact-navleft">
-        <nav class="nav flex-column">
+        <nav class="nav flex-column" id="navPacientes">
             <a class="nav-link active" data-panel="tabCitasHoy" data-toggle="tab" href="#tabCitasHoy">
                 <span data-panel="tabCitasHoy" data-placement="right" data-toggle="tooltip">
                     <i class="icon ion-md-calendar tx-22">
@@ -139,7 +138,7 @@
                     Paciente
                 </a>
                 <a class="nav-link" data-toggle="tab" href="#hc">
-                    Historia Clínica
+                    Historial de Atenciones
                 </a>
                 <a class="nav-link" data-toggle="tab" href="#lab">
                     Laboratorio
@@ -326,7 +325,7 @@
                     </div>
                 </div>
                 <h6 class="d-flex flex-row justify-content-between">
-                    Diagnósticos
+                    Diagnóstico
                     <div class="spinner-grow spinner-grow-sm mg-l-10 save-3 d-none" role="status" title="Guardando...">
                     </div>
                     <div class="check-3 d-none" title="Texto Guardado">
@@ -406,6 +405,7 @@
 <script defer="" src="//mozilla.github.io/pdf.js/build/pdf.js">
 </script>
 <script type="text/javascript">
+    var epDatosMedico = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.datosMedico}}';
     var epCitasAgendaPendientes = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.citasAgendaPendientes}}';
     var epCitasAgendaPasadas = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.citasAgendaPasadas}}';
     var epCitasNombres = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.citasNombres}}';

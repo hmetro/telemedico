@@ -1,7 +1,7 @@
 {% extends 'overall/layout' %}
 {% block appMetaHead %}
 <title>
-    Nuevo Usuario | {{config.build.name}}
+    Editar Usuario | {{config.build.name}}
 </title>
 {% endblock %}
 {% block appHead %}
@@ -18,12 +18,12 @@
             <div class="card col-sm-10 col-md-10 col-lg-10 mg-b-20 mg-lg-b-25">
                 <div class="card-header pd-y-15 pd-x-20 d-flex align-items-center justify-content-between">
                     <h6 class="tx-uppercase tx-semibold mg-b-0">
-                        Nuevo Usuario:
+                        Editar Horario:
                     </h6>
                 </div>
                 <!-- card-header -->
                 <div class="card-body pd-25">
-                    <form id="f-nuevo-usuario">
+                    <form id="f-nuevo-horario">
                         <div class="form-group row">
                             <label class="col-sm-2">
                             </label>
@@ -32,24 +32,107 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">
-                                Usuario:
+                                Fecha Desde:
                             </label>
                             <div class="col-sm-10">
-                                <input class="form-control d-inline" id="user" placeholder="Usuario" type="text"/>
+                                <input class="form-control wd-300 d-inline" id="desde" max="2030-12-31" min="2020-01-01" placeholder="dd-mm-yyyy" type="date"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">
-                                Contraseña:
+                                Fecha Hasta:
                             </label>
                             <div class="col-sm-10">
-                                <input class="form-control d-inline" id="pass" placeholder="Contraseña" type="text"/>
+                                <input class="form-control wd-300 d-inline" id="hasta" type="date"/>
                             </div>
                         </div>
-                        <div class="d-flex flex-row-reverse">
-                            <div class="d-flex flex-row-reverse">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">
+                                Hora Inicial:
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control wd-100 d-inline" id="horaInicial">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">
+                                Hora Final:
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control wd-100 d-inline" id="horaFinal">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                Dias:
+                            </div>
+                            <div class="col-sm-10">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="lunes" type="checkbox">
+                                        <label class="custom-control-label" for="lunes">
+                                            Lunes
+                                        </label>
+                                    </input>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="martes" type="checkbox">
+                                        <label class="custom-control-label" for="martes">
+                                            Martes
+                                        </label>
+                                    </input>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="miercoles" type="checkbox">
+                                        <label class="custom-control-label" for="miercoles">
+                                            Miércoles
+                                        </label>
+                                    </input>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="jueves" type="checkbox">
+                                        <label class="custom-control-label" for="jueves">
+                                            Jueves
+                                        </label>
+                                    </input>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="viernes" type="checkbox">
+                                        <label class="custom-control-label" for="viernes">
+                                            Viernes
+                                        </label>
+                                    </input>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="sabado" type="checkbox">
+                                        <label class="custom-control-label" for="sabado">
+                                            Sábado
+                                        </label>
+                                    </input>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" id="domingo" type="checkbox">
+                                        <label class="custom-control-label" for="domingo">
+                                            Domingo
+                                        </label>
+                                    </input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">
+                                Duración:
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control wd-100 d-inline" id="dura" name="dura">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mg-b-0">
+                            <div class="col-sm-10">
                                 <button class="btn btn-primary" id="send">
-                                    Crear Usuario
+                                    Crear Horario
                                 </button>
                             </div>
                         </div>
@@ -160,11 +243,6 @@
                                 </div>
                             </li>
                         </ul>
-                        <a class="link-03 d-inline-flex align-items-center" href="">
-                            See more stories
-                            <i class="icon ion-ios-arrow-down mg-l-5 mg-t-3 tx-12">
-                            </i>
-                        </a>
                     </div>
                 </div>
                 <!-- row -->
@@ -186,6 +264,10 @@
 </script>
 <script defer="" src="assets/dashforge/assets/js/dashforge.js">
 </script>
-<script defer="" src="dist/app/js/nuevo-usuario.js?{{ date().timestamp }}">
+<script type="text/javascript">
+    var idUser = '{{get.id}}';
+    var epEliminarHorario = '{{config.build.}}';
+</script>
+<script defer="" src="dist/app/js/editar-horario.js?{{ date().timestamp }}">
 </script>
 {% endblock %}

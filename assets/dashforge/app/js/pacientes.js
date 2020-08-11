@@ -1,5 +1,6 @@
 $(function() {
     getAgendasMedico();
+    loadPanelDatosMedico();
     // Select2
 });
 

@@ -1,4 +1,6 @@
 $(function() {
+    initDashforge();
+    loadPanelDatosMedico();
     getHorariosMedico();
 });
 
@@ -64,9 +66,9 @@ function table(_data) {
         }, {
             title: "Tipo Horario:"
         }, {
-            title: "Desde:"
+            title: "Fecha y Hora Desde:"
         }, {
-            title: "Hasta:"
+            title: "Fecha y Hora Hasta:"
         }, {
             title: "Dias:"
         }, {
@@ -88,13 +90,15 @@ function table(_data) {
             aTargets: [1]
         }, {
             mRender: function(data, type, full) {
-                return full.desde.split(' ')[0];
+                var desde = full.desde.split(' ')[0];
+                return desde + ' ' + full.horaInicial;
             },
             visible: true,
             aTargets: [2]
         }, {
             mRender: function(data, type, full) {
-                return full.hasta.split(' ')[0];
+                var hasta = full.hasta.split(' ')[0];
+                return hasta + ' ' + full.horaFinal;
             },
             visible: true,
             aTargets: [3]
@@ -135,10 +139,12 @@ function table(_data) {
         }, {
             mRender: function(data, type, full) {
                 var jsonData = JSON.stringify(full);
+                var desde = full.desde.split(' ')[0];
+                var hasta = full.hasta.split(' ')[0];
                 return template($('#btn-table-opc').html(), {
                     data: jsonData.replace(/["]+/g, "'"),
-                    desde: full.desde.split(' ')[0],
-                    hasta: full.hasta.split(' ')[0]
+                    desde: desde + ' ' + full.horaInicial,
+                    hasta: hasta + ' ' + full.horaFinal
                 });
             },
             visible: true,

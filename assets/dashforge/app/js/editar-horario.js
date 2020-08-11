@@ -1,5 +1,6 @@
 $(function() {
     getHorario();
+    loadPanelDatosMedico();
 });
 
 function getHorario() {

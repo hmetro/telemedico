@@ -133,7 +133,7 @@ class Citas extends Models implements IModels
         ), 3);
 
         # Verificar si hubo algún problema con el envío del correo
-        if ($this->sendMail($_html, 'mchangcnt@gmail.com', 'Su Médico le esta esperando para iniciar su atención. - ' . $config['build']['name']) != 0) {
+        if ($this->sendMail($_html, 'mchang@hmetro.med.ec', 'Su Médico le esta esperando para iniciar su atención. - ' . $config['build']['name']) != 0) {
             throw new ModelsException('No se ha podido enviar el correo electrónico.');
         }
     }

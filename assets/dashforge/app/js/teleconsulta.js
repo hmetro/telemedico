@@ -1,6 +1,7 @@
 $(function() {
     initDashforge();
     initDashforgeContacts();
+    loadPanelDatosMedico();
     getNotificaciones();
     loadContactos();
     searchContacts();
@@ -110,7 +111,7 @@ function setInsertHistoriaClinica() {
         },
         bounds: '#evoluciones',
         scrollingContainer: '#scrolling-container-evoluciones',
-        placeholder: 'Escribir...',
+        placeholder: 'Escribir Evolución...',
         theme: 'bubble'
     });
     evoluciones.on('text-change', function(delta, oldDelta, source) {
@@ -138,7 +139,7 @@ function setInsertHistoriaClinica() {
         },
         bounds: '#preescripciones',
         scrollingContainer: '#scrolling-container-preescripciones',
-        placeholder: 'Escribir...',
+        placeholder: 'Escribir Preescripción...',
         theme: 'bubble'
     });
     preescripciones.on('text-change', function(delta, oldDelta, source) {
@@ -156,6 +157,34 @@ function setInsertHistoriaClinica() {
             }, 3000);
             setTimeout(function() {
                 $('.check-5').addClass('d-none');
+            }, 6000);
+            console.log("A user action triggered this change.");
+        }
+    });
+    var diagnosticos = new Quill('#diagnosticos', {
+        modules: {
+            toolbar: []
+        },
+        bounds: '#diagnosticos',
+        scrollingContainer: '#scrolling-container-diagnosticos',
+        placeholder: 'Escribir Diagnóstico...',
+        theme: 'bubble'
+    });
+    diagnosticos.on('text-change', function(delta, oldDelta, source) {
+        if (source == 'api') {
+            console.log("An API call triggered this change.");
+        } else if (source == 'user') {
+            var text_diagnosticos, itext_diagnosticos;
+            text_diagnosticos = diagnosticos.getContents();
+            itext_diagnosticos = text_diagnosticos.ops[0].insert;
+            localStorage.setItem('hcdiagnosticos', itext_diagnosticos);
+            $('.save-3').removeClass('d-none');
+            setTimeout(function() {
+                $('.save-3').addClass('d-none');
+                $('.check-3').removeClass('d-none');
+            }, 3000);
+            setTimeout(function() {
+                $('.check-3').addClass('d-none');
             }, 6000);
             console.log("A user action triggered this change.");
         }
@@ -330,7 +359,7 @@ function loadContactos() {
             $.each(data.data.reverse(), function(index, value) {
                 moment.invalid();
                 // value.fecha = '04-08-2020';
-                if (value.fecha === '05-08-2020') {
+                if (value.fecha === '10-08-2020') {
                     // value.horaInicio = moment().format("HH:mm");
                     var timestamp = moment(moment(value.fecha + ' ' + value.horaInicio).format('DD-MM-YYYY HH:mm')).unix();
                     var timestampFin = moment(moment(value.fecha + ' ' + value.horaFin).format('DD-MM-YYYY HH:mm')).unix();
@@ -408,13 +437,18 @@ function _loadPTE() {
     }).then(function(data) {
         console.log('data = ', data);
         $('#paciente').html('');
+        // Set datos de paciente
+        localStorage.setItem('primerNombPte', data.data[0].primerNombre);
+        localStorage.setItem('segundoNombPte', data.data[0].segundoNombre);
+        localStorage.setItem('primerApePte', data.data[0].primerApellido);
+        localStorage.setItem('segundoApePte', data.data[0].segundoApellido);
         // Set Medios de contacto
         var arrMediosContacto = data.data[0].mediosContacto;
         var textMediosContacto = '';
         $.each(arrMediosContacto, function(key, value) {
-            textMediosContacto += '<b>' + value.tipo + '</b> ' + value.valor + ' - ';
+            textMediosContacto += value.tipo + ' ' + value.valor + ' - ';
         });
-        data.data[0]['textMediosContacto'] = textMediosContacto;
+        data.data[0]['textMediosContacto'] = textMediosContacto.slice(0, -2);
         // Set Direcciones
         var arrDirecciones = data.data[0].direcciones;
         var textDirecciones = '';
@@ -647,17 +681,24 @@ function _loadHC() {
     }).then(function(json) {
         console.log('data = ', json);
         if (json.status) {
+            var primerNombPte, segundoNombPte, primerApePte, segundoApePte;
+            primerNombPte = json.data.primerNombrePaciente;
+            segundoNombPte = json.data.segundoNombrePaciente;
+            primerApePte = json.data.primerApellidoPaciente;
+            segundoApePte = json.data.segundoApellidoPaciente;
             $('.contact-content-body').scrollTop(0);
+            $('#navPacientes').addClass('d-none');
             $('#load-view-hc').addClass('d-none');
             $('#view-hc').removeClass('d-none');
             $('#view-hc').html(template($('#v-hc-detalle').html(), {}));
             $('#fechaHC').html('<b>FECHA:</b> ' + localStorage.fechaHC);
-            $('#nPaciente').html(' <b>PTE:</b> ' + json.data.primerNombrePaciente + ' ' + json.data.segundoNombrePaciente + ' ' + json.data.primerApellidoPaciente + ' ' + json.data.segundoApellidoPaciente);
+            $('#nPaciente').html(' <b>PTE:</b> ' + ((primerNombPte !== null) ? primerNombPte : '') + ' ' + ((segundoNombPte !== null) ? segundoNombPte : '') + ' ' + ((primerApePte !== null) ? primerApePte : '') + ' ' + ((segundoApePte !== null) ? segundoApePte : ''));
             $('#nhcPaciente').html(' <b>NHC:</b> ' + json.data.numeroHistoriaClinica);
             $('#admPaciente').html(' <b>ADM:</b> ' + json.data.numeroAdmision);
             setViewHC(json);
             $('.reset-render-hc').click(function(e) {
                 e.preventDefault();
+                $('#navPacientes').removeClass('d-none');
                 $('.contact-sidebar').removeClass('d-none');
                 $('.contact-content').css('left', '340px');
                 $('.contact-content-header').css('right', '290px');
@@ -741,7 +782,7 @@ function initCallZoom() {
 function template(templateid, data) {
     return templateid.replace(/%(\w*)%/g, // or /{(\w*)}/g for "{this} instead of %this%"
         function(m, key) {
-            return data.hasOwnProperty(key) ? (data[key] != null) ? data[key] : '<code><i class="icon ion-md-close-circle-outline"></i></code>' : "";
+            return data.hasOwnProperty(key) ? (data[key] != null) ? data[key] : '' : "";
         });
 }
 
@@ -790,6 +831,8 @@ function _ini_new_cita() {
             $('.notas').removeClass('d-none');
             window.localStorage.setItem('id_call', json.id_call);
             $('#t-initCallZoom').parent().remove();
+            // Init panel diagnositicos
+            // setPanelDiagnosticos();
             // Status conexion participantes
             localStorage.setItem('online', '0');
             setInterval(function() {
@@ -986,8 +1029,32 @@ function searchContacts() {
     }, 900);
 }
 
+function setPanelDiagnosticos() {
+    var maxField = 100; //Input fields increment limitation
+    var addButton = $('.add_button_diag'); //Add button selector
+    var wrapper = $('.field_wrapper_diag'); //Input field wrapper
+    var fieldHTML = '<div><input type="text" name="field_name_diag[]" value=""/><a href="javascript:void(0);" class="link"><i class="icon ion-md-remove-circle"></i></a></div>'; //New input field html 
+    var x = 1; //Initial field counter is 1
+    //Once add button is clicked
+    $(addButton).click(function() {
+        //Check maximum number of input fields
+        if (x < maxField) {
+            x++; //Increment field counter
+            $(wrapper).append(fieldHTML); //Add field html
+        }
+    });
+    //Once remove button is clicked
+    $(wrapper).on('click', '.remove_button', function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove(); //Remove field html
+        x--; //Decrement field counter
+    });
+}
+
 function createHC() {
-    var jsonBody = '{"numeroHistoriaClinica":"' + localStorage.hcpte + '","numeroAdmision":"' + localStorage.numAdm + '","usuarioCrea":"GEMA","usuarioModifica":null,"primerApellidoPaciente":"CHANG","segundoApellidoPaciente":"CHAVEZ","primerNombrePaciente":"MARTIN","segundoNombrePaciente":"FRANCISCO","motivoConsulta":{"motivoConsulta":"PRUEBA 3 MOTIVO CONSULTA","antecedentesPersonales":"PRUEBA 3 ANTECEDENTES PERSONALES","enfermedadActual":"PRUEBA 3 ENFERMEDAD ACTUAL"},"revisionOrganos":{"sentidos":"PRUEBA 3 SENTIDOS","cardioVascular":"PRUEBA 3 CARDIO VASCULAR","genital":"PRUEBA 3 GENITAL","muscEsqueletico":"PRUEBA 3 MUSCULO ESQUELETICO","hemoLinfatico":"PRUEBA 3 HEMO LINFATICO","respiratorio":"PRUEBA 3 RESPIRATORIO","digestivo":"PRUEBA 3 DIGESTIVO","urinario":"PRUEBA 3 URINARIO","endocrino":"PRUEBA 3 ENDOCRINO","nervioso":"PRUEBA 3 NERVIOSO"},"antecedentesFamiliares":{"cardiopatia":"PRUEBA 3 ANTECEDENTES CARDIOPATIA","diabetes":"PRUEBA 3 ANTECEDENTES DIABETES","enfermedadVascular":"PRUEBA 3 ANTECEDENTES VASCULAR","hipertension":"PRUEBA 3 ANTECEDENTES HIPERTENSION","cancer":"PRUEBA 3 ANTECEDENTES CANCER","tuberculosis":"PRUEBA 3 ANTECEDENTES TUBERCULOSIS","enfermendadMental":"PRUEBA 3 ANTECEDENTES ENFERMEDAD MENTAL","enfermedadInfecciosa":"PRUEBA 3 ANTECEDENTES ENFERMEDAD INFECCIOSA","malformacion":"PRUEBA 3 ANTECEDENTES MALFORMACION","otro":"PRUEBA 3 ANTECEDENTES OTRO"},"signosVitales":[{"fecha":"15-07-2020 11:04","temperaturaBucal":"37","temperaturaAxiliar":"38","temperaturaRectal":"39","taSistolica":"120","taDiastolica":"80","pulso":"60","frecuenciaRespiratoria":"30","perimetroCef":"80","peso":"72","talla":"172","imc":"24,34"}],"examenFisico":{"cabeza1R":"PRUEBA 3 EXAMEN CABEZA","cuello2R":"PRUEBA 3 EXAMEN CUELLO","torax3R":"PRUEBA 3 EXAMEN TORAX","abdomen4R":"PRUEBA 3 EXAMEN ABDOMEN","pelvis5R":"PRUEBA 3 EXAMEN PELVIS","extremidades6R":"PRUEBA 3 EXAMEN EXTREMIDADES","planTratamiento":"PRUEBA 3 EL PLAN DE TRATAMIENTO"},"diagnosticos":[{"numeroDiagnostico":"1","codigo":"V30","grupo":"V30-V39","descripcion":"OCUPANTE DE VEHICULO DE MOTOR DE TRES RUEDAS LESIONADO POR COLISION CON PEATON O ANIMAL","tipo":"PRESUNTIVO","clasificacionDiagnostico":"INGRESO","principal":"SI"},{"numeroDiagnostico":"2","codigo":"V31","grupo":"V30-V39","descripcion":"OCUPANTE DE VEHICULO DE MOTOR DE TRES RUEDAS LESIONADO POR COLISION CON VEHICULO DE PEDAL","tipo":"DEFINITIVO","clasificacionDiagnostico":"EGRESO","principal":"SI"}],"evoluciones":{"codigo":"1","descripcion":"PRUEBA 3 DE PRIMERA NOTA DE EVOLUCION MCHANG"},"prescripciones":[{"codigo":"1","descripcion":"PRUEBA 3 DE PRESCRIPCI MCHANG"}]}';
+    var fechaHC = moment().format("DD-MM-YYYY HH:mm");
+    var jsonBody_ = '{"numeroHistoriaClinica":"' + localStorage.hcpte + '","numeroAdmision":"' + localStorage.numAdm + '","usuarioCrea":"GEMA","usuarioModifica":null,"primerApellidoPaciente":"' + localStorage.primerApePte + '","segundoApellidoPaciente":"' + localStorage.segundoApePte + '","primerNombrePaciente":"' + localStorage.primerNombPte + '","segundoNombrePaciente":"' + localStorage.segundoNombPte + '","motivoConsulta":{"motivoConsulta":"' + localStorage.hcmotivoConsulta + '","antecedentesPersonales":"' + localStorage.hcantecedentes + '","enfermedadActual":null},"revisionOrganos":{"sentidos":null,"cardioVascular":null,"genital":null,"muscEsqueletico":null,"hemoLinfatico":null,"respiratorio":null,"digestivo":null,"urinario":null,"endocrino":null,"nervioso":null},"antecedentesFamiliares":{"cardiopatia":null,"diabetes":null,"enfermedadVascular":null,"hipertension":null,"cancer":null,"tuberculosis":null,"enfermendadMental":null,"enfermedadInfecciosa":null,"malformacion":null,"otro":null},"signosVitales":[{"fecha":null,"temperaturaBucal":null,"temperaturaAxiliar":null,"temperaturaRectal":null,"taSistolica":null,"taDiastolica":null,"pulso":null,"frecuenciaRespiratoria":null,"perimetroCef":null,"peso":null,"talla":null,"imc":null}],"examenFisico":{"cabeza1R":null,"cuello2R":null,"torax3R":null,"abdomen4R":null,"pelvis5R":null,"extremidades6R":null,"planTratamiento":null},"diagnosticos":[{"numeroDiagnostico":"1","codigo":"V30","grupo":"V30-V39","descripcion":"' + localStorage.hcdiagnosticos + '","tipo":"PRESUNTIVO","clasificacionDiagnostico":"INGRESO","principal":"SI"},{"numeroDiagnostico":"2","codigo":"V31","grupo":"V30-V39","descripcion":"' + localStorage.hcdiagnosticos + '","tipo":"DEFINITIVO","clasificacionDiagnostico":"EGRESO","principal":"SI"}],"evoluciones":{"codigo":"1","descripcion":"' + localStorage.hcevoluciones + '"},"prescripciones":[{"codigo":"1","descripcion":"' + localStorage.hcpreescripciones + '"}]}';
+    var jsonBody = '{"numeroHistoriaClinica":"' + localStorage.hcpte + '","numeroAdmision":"' + localStorage.numAdm + '","usuarioCrea":"GEMA","usuarioModifica":null,"primerApellidoPaciente":"CHANG","segundoApellidoPaciente":"CHAVEZ","primerNombrePaciente":"MARTIN","segundoNombrePaciente":"FRANCISCO","motivoConsulta":{"motivoConsulta":"PRUEBA MOTIVO CONSULTA","antecedentesPersonales":"PRUEBA ANTECEDENTES PERSONALES","enfermedadActual":"PRUEBA ENFERMEDAD ACTUAL"},"revisionOrganos":{"sentidos":"PRUEBA 3 SENTIDOS","cardioVascular":"PRUEBA CARDIO VASCULAR","genital":"PRUEBA  GENITAL","muscEsqueletico":"PRUEBA MUSCULO ESQUELETICO","hemoLinfatico":"PRUEBA HEMO LINFATICO","respiratorio":"PRUEBA RESPIRATORIO","digestivo":"PRUEBA DIGESTIVO","urinario":"PRUEBA URINARIO","endocrino":"PRUEBA ENDOCRINO","nervioso":"PRUEBA NERVIOSO"},"antecedentesFamiliares":{"cardiopatia":"PRUEBA ANTECEDENTES CARDIOPATIA","diabetes":"PRUEBA ANTECEDENTES DIABETES","enfermedadVascular":"PRUEBA ANTECEDENTES VASCULAR","hipertension":"PRUEBA ANTECEDENTES HIPERTENSION","cancer":"PRUEBA ANTECEDENTES CANCER","tuberculosis":"PRUEBA ANTECEDENTES TUBERCULOSIS","enfermendadMental":"PRUEBA ANTECEDENTES ENFERMEDAD MENTAL","enfermedadInfecciosa":"PRUEBA ANTECEDENTES ENFERMEDAD INFECCIOSA","malformacion":"PRUEBA ANTECEDENTES MALFORMACION","otro":"PRUEBA ANTECEDENTES OTRO"},"signosVitales":[{"fecha":"15-07-2020 11:04","temperaturaBucal":"37","temperaturaAxiliar":"38","temperaturaRectal":"39","taSistolica":"120","taDiastolica":"80","pulso":"60","frecuenciaRespiratoria":"30","perimetroCef":"80","peso":"72","talla":"172","imc":"24,34"}],"examenFisico":{"cabeza1R":"PRUEBA EXAMEN CABEZA","cuello2R":"PRUEBA EXAMEN CUELLO","torax3R":"PRUEBA EXAMEN TORAX","abdomen4R":"PRUEBA EXAMEN ABDOMEN","pelvis5R":"PRUEBA EXAMEN PELVIS","extremidades6R":"PRUEBA EXAMEN EXTREMIDADES","planTratamiento":"PRUEBA EL PLAN DE TRATAMIENTO"},"diagnosticos":[{"numeroDiagnostico":"1","codigo":"V30","grupo":"V30-V39","descripcion":"PRUEBA DIAG","tipo":"PRESUNTIVO","clasificacionDiagnostico":"INGRESO","principal":"SI"},{"numeroDiagnostico":"2","codigo":"V31","grupo":"V30-V39","descripcion":"PRUEBA DIAG","tipo":"DEFINITIVO","clasificacionDiagnostico":"EGRESO","principal":"SI"}],"evoluciones":{"codigo":"1","descripcion":"PRUEBA DE PRIMERA NOTA DE EVOLUCION"},"prescripciones":[{"codigo":"1","descripcion":"PRUEBA DE PRESCRIPCION"}]}';
     fetch(epCrearHC, {
         headers: {
             'Accept': 'application/json, text/plain, */*',

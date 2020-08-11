@@ -159,6 +159,7 @@ function getDocumentoLab(id_documento) {
         var _td = $('#' + retrievedObject_td.id_resultado);
         _td.removeAttr('disabled', 'disabled');
         _td.html('<i class="icon ion-md-document"></i> Ver').removeClass('pos-absolute');
+        $('#navPacientes').addClass('d-none');
         $('#d-resultados-lab').hide();
         $('#d-view-resultado').removeClass('d-none');
         $('.contact-sidebar').addClass('d-none');
@@ -168,6 +169,7 @@ function getDocumentoLab(id_documento) {
         loadPdf(retrievedObject_td.pdf);
         $('.reset-render-lab').click(function(e) {
             e.preventDefault();
+            $('#navPacientes').removeClass('d-none');
             $('.contact-sidebar').removeClass('d-none');
             $('.contact-content').css('left', '340px');
             $('.contact-content-header').css('right', '290px');

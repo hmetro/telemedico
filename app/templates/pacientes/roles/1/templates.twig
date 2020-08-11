@@ -386,18 +386,18 @@
         <!-- col -->
     </div>
     <!-- row -->
-    <h6 class="mg-t-40 mg-b-20">
-        Medios de Contacto
-    </h6>
     <div class="row row-sm">
-        <div class="col-sm-12">
-            <label class="tx-12 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
-                %textMediosContacto%
+        <div class="col-sm-12 mg-t-20 mg-sm-t-30">
+            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                Medios de Contacto:
             </label>
+            <p class="mg-b-0">
+                %textMediosContacto%
+            </p>
         </div>
         <div class="col-sm-12 mg-t-20 mg-sm-t-30">
             <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
-                Direcciónes:
+                Direcciones:
             </label>
             <p class="mg-b-0">
                 %textDirecciones%
@@ -415,15 +415,13 @@
                 </h6>
                 <nav class="nav nav-with-icon tx-13">
                     <a class="nav-link detalle-hc d-none" href="{{config.build.url}}teleconsulta/hc" title="Descargar Formulario 002">
-                        <i data-feather="download">
-                        </i>
                         FOR-002
                     </a>
-                    <a class="nav-link detalle-hc d-none" data-adm="%numeroAdmision%" data-fechahc="%fechaAdmision%" href="#!">
-                        <i data-feather="file">
+                    <span class="nav-link">
+                        <i class="icon ion-md-close-circle mg-r-5">
                         </i>
-                        Ver Detalle
-                    </a>
+                        Adm. no tiene Historia Clínica
+                    </span>
                 </nav>
             </div>
             <!-- card-header -->
@@ -448,14 +446,14 @@
                         </p>
                         <p class="mg-b-3 tx-color-02">
                             <span class="tx-medium tx-color-01">
-                                Expediente Clínico N°:
+                                Admisión N°:
                                 <b>
                                     %numeroAdmision%
                                 </b>
                             </span>
                         </p>
                         <span class="d-block tx-13 tx-color-03">
-                            %fechaAdmision%
+                            Fecha: %fechaAdmision%
                         </span>
                     </div>
                 </div>
@@ -478,9 +476,9 @@
                         FOR-002
                     </a>
                     <a class="nav-link detalle-hc" data-adm="%numeroAdmision%" data-fechahc="%fechaAdmision%" href="#!">
-                        <i data-feather="file">
+                        <i class="icon ion-md-document mg-r-5">
                         </i>
-                        Ver Detalle
+                        Ver Historia Clínica
                     </a>
                 </nav>
             </div>
@@ -506,14 +504,14 @@
                         </p>
                         <p class="mg-b-3 tx-color-02">
                             <span class="tx-medium tx-color-01">
-                                Expediente Clínico N°:
+                                Admisión N°:
                                 <b>
                                     %numeroAdmision%
                                 </b>
                             </span>
                         </p>
                         <span class="d-block tx-13 tx-color-03">
-                            %fechaAdmision%
+                            Fecha: %fechaAdmision%
                         </span>
                     </div>
                 </div>

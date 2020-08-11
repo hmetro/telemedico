@@ -1,6 +1,7 @@
 $(function() {
     'use strict'
     initDashforge();
+    loadPanelDatosMedico();
     // Initialize tooltip
     $('[data-toggle="tooltip"]').tooltip();
     // Sidebar calendar

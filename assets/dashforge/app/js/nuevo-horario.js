@@ -1,4 +1,6 @@
 $(function() {
+    initDashforge();
+    loadPanelDatosMedico();
     // Select2
     setOptionCombo('#dia-desde', 0, 31, 'Día');
     setOptionCombo('#mes-desde', 0, 12, 'Mes');
@@ -9,6 +11,13 @@ $(function() {
     setOptionCombo('#dura', 10, 60, 'Minutos');
     setOptionComboHoras('#horaInicial', 6, 23, 'Horas');
     setOptionComboHoras('#horaFinal', 6, 23, 'Horas');
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+    today = yyyy + '-' + ((mm < 10) ? '0' + mm : mm) + '-' + ((dd < 10) ? '0' + dd : dd);
+    console.log(today);
+    $('#desde').attr('min', today);
 });
 // funcion option
 function setOptionCombo(id_e, i = 1, rango, placeholder) {

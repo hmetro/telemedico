@@ -1,5 +1,6 @@
 $(function() {
     getPagosMedico();
+    loadPanelDatosMedico();
     // Select2
 });
 

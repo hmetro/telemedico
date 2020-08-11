@@ -56,10 +56,15 @@
                     apiKey: meetConfig.apiKey,
                     passWord: meetConfig.passWord,
                     success: function(res) {
-                        /*
                         $('#join_meeting').css('display', 'none');
                         $($('#wc-footer').children('div').get(0)).css('display', 'block');
                         $($('#wc-footer').children('div').get(2)).css('display', 'none');
+                        $('[aria-label="open the participants list pane"]').css('display', 'none');
+                        $('[aria-label="open the chat pane"]').css('display', 'none');
+                        $('[aria-label="Share permission setting"]').css('display', 'none');
+                        $('.security-option-menu dropup btn-group').css('display', 'none');
+                        $('.more-button').css('display', 'none');
+                        /*
                         // Custom para UI de Zoom
                         $($('#wc-footer').children('div').get(1).children('div').get(0)).css('display', 'none');
                         $($('#wc-footer').children('div').get(1).children('button').get(0)).css('display', 'none');
