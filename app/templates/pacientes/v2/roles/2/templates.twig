@@ -1,0 +1,880 @@
+<template id="btn-table-opc">
+    <div class="btn-group" role="group">
+        <button class="btn btn-xs btn-outline-primary ver-resultado" data-fecha="%fecha%" id="%id%" type="button">
+            <i class="icon ion-md-document">
+            </i>
+            Ver
+        </button>
+        <button class="btn btn-xs btn-outline-primary descargar-resultado d-none" data-fecha="%fecha%" id="%id%" type="button">
+            <i class="icon ion-md-download">
+            </i>
+            Descargar
+        </button>
+        <button class="btn btn-xs btn-outline-primary enviar-resultado d-none" id="%id%" title="Enviar por Correo Electrónico" type="button">
+            <i class="icon ion-md-mail">
+            </i>
+            Enviar
+        </button>
+    </div>
+</template>
+<template id="check-opc">
+    <input class="check-descargar-resultado" id="%id%" name="case" type="checkbox" value="%id%"/>
+</template>
+<template id="v-ver-resultado">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">
+                RESULTADO DE LABORATORIO:
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted">
+                <b>
+                    PACIENTE:
+                </b>
+                %paciente%
+            </h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+                <b>
+                    ORIGEN:
+                </b>
+                %origen%
+            </h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+                <b>
+                    FECHA:
+                </b>
+                %fecha%
+            </h6>
+            <div class="divider-text">
+                <a class="card-link mg-r-20 tx-12" href="#" id="prev">
+                    <i class="icon ion-md-return-left">
+                    </i>
+                    Anterior
+                </a>
+                <span class="tx-12">
+                    Página:
+                    <span id="page_num">
+                    </span>
+                    /
+                    <span id="page_count">
+                    </span>
+                </span>
+                <a class="card-link mg-l-20 tx-12" href="#" id="next">
+                    Siguiente
+                    <i class="icon ion-md-return-right">
+                    </i>
+                </a>
+                <a class="card-link mg-l-80 tx-12" download="Res_Lab_%id_resultado%_%fecha%_.pdf" href="%pdf%">
+                    <i class="icon ion-md-download">
+                    </i>
+                    Descargar
+                </a>
+                <a class="card-link mg-l-120 tx-12 d-none" download="Res_Lab_%id_resultado%_%fecha%_.pdf" href="%pdf%" title="Enviar por Correo Electrónico">
+                    <i class="icon ion-md-mail">
+                    </i>
+                    Enviar
+                </a>
+            </div>
+            <div class="d-flex justify-content-center">
+                <canvas id="the-canvas" width="100%">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="v-table">
+    <h5 class="card-title">
+        Resultados de Laboratorio
+    </h5>
+    <h6 class="card-subtitle mb-2 text-muted">
+        Aqui puede obtener todos los resultados disponibles.
+    </h6>
+    <br/>
+    <div class="df-example demo-table mg-b-20" data-label="Filtrar">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <input aautofocus="" class="form-control mg-b-20" id="_dt_search_text" placeholder="Buscar por Documento y Paciente" title="Buscar" type="text">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-light" id="button-buscar-t" type="button">
+                                <i class="icon ion-md-search-outline">
+                                </i>
+                                Buscar
+                            </button>
+                        </div>
+                    </input>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <input class="form-control" id="desde" placeholder="Desde" title="Desde" type="text">
+                    </input>
+                    <input class="form-control" id="hasta" placeholder="Hasta" title="Hasta" type="text">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-light" id="filtrar" title="Buscar" type="button">
+                                <i class="icon ion-md-funnel">
+                                </i>
+                                Filtrar
+                            </button>
+                        </div>
+                    </input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center" id="loader">
+        <div class="spinner-border spinner-border-sm">
+            <span class="sr-only">
+                Procesando...
+            </span>
+        </div>
+        Procesando...
+    </div>
+    <div id="v-v-table">
+        <table class="table table-sm table-hover" id="table" width="100%">
+        </table>
+    </div>
+</template>
+<template id="v-spinner">
+    <div class="card">
+        <div class="card-body" style="height: 1000px;">
+            <div class="progress ht-20 mg-t-20">
+                <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-bar progress-bar-animated wd-25p" id="loader" role="progressbar">
+                    0%
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="v-enviar-resultado">
+    <fieldset class="form-fieldset">
+        <legend>
+            Enviar Resultado
+        </legend>
+        <form id="enviarresultado_mx">
+            <div class="form-group row">
+                <div class="col-sm-10 offset-sm-2">
+                    <div class="alert alert-solid d-none" id="response" role="alert">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="email">
+                    Correo Electrónico:
+                </label>
+                <div class="col-sm-10">
+                    <input autofocus="" class="form-control" id="email" name="email" placeholder="Correo Electrónico" type="email">
+                    </input>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="email">
+                    Resultado de Laboratorio
+                </label>
+                <div>
+                    <div class="col-6 col-sm-4 col-md-3 col-xl">
+                        <div class="card card-file">
+                            <div class="card-file-thumb tx-danger d-flex align-items-center justify-content-center mg-t-20">
+                                <i class="icon ion-md-document" style="font-size: -webkit-xxx-large;">
+                                </i>
+                            </div>
+                            <div class="card-body">
+                                <h6>
+                                    <a class="link-02" href="%pdf%" target="_blank">
+                                        Resultado de Laboratorio
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="card-footer">
+                                <a class="tx-medium" href="%pdf%" target="_blank">
+                                    Ver Resultado
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row mg-b-0">
+                <div class="col-sm-12 d-flex flex-row-reverse">
+                    <button class="btn btn-primary" id="btn-enviar">
+                        Enviar Resultado
+                    </button>
+                </div>
+            </div>
+        </form>
+    </fieldset>
+</template>
+<template id="v-hc-detalle">
+    <div class="card">
+        <div class="card-header">
+            <div class="divider-text">
+                <span class="tx-12" id="fechaHC">
+                </span>
+                <span class="tx-12 mg-l-10" id="nPaciente">
+                </span>
+                <span class="tx-12 mg-l-10" id="nhcPaciente">
+                </span>
+                <span class="tx-12 mg-l-10" id="admPaciente">
+                </span>
+                <a class="card-link text-danger mg-l-10 tx-12 reset-render-hc" href="#">
+                    << Regresar
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="mg-b-20">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a aria-controls="motivo" aria-selected="true" class="nav-link active" data-toggle="tab" href="#motivo" id="motivo-tab" role="tab">
+                            Motivo de Consulta
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a aria-controls="organos" aria-selected="false" class="nav-link" data-toggle="tab" href="#organos" id="organos-tab" role="tab">
+                            Revisión de Organos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a aria-controls="ante" aria-selected="false" class="nav-link" data-toggle="tab" href="#ante" id="ante-tab" role="tab">
+                            Antecedentes Familiares
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a aria-controls="contact" aria-selected="false" class="nav-link" data-toggle="tab" href="#signos" id="signos-tab" role="tab">
+                            Signos Vitales
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a aria-controls="contact" aria-selected="false" class="nav-link" data-toggle="tab" href="#examen" id="examen-tab" role="tab">
+                            Exámen Físico
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content bd bd-gray-300 bd-t-0 pd-20" id="myTabContent">
+                    <div aria-labelledby="motivo-tab" class="tab-pane fade show active" id="motivo" role="tabpanel">
+                    </div>
+                    <div aria-labelledby="organos-tab" class="tab-pane fade" id="organos" role="tabpanel">
+                    </div>
+                    <div aria-labelledby="ante-tab" class="tab-pane fade" id="ante" role="tabpanel">
+                    </div>
+                    <div aria-labelledby="signos-tab" class="tab-pane fade" id="signos" role="tabpanel">
+                    </div>
+                    <div aria-labelledby="examen-tab" class="tab-pane fade" id="examen" role="tabpanel">
+                    </div>
+                </div>
+            </div>
+            <div class="mg-b-10">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a aria-controls="diagnosticos" aria-selected="true" class="nav-link active" data-toggle="tab" href="#diagnosticos" id="diagnosticos-tab" role="tab">
+                            Diagnosticos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a aria-controls="evoluciones" aria-selected="false" class="nav-link" data-toggle="tab" href="#evoluciones" id="evoluciones-tab" role="tab">
+                            Evoluciones
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a aria-controls="prees" aria-selected="false" class="nav-link" data-toggle="tab" href="#prees" id="prees-tab" role="tab">
+                            Preescripciones
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content bd bd-gray-300 bd-t-0 pd-20" id="myTabContent">
+                    <div aria-labelledby="home-tab" class="tab-pane fade show active" id="diagnosticos" role="tabpanel">
+                    </div>
+                    <div aria-labelledby="profile-tab" class="tab-pane fade" id="evoluciones" role="tabpanel">
+                    </div>
+                    <div aria-labelledby="contact-tab" class="tab-pane fade" id="prees" role="tabpanel">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="v-loader">
+    <div class="placeholder-paragraph pd-y-25 pd-x-20">
+        <div class="line">
+        </div>
+        <div class="line">
+        </div>
+    </div>
+</template>
+<template id="v-cita">
+    <div class="media ver-cita" data-hcpte="%nhc%" data-idh="%idh%" data-idpte="%id%" data-idt="%idt%" data-nombpte="%pte%" data-numadm="%numAdm%" data-timestamp="%timestamp%" data-timestampfin="%timestampFin%">
+        <div class="avatar avatar-sm" id="asistio-%idh%-%idt%">
+            <span class="avatar-initial rounded-circle bg-primary">
+                %inicial%
+            </span>
+        </div>
+        <div class="media-body mg-l-10">
+            <h6 class="tx-11 mg-b-3">
+                %pte%
+            </h6>
+            <span class="tx-12" title="Fecha de Cita">
+                %fecha%
+            </span>
+        </div>
+        <!-- media-body -->
+        <nav>
+            <span>
+                <i class="icon ion-md-time" title="Hora de Cita">
+                </i>
+                %hora%
+            </span>
+        </nav>
+    </div>
+</template>
+<template id="v-cita-pasada">
+    <div class="media ver-cita-pasada" data-hcpte="%nhc%" data-idh="%idh%" data-idpte="%id%" data-idt="%idt%" data-nombpte="%pte%" data-numadm="%numAdm%" data-timestamp="%timestamp%" data-timestampfin="%timestampFin%">
+        <div class="avatar avatar-sm" id="asistio-%idh%-%idt%">
+            <span class="avatar-initial rounded-circle bg-primary">
+                %inicial%
+            </span>
+        </div>
+        <div class="media-body mg-l-10">
+            <h6 class="tx-11 mg-b-3">
+                %pte%
+            </h6>
+            <span class="tx-12" title="Fecha de Cita">
+                %fecha%
+            </span>
+        </div>
+        <!-- media-body -->
+        <nav>
+            <span>
+                <i class="icon ion-md-time" title="Hora de Cita">
+                </i>
+                %hora%
+            </span>
+        </nav>
+    </div>
+</template>
+<template id="v-paciente">
+    <div class="d-flex align-items-center justify-content-between mg-b-25">
+        <h6 class="mg-b-0">
+            Datos Personales
+        </h6>
+        <div class="d-flex">
+            <button class="btn btn-sm btn-primary text-white d-flex align-items-center mg-r-5" id="t-initCallZoom">
+                <i class="icon ion-md-videocam mg-t-2">
+                </i>
+                <span class="d-none d-sm-inline mg-l-5">
+                    Iniciar Videollamada
+                </span>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                Nombres
+            </label>
+            <p class="mg-b-0">
+                %primerNombre% %segundoNombre%
+            </p>
+        </div>
+        <!-- col -->
+        <div class="col-sm mg-t-20 mg-sm-t-0">
+            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                Apellidos
+            </label>
+            <p class="mg-b-0">
+                %primerApellido% %segundoApellido%
+            </p>
+        </div>
+        <!-- col -->
+    </div>
+    <!-- row -->
+    <h6 class="mg-t-40 mg-b-20">
+        Medios de Contacto
+    </h6>
+    <div class="row row-sm">
+        <div class="col-sm-12">
+            <label class="tx-12 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                %textMediosContacto%
+            </label>
+        </div>
+        <div class="col-sm-12 mg-t-20 mg-sm-t-30">
+            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                Direcciones:
+            </label>
+            <p class="mg-b-0">
+                %textDirecciones%
+            </p>
+        </div>
+    </div>
+    <!-- row -->
+</template>
+<template id="v-h-clinicas">
+    <div class="d-flex align-items-center justify-content-between mg-b-10">
+        <div class="col-sm card mg-b-20 mg-lg-b-25">
+            <div class="card-header pd-y-15 pd-x-20 d-flex align-items-center justify-content-between">
+                <h6 class="tx-uppercase tx-semibold mg-b-0">
+                    %nombreMedicoTratante%
+                </h6>
+                <nav class="nav nav-with-icon tx-13">
+                    <a class="nav-link detalle-hc d-none" href="{{config.build.url}}teleconsulta/hc" title="Descargar Formulario 002">
+                        <i data-feather="download">
+                        </i>
+                        FOR-002
+                    </a>
+                    <a class="nav-link detalle-hc d-none" data-adm="%numeroAdmision%" data-fechahc="%fechaAdmision%" href="#!">
+                        <i data-feather="file">
+                        </i>
+                        Ver Detalle
+                    </a>
+                </nav>
+            </div>
+            <!-- card-header -->
+            <div class="card-body pd-25">
+                <div class="media d-block d-sm-flex">
+                    <div class="wd-80 ht-80 bg-ui-04 rounded d-flex align-items-center justify-content-center">
+                        <svg class="feather feather-briefcase tx-white-7 wd-40 ht-40" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                            <rect height="14" rx="2" ry="2" width="20" x="2" y="7">
+                            </rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="media-body pd-t-25 pd-sm-t-0 pd-sm-l-25">
+                        <h5 class="mg-b-5">
+                            %origen%
+                        </h5>
+                        <p class="mg-b-3 tx-color-02">
+                            <span class="tx-medium tx-color-01">
+                                %especialidad%
+                            </span>
+                        </p>
+                        <p class="mg-b-3 tx-color-02">
+                            <span class="tx-medium tx-color-01">
+                                Expediente Clínico N°:
+                                <b>
+                                    %numeroAdmision%
+                                </b>
+                            </span>
+                        </p>
+                        <span class="d-block tx-13 tx-color-03">
+                            %fechaAdmision%
+                        </span>
+                    </div>
+                </div>
+                <!-- media -->
+            </div>
+        </div>
+    </div>
+</template>
+<template id="v-h-tel-clinicas">
+    <div class="d-flex align-items-center justify-content-between mg-b-10">
+        <div class="col-sm card mg-b-20 mg-lg-b-25">
+            <div class="card-header pd-y-15 pd-x-20 d-flex align-items-center justify-content-between">
+                <h6 class="tx-uppercase tx-semibold mg-b-0">
+                    %nombreMedicoTratante%
+                </h6>
+                <nav class="nav nav-with-icon tx-13">
+                    <a class="nav-link detalle-hc d-none" href="{{config.build.url}}teleconsulta/hc" title="Descargar Formulario 002">
+                        <i data-feather="download">
+                        </i>
+                        FOR-002
+                    </a>
+                    <a class="nav-link detalle-hc" data-adm="%numeroAdmision%" data-fechahc="%fechaAdmision%" href="#!">
+                        <i data-feather="file">
+                        </i>
+                        Ver Detalle
+                    </a>
+                </nav>
+            </div>
+            <!-- card-header -->
+            <div class="card-body pd-25">
+                <div class="media d-block d-sm-flex">
+                    <div class="wd-80 ht-80 bg-ui-04 rounded d-flex align-items-center justify-content-center">
+                        <svg class="feather feather-briefcase tx-white-7 wd-40 ht-40" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                            <rect height="14" rx="2" ry="2" width="20" x="2" y="7">
+                            </rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="media-body pd-t-25 pd-sm-t-0 pd-sm-l-25">
+                        <h5 class="mg-b-5">
+                            %origen%
+                        </h5>
+                        <p class="mg-b-3 tx-color-02">
+                            <span class="tx-medium tx-color-01">
+                                %especialidad%
+                            </span>
+                        </p>
+                        <p class="mg-b-3 tx-color-02">
+                            <span class="tx-medium tx-color-01">
+                                Expediente Clínico N°:
+                                <b>
+                                    %numeroAdmision%
+                                </b>
+                            </span>
+                        </p>
+                        <span class="d-block tx-13 tx-color-03">
+                            %fechaAdmision%
+                        </span>
+                    </div>
+                </div>
+                <!-- media -->
+            </div>
+        </div>
+    </div>
+</template>
+<template id="v-i-logs">
+    <div class="timeline-item">
+        <div class="timeline-time">
+            10:30pm
+        </div>
+        <div class="timeline-body">
+            <h6 class="mg-b-0">
+                Building a Simple User Interface
+            </h6>
+            <p>
+                <a href="#">
+                    Elisse Joson
+                </a>
+                San Francisco, CA
+            </p>
+            <p>
+                In this lesson, you create a layout in XML that includes a text field and a button. In the next lesson, your app responds when the
+            </p>
+            <nav class="nav nav-row mg-t-15">
+                <a class="nav-link" href="#">
+                    Like
+                </a>
+                <a class="nav-link" href="#">
+                    Comment
+                </a>
+            </nav>
+        </div>
+        <!-- timeline-body -->
+    </div>
+</template>
+<template id="v-not-results-sidebar">
+    <div class="pd-y-25 pd-x-20">
+        <h6 class="tx-12 tx-semibold tx-spacing-1 tx-uppercase">
+            Sin resultados
+        </h6>
+        <p class="tx-13 tx-color-03 mg-b-20">
+            Usted no tiene citas agendadas.
+        </p>
+    </div>
+</template>
+<!-- tab-pane -->
+<template id="v-not-results">
+    <div class="alert alert-outline alert-light " role="alert">
+        No existe Resultados
+    </div>
+</template>
+<template id="l-citasHoy">
+    <label class="contact-list-divider mg-t-10">
+        Citas de Hoy y Pendientes
+    </label>
+</template>
+<template id="l-citasAnteriores">
+    <label class="contact-list-divider mg-t-10">
+        Citas Anteriores
+    </label>
+</template>
+<template id="v-not-data">
+    <div class="media">
+        <div class="media-body">
+            <h6>
+                No existe información.
+            </h6>
+        </div>
+    </div>
+</template>
+<template id="v-motivo-consulta">
+    <div class="media">
+        <div class="media-body">
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Motivo de Consulta:
+            </h6>
+            <p>
+                %motivoConsulta%
+            </p>
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Antecedentes Personales:
+            </h6>
+            <p>
+                %antecedentesPersonales%
+            </p>
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Enfermedad Actual:
+            </h6>
+            <p>
+                %enfermedadActual%
+            </p>
+        </div>
+        <!-- media-body -->
+    </div>
+</template>
+<template id="v-revision-organos">
+    <div class="media">
+        <div class="media-body">
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Revisión de Organos:
+            </h6>
+            <p>
+                %revisionOrganos%
+            </p>
+        </div>
+    </div>
+</template>
+<template id="v-antecedentes">
+    <div class="media">
+        <div class="media-body">
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Antecedentes Familiares:
+            </h6>
+            <p>
+                %ante%
+            </p>
+        </div>
+    </div>
+</template>
+<template id="v-signos-detalle">
+    <p>
+        <b>
+            Fecha:
+        </b>
+        %fecha%
+        <b>
+            F. Respiratoria:
+        </b>
+        %frecuenciaRespiratoria%
+        <b>
+            IMC:
+        </b>
+        %imc%
+        <b>
+            P. Cef:
+        </b>
+        %perimetroCef%
+        <b>
+            Peso:
+        </b>
+        %peso%
+        <b>
+            Pulso:
+        </b>
+        %pulso%
+        <b>
+            T. Diastólica:
+        </b>
+        %taDiastolica%
+        <b>
+            T. Sistólica:
+        </b>
+        %taSistolica%
+        <b>
+            Talla:
+        </b>
+        %talla%
+        <b>
+            T. Axilar:
+        </b>
+        %temperaturaAxiliar%
+        <b>
+            T. Bucal:
+        </b>
+        %temperaturaBucal%
+        <b>
+            T. Rectal:
+        </b>
+        %temperaturaRectal%
+    </p>
+</template>
+<template id="v-signos">
+    <div class="media">
+        <div class="media-body">
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Signos Vitales:
+            </h6>
+            <div id="detalle-signos">
+            </div>
+        </div>
+    </div>
+</template>
+<template id="v-diag-detalle">
+    <p>
+        <b>
+            C. Diagnóstico:
+        </b>
+        %clasificacionDiagnostico%
+        <b>
+            Código:
+        </b>
+        %codigo%
+        <b>
+            Grupo:
+        </b>
+        %grupo%
+        <b>
+            N. Diagnóstico:
+        </b>
+        %numeroDiagnostico%
+        <b>
+            Principal:
+        </b>
+        %principal%
+        <b>
+            Tipo:
+        </b>
+        %tipo%
+        <b>
+            Des::
+        </b>
+        %descripcion%
+    </p>
+</template>
+<template id="v-diagnosticos">
+    <div class="media">
+        <div class="media-body">
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Diagnosticos:
+            </h6>
+            <div id="detalle-diag">
+            </div>
+        </div>
+    </div>
+</template>
+<template id="v-examen">
+    <div class="media">
+        <div class="media-body">
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Abdomen:
+            </h6>
+            <p>
+                %abdomen4R%
+            </p>
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Cabeza:
+            </h6>
+            <p>
+                %cabeza1R%
+            </p>
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Cuello:
+            </h6>
+            <p>
+                %cuello2R%
+            </p>
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Extremidades:
+            </h6>
+            <p>
+                %extremidades6R%
+            </p>
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Pelvis:
+            </h6>
+            <p>
+                %pelvis5R%
+            </p>
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Torax:
+            </h6>
+            <p>
+                %torax3R%
+            </p>
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Plan Tratamiento:
+            </h6>
+            <p>
+                %planTratamiento%
+            </p>
+        </div>
+    </div>
+</template>
+<template id="v-evoluciones">
+    <div class="media">
+        <div class="media-body">
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Código:
+            </h6>
+            <p>
+                %codigo%
+            </p>
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Descripción:
+            </h6>
+            <p>
+                %descripcion%
+            </p>
+        </div>
+    </div>
+</template>
+<template id="v-prees-detalle">
+    <p>
+        <b>
+            Código:
+        </b>
+        %codigo%
+        <b>
+            Descripción:
+        </b>
+        %descripcion%
+    </p>
+</template>
+<template id="v-prees">
+    <div class="media">
+        <div class="media-body">
+            <h6>
+                <i class="icon ion-md-clipboard">
+                </i>
+                Preescripciones:
+            </h6>
+            <div id="detalle-prees">
+            </div>
+        </div>
+    </div>
+</template>
+<template id="v-time-cita">
+    <h4>
+        <i class="icon ion-md-time">
+        </i>
+        <div class="countdown d-inline">
+        </div>
+    </h4>
+    <span class="badge badge-primary">
+        Online
+    </span>
+    Paciente
+</template>
+<br/>

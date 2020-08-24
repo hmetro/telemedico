@@ -1,0 +1,1801 @@
+{% extends 'overall/layout' %}
+{% block appMetaHead %}
+<title>
+    Pacientes | {{config.build.name}}
+</title>
+{% endblock %}
+{% block appHead %}
+<!-- DashForge CSS -->
+<link href="assets/dashforge/lib/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet"/>
+<link href="assets/dashforge/lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.contacts.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.profile.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.demo.css" rel="stylesheet"/>
+{% endblock %}
+{% block appHeader %}
+{% include 'overall/header-pacientes' %}
+{% endblock %}
+{% block appBody %}
+<div class="contact-wrapper">
+    <div class="contact-navleft">
+        <nav class="nav flex-column">
+            <a class="nav-link tabContact active" data-toggle="tab" href="#tabContact">
+                <span data-placement="right" data-toggle="tooltip" title="Todos los Pacientes">
+                    <i data-feather="users">
+                    </i>
+                </span>
+            </a>
+            <a class="nav-link" data-toggle="tab" href="#tabPhoneCall">
+                <span data-placement="right" data-toggle="tooltip" title="Pacientes Recientes">
+                    <i data-feather="phone-call">
+                    </i>
+                </span>
+            </a>
+            <a class="nav-link" data-toggle="tab" href="#tabFavorites">
+                <span data-placement="right" data-toggle="tooltip" title="Favoritos">
+                    <i data-feather="star">
+                    </i>
+                </span>
+            </a>
+            <a class="nav-link" data-toggle="tab" href="#tabTags">
+                <span data-placement="right" data-toggle="tooltip" title="Pacientes por Categorias">
+                    <i data-feather="tag">
+                    </i>
+                </span>
+            </a>
+        </nav>
+    </div>
+    <!-- contact-navleft -->
+    <div class="contact-sidebar">
+        <div class="contact-sidebar-header">
+            <i data-feather="search">
+            </i>
+            <div class="search-form">
+                <input class="form-control" placeholder="Buscar" type="search">
+                </input>
+            </div>
+            <a class="btn btn-xs btn-icon btn-primary" data-toggle="modal" href="#modalNewContact">
+                <span data-toggle="tooltip" title="Nuevo Paciente">
+                    <i data-feather="user-plus">
+                    </i>
+                </span>
+            </a>
+            <!-- contact-add -->
+        </div>
+        <!-- contact-sidebar-header -->
+        <div class="contact-sidebar-body">
+            <div class="tab-content">
+                <div class="tab-pane fade active show" id="tabContact">
+                    <div class="pd-y-20 pd-x-10 contact-list">
+                        <label class="contact-list-divider" id="contactA">
+                            A
+                        </label>
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <span class="avatar-initial rounded-circle bg-gray-700">
+                                    A
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Abigail Johnson
+                                </h6>
+                                <span class="tx-12">
+                                    +1-234-567-890
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Archie Cantones
+                                </h6>
+                                <span class="tx-12">
+                                    archie@cantones.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <span class="avatar-initial rounded-circle bg-primary">
+                                    a
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Allan Rey Palban
+                                </h6>
+                                <span class="tx-12">
+                                    allanr@palban.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-offline">
+                                <span class="avatar-initial rounded-circle bg-info">
+                                    a
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Aileen Mante
+                                </h6>
+                                <span class="tx-12">
+                                    +1-234-567-890
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <label class="contact-list-divider" id="contactB">
+                            B
+                        </label>
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Brenda Aceron
+                                </h6>
+                                <span class="tx-12">
+                                    brenda@aceron.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <span class="avatar-initial rounded-circle bg-indigo">
+                                    B
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Brandibelle Yap
+                                </h6>
+                                <span class="tx-12">
+                                    byap@urmail.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <span class="avatar-initial rounded-circle bg-gray-800">
+                                    B
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Brejette Bunggay
+                                </h6>
+                                <span class="tx-12">
+                                    +1-234-567-890
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <label class="contact-list-divider" id="contactC">
+                            C
+                        </label>
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Camille Audrey
+                                </h6>
+                                <span class="tx-12">
+                                    +1-234-567-890
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Christine Lerio
+                                </h6>
+                                <span class="tx-12">
+                                    +1-234-567-890
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <label class="contact-list-divider" id="contactD">
+                            D
+                        </label>
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-offline">
+                                <span class="avatar-initial rounded-circle bg-primary">
+                                    D
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Daniel Calinawan
+                                </h6>
+                                <span class="tx-12">
+                                    daniel@youremail.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <label class="contact-list-divider" id="contactE">
+                            E
+                        </label>
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-offline">
+                                <span class="avatar-initial rounded-circle bg-success">
+                                    E
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Elvis Vircede
+                                </h6>
+                                <span class="tx-12">
+                                    +63929-123-4567
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <span class="avatar-initial rounded-circle bg-gray-700">
+                                    E
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Elena Salubre
+                                </h6>
+                                <span class="tx-12">
+                                    e.salubre@myemail.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                    </div>
+                    <!-- contact-list -->
+                </div>
+                <!-- tab-pane -->
+                <div class="tab-pane fade" id="tabPhoneCall">
+                    <div class="pd-y-20 pd-x-10 contact-list">
+                        <label class="contact-list-divider">
+                            Recently Contacted
+                        </label>
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Camille Audrey
+                                </h6>
+                                <span class="tx-12">
+                                    +1-234-567-890
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-offline">
+                                <span class="avatar-initial rounded-circle bg-success">
+                                    E
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Elvis Vircede
+                                </h6>
+                                <span class="tx-12">
+                                    +63929-123-4567
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                    </div>
+                    <!-- contact-list -->
+                </div>
+                <!-- tab-pane -->
+                <div class="tab-pane fade" id="tabFavorites">
+                    <div class="pd-y-20 pd-x-10 contact-list">
+                        <label class="contact-list-divider">
+                            My Favorites
+                        </label>
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Archie Cantones
+                                </h6>
+                                <span class="tx-12">
+                                    archie@cantones.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Brenda Aceron
+                                </h6>
+                                <span class="tx-12">
+                                    brenda@aceron.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <span class="avatar-initial rounded-circle bg-indigo">
+                                    B
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Brandibelle Yap
+                                </h6>
+                                <span class="tx-12">
+                                    byap@urmail.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Camille Audrey
+                                </h6>
+                                <span class="tx-12">
+                                    +1-234-567-890
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-offline">
+                                <span class="avatar-initial rounded-circle bg-success">
+                                    E
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Elvis Vircede
+                                </h6>
+                                <span class="tx-12">
+                                    +63929-123-4567
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                    </div>
+                    <!-- contact-list -->
+                </div>
+                <!-- tab-pane -->
+                <div class="tab-pane fade" id="tabTags">
+                    <div class="pd-y-20 pd-x-10 contact-list">
+                        <label class="contact-list-divider">
+                            My Family
+                        </label>
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <span class="avatar-initial rounded-circle bg-gray-700">
+                                    A
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Abigail Johnson
+                                </h6>
+                                <span class="tx-12">
+                                    +1-234-567-890
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Archie Cantones
+                                </h6>
+                                <span class="tx-12">
+                                    archie@cantones.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <label class="contact-list-divider">
+                            My Friends
+                        </label>
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <span class="avatar-initial rounded-circle bg-primary">
+                                    a
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Allan Rey Palban
+                                </h6>
+                                <span class="tx-12">
+                                    allanr@palban.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-offline">
+                                <span class="avatar-initial rounded-circle bg-primary">
+                                    D
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Daniel Calinawan
+                                </h6>
+                                <span class="tx-12">
+                                    daniel@youremail.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-offline">
+                                <span class="avatar-initial rounded-circle bg-success">
+                                    E
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Elvis Vircede
+                                </h6>
+                                <span class="tx-12">
+                                    +63929-123-4567
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                        <label class="contact-list-divider">
+                            My Officemates
+                        </label>
+                        <div class="media">
+                            <div class="avatar avatar-sm avatar-online">
+                                <span class="avatar-initial rounded-circle bg-gray-700">
+                                    E
+                                </span>
+                            </div>
+                            <div class="media-body mg-l-10">
+                                <h6 class="tx-13 mg-b-3">
+                                    Elena Salubre
+                                </h6>
+                                <span class="tx-12">
+                                    e.salubre@myemail.com
+                                </span>
+                            </div>
+                            <!-- media-body -->
+                            <nav>
+                                <a href="">
+                                    <i data-feather="star">
+                                    </i>
+                                </a>
+                                <a href="">
+                                    <i data-feather="edit-2">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- media -->
+                    </div>
+                    <!-- contact-list -->
+                </div>
+                <!-- tab-pane -->
+                <div class="tab-pane fade" id="tabExport">
+                    <div class="pd-y-25 pd-x-20">
+                        <h6 class="tx-12 tx-semibold tx-spacing-1 tx-uppercase">
+                            Export Contacts
+                        </h6>
+                        <p class="tx-13 tx-color-03 mg-b-20">
+                            You can export your contacts and import them into other email apps.
+                        </p>
+                        <div class="form-group">
+                            <label class="tx-13">
+                                Which contacts do you want to export?
+                            </label>
+                            <select class="custom-select tx-13">
+                                <option selected="" value="1">
+                                    All Contacts
+                                </option>
+                                <option value="2">
+                                    My Favorites
+                                </option>
+                                <option value="3">
+                                    My Family
+                                </option>
+                                <option value="4">
+                                    My Friends
+                                </option>
+                                <option value="4">
+                                    My Officemates
+                                </option>
+                            </select>
+                        </div>
+                        <!-- form-group -->
+                        <button class="btn btn-sm btn-primary">
+                            Export
+                        </button>
+                    </div>
+                </div>
+                <!-- tab-pane -->
+            </div>
+            <!-- tab-content -->
+        </div>
+        <!-- contact-sidebar-body -->
+    </div>
+    <!-- contact-sidebar -->
+    <div class="contact-content">
+        <div class="contact-content-header">
+            <nav class="nav">
+                <a class="nav-link" data-toggle="tab" href="#paciente">
+                    Paciente
+                </a>
+                <a class="nav-link active" data-toggle="tab" href="#hc">
+                    Historia Clínica
+                </a>
+                <a class="nav-link" data-toggle="tab" href="#lab">
+                    Laboratorio
+                </a>
+                <a class="nav-link" href="{{config.build.url}}link-to-imagen" target="_blank">
+                    Imagen
+                </a>
+                <a class="nav-link" data-toggle="tab" href="#logs">
+                    Historial de Actividad
+                </a>
+                <a class="nav-link live-active d-none" data-toggle="tab" href="#live">
+                    Live
+                </a>
+            </nav>
+            <a class="text-secondary mg-l-auto d-xl-none" href="" id="contactOptions">
+                <i data-feather="more-horizontal">
+                </i>
+            </a>
+        </div>
+        <!-- contact-content-header -->
+        <div class="contact-content-body">
+            <div class="tab-content">
+                <div class="tab-pane pd-20 pd-xl-25" id="paciente">
+                    <div class="d-flex align-items-center justify-content-between mg-b-25">
+                        <h6 class="mg-b-0">
+                            Personal Details
+                        </h6>
+                        <div class="d-flex">
+                            <button class="btn btn-sm btn-primary text-white d-flex align-items-center mg-r-5" id="initCallZoom">
+                                <i data-feather="video">
+                                </i>
+                                <span class="d-none d-sm-inline mg-l-5" id="t-initCallZoom">
+                                    Iniciar Videollamada
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 col-sm">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Firstname
+                            </label>
+                            <p class="mg-b-0">
+                                Abigail
+                            </p>
+                        </div>
+                        <!-- col -->
+                        <div class="col-6 col-sm">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Middlename
+                            </label>
+                            <p class="mg-b-0">
+                                Christensen
+                            </p>
+                        </div>
+                        <!-- col -->
+                        <div class="col-sm mg-t-20 mg-sm-t-0">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Lastname
+                            </label>
+                            <p class="mg-b-0">
+                                Johnson
+                            </p>
+                        </div>
+                        <!-- col -->
+                    </div>
+                    <!-- row -->
+                    <h6 class="mg-t-40 mg-b-20">
+                        Contact Details
+                    </h6>
+                    <div class="row row-sm">
+                        <div class="col-6 col-sm-4">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Mobile Phone
+                            </label>
+                            <p class="tx-primary tx-rubik mg-b-0">
+                                +1 290 912 3868
+                            </p>
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Home Phone
+                            </label>
+                            <p class="tx-primary tx-rubik mg-b-0">
+                                +1 011 342 3129
+                            </p>
+                        </div>
+                        <div class="col-6 col-sm-4 mg-t-20 mg-sm-t-0">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Work Phone
+                            </label>
+                            <p class="tx-primary tx-rubik mg-b-0">
+                                +1 100 003 3344
+                            </p>
+                        </div>
+                        <div class="col-sm-4 mg-t-20 mg-sm-t-30">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Email Address
+                            </label>
+                            <p class="tx-primary mg-b-0">
+                                me@themepixels.me
+                            </p>
+                        </div>
+                        <div class="col-sm-4 mg-t-20 mg-sm-t-30">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Company
+                            </label>
+                            <p class="mg-b-0">
+                                ThemePixels, Inc.
+                            </p>
+                        </div>
+                        <div class="col-sm-4 mg-t-20 mg-sm-t-30">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Job Position
+                            </label>
+                            <p class="mg-b-0">
+                                President & CEO
+                            </p>
+                        </div>
+                        <div class="col-sm-6 mg-t-20 mg-sm-t-30">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Home Address
+                            </label>
+                            <p class="mg-b-0">
+                                4658 Kenwood Place
+                                <br>
+                                    Pompano Beach, FL 33060, United States
+                                </br>
+                            </p>
+                        </div>
+                        <div class="col-sm-6 mg-t-20 mg-sm-t-30">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Work Address
+                            </label>
+                            <p class="mg-b-0">
+                                819 Waldeck Street
+                                <br>
+                                    Farmers Branch, TX 75244, United States
+                                </br>
+                            </p>
+                        </div>
+                        <div class="col-sm-6 mg-t-20 mg-sm-t-30">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Personal Website
+                            </label>
+                            <p class="tx-primary mg-b-0">
+                                http://themepixels.me/
+                            </p>
+                        </div>
+                        <div class="col-sm-6 mg-t-20 mg-sm-t-30">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Social Profiles
+                            </label>
+                            <nav class="nav nav-social">
+                                <a class="nav-link" href="">
+                                    <i data-feather="facebook">
+                                    </i>
+                                </a>
+                                <a class="nav-link" href="">
+                                    <i data-feather="twitter">
+                                    </i>
+                                </a>
+                                <a class="nav-link" href="">
+                                    <i data-feather="instagram">
+                                    </i>
+                                </a>
+                                <a class="nav-link" href="">
+                                    <i data-feather="github">
+                                    </i>
+                                </a>
+                            </nav>
+                        </div>
+                        <!-- col -->
+                        <div class="col-sm mg-t-20 mg-sm-t-30">
+                            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10">
+                                Notes
+                            </label>
+                        </div>
+                    </div>
+                    <!-- row -->
+                </div>
+                <div class="tab-pane show active pd-20 pd-xl-25" id="hc">
+                    <div class="d-flex align-items-center justify-content-between mg-b-10">
+                        <div class="col-sm card mg-b-20 mg-lg-b-25">
+                            <div class="card-header pd-y-15 pd-x-20 d-flex align-items-center justify-content-between">
+                                <h6 class="tx-uppercase tx-semibold mg-b-0">
+                                    Francisco Foyain
+                                </h6>
+                            </div>
+                            <!-- card-header -->
+                            <div class="card-body pd-25">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <div class="accordion" id="accordion2">
+                                            <h6 class="accordion-title">
+                                                What does royalty free mean?
+                                            </h6>
+                                            <div class="accordion-body">
+                                                Royalty free means you just need to pay for rights to use the item once per end product. You don't need to pay additional or ongoing fees for each person who sees or uses it.
+                                            </div>
+                                            <h6 class="accordion-title">
+                                                What do you mean by item and end product?
+                                            </h6>
+                                            <div class="accordion-body">
+                                                The item is what you purchase from Envato Market. The end product is what you build with that item. For example, the item is a business card template; the end product is the finalized business card. The item is a button graphic; the end product is an app using the button graphic in the app's interface.
+                                            </div>
+                                            <h6 class="accordion-title">
+                                                What are some examples of permitted end products?
+                                            </h6>
+                                            <div class="accordion-body">
+                                                You can buy a web template, add your text and images, and use it as your website. You can buy an HTML site template, convert it to WordPress, and use it as your website (but not as a stock template for sale. You can buy a flyer template, modify the text, print a flyer, and hand it out. You can buy a game starter kit, compile it, and put the game on an app store. You can buy a music track and use it in your radio or TV ad.
+                                            </div>
+                                        </div>
+                                        <!-- az-accordion -->
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="nav-label">
+                                            Historia Clínica:
+                                        </label>
+                                        <nav class="nav flex-column">
+                                            <a class="badge badge-light mg-b-5" href="#section1" style="padding: 0.1rem 1rem;">
+                                                Motico de Consulta
+                                            </a>
+                                            <a class="badge badge-light mg-b-5" href="#section2" style="padding: 0.1rem 1rem;">
+                                                Revision de Organos
+                                            </a>
+                                            <a class="badge badge-light mg-b-5" href="#section3" style="padding: 0.1rem 1rem;">
+                                                Antecedentes Familiares
+                                            </a>
+                                            <a class="badge badge-light mg-b-5" href="#section4" style="padding: 0.1rem 1rem;">
+                                                Signos Vitales
+                                            </a>
+                                            <a class="badge badge-light mg-b-5" href="#section5" style="padding: 0.1rem 1rem;">
+                                                Exámen Físico
+                                            </a>
+                                            <a class="badge badge-primary mg-b-5" href="#section6" style="padding: 0.1rem 1rem;">
+                                                Diagnóstico
+                                            </a>
+                                            <a class="badge badge-success mg-b-5" href="#section7" style="padding: 0.1rem 1rem;">
+                                                Evoluciones
+                                            </a>
+                                            <a class="badge badge-danger mg-b-5" href="#section8" style="padding: 0.1rem 1rem;">
+                                                Prescripciones
+                                            </a>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane pd-20 pd-xl-25" id="lab">
+                    <div class=" mg-b-30">
+                        <div id="d-resultados-lab">
+                            <table class="table" id="resultados-lab" width="100%">
+                            </table>
+                        </div>
+                        <div class="d-none" id="d-view-resultado">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="divider-text">
+                                        <a class="card-link mg-r-20 tx-12" href="#" id="prev">
+                                            <i class="icon ion-md-return-left">
+                                            </i>
+                                            Anterior
+                                        </a>
+                                        <span class="tx-12">
+                                            Página:
+                                            <span id="page_num">
+                                            </span>
+                                            /
+                                            <span id="page_count">
+                                            </span>
+                                        </span>
+                                        <a class="card-link mg-l-20 tx-12" href="#" id="next">
+                                            Siguiente
+                                            <i class="icon ion-md-return-right">
+                                            </i>
+                                        </a>
+                                        <a class="card-link text-danger mg-l-150 tx-12 reset-render-lab" href="#">
+                                            << Regresar
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-center">
+                                        <canvas id="render-resultado" width="100%">
+                                        </canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane pd-20 pd-xl-25" id="lab">
+                    <div class="d-flex align-items-center justify-content-between mg-b-30">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        N°
+                                    </th>
+                                    <th scope="col">
+                                        Nombres
+                                    </th>
+                                    <th scope="col">
+                                        Apellidos
+                                    </th>
+                                    <th scope="col">
+                                        Fecha
+                                    </th>
+                                    <th scope="col">
+                                        Opciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">
+                                        1
+                                    </th>
+                                    <td>
+                                        Francisco Javier
+                                    </td>
+                                    <td>
+                                        Foyain Espinosa
+                                    </td>
+                                    <td>
+                                        26/05/2020
+                                    </td>
+                                    <td>
+                                        <a href="{{config.buil.url}}assets/documentos/imagen/20200526.png" target="_blank">
+                                            Ver Imagen
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        2
+                                    </th>
+                                    <td>
+                                        Francisco Javier
+                                    </td>
+                                    <td>
+                                        Foyain Espinosa
+                                    </td>
+                                    <td>
+                                        15/05/2020
+                                    </td>
+                                    <td>
+                                        <a href="{{config.buil.url}}assets/documentos/imagen/20200526.png" target="_blank">
+                                            Ver Imagen
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        3
+                                    </th>
+                                    <td>
+                                        Francisco Javier
+                                    </td>
+                                    <td>
+                                        Foyain Espinosa
+                                    </td>
+                                    <td>
+                                        03/05/2020
+                                    </td>
+                                    <td>
+                                        <a href="{{config.buil.url}}assets/documentos/imagen/20200526.png" target="_blank">
+                                            Ver Imagen
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane pd-20 pd-xl-25" id="logs">
+                    <div class="d-flex align-items-center justify-content-between mg-b-30">
+                        <div class="container pd-x-0 pd-lg-x-10 pd-xl-x-0">
+                            <div class="media d-block d-lg-flex">
+                                <div class="media-body">
+                                    <div class="timeline-group tx-13">
+                                        <div class="timeline-label">
+                                            Hoy
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-time">
+                                                10:30pm
+                                            </div>
+                                            <div class="timeline-body">
+                                                <h6 class="mg-b-0">
+                                                    Building a Simple User Interface
+                                                </h6>
+                                                <p>
+                                                    <a href="#">
+                                                        Elisse Joson
+                                                    </a>
+                                                    San Francisco, CA
+                                                </p>
+                                                <p>
+                                                    In this lesson, you create a layout in XML that includes a text field and a button. In the next lesson, your app responds when the
+                                                </p>
+                                                <nav class="nav nav-row mg-t-15">
+                                                    <a class="nav-link" href="#">
+                                                        Like
+                                                    </a>
+                                                    <a class="nav-link" href="#">
+                                                        Comment
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                            <!-- timeline-body -->
+                                        </div>
+                                        <!-- timeline-item -->
+                                        <div class="timeline-item">
+                                            <div class="timeline-time">
+                                                08:15pm
+                                            </div>
+                                            <div class="timeline-body">
+                                                <h6 class="mg-b-0">
+                                                    Blueberry Cheesecake Dessert Recipe
+                                                </h6>
+                                                <p>
+                                                    <a href="#">
+                                                        Katherine Lumaad
+                                                    </a>
+                                                    Oakland, CA
+                                                </p>
+                                                <p>
+                                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.
+                                                </p>
+                                                <a class="d-block wd-lg-50p" href="#">
+                                                    <img alt="" class="img-fluid" src="../../assets/img/img36.jpg"/>
+                                                </a>
+                                                <nav class="nav nav-row mg-t-15">
+                                                    <a class="nav-link" href="#">
+                                                        Like
+                                                    </a>
+                                                    <a class="nav-link" href="#">
+                                                        Comment
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                            <!-- timeline-body -->
+                                        </div>
+                                        <!-- timeline-item -->
+                                        <div class="timeline-item">
+                                            <div class="timeline-time">
+                                                03:30pm
+                                            </div>
+                                            <div class="timeline-body">
+                                                <h6 class="mg-b-0">
+                                                    Your Finances Don't Have to Be Perfect to Work
+                                                </h6>
+                                                <p>
+                                                    <a href="#">
+                                                        Elisse Joson
+                                                    </a>
+                                                    San Francisco, CA
+                                                </p>
+                                                <p>
+                                                    In this lesson, you create a layout in XML that includes a text field and a button. In the next lesson, your app responds when the lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.
+                                                </p>
+                                                <nav class="nav nav-row mg-t-15">
+                                                    <a class="nav-link" href="#">
+                                                        Like
+                                                    </a>
+                                                    <a class="nav-link" href="#">
+                                                        Comment
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                            <!-- timeline-body -->
+                                        </div>
+                                        <!-- timeline-item -->
+                                        <div class="timeline-label">
+                                            Yesterday
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-time">
+                                                06:30pm
+                                            </div>
+                                            <div class="timeline-body">
+                                                <h6 class="mg-b-0">
+                                                    An Engineer Explains Why You Should Always Order the Larger Pizza
+                                                </h6>
+                                                <p>
+                                                    <a href="#">
+                                                        Elisse Joson
+                                                    </a>
+                                                    San Francisco, CA
+                                                </p>
+                                                <p>
+                                                    Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.
+                                                </p>
+                                                <div class="row row-xs">
+                                                    <div class="col">
+                                                        <img alt="" class="img-fluid" src="../../assets/img/img26.jpg"/>
+                                                    </div>
+                                                    <div class="col">
+                                                        <img alt="" class="img-fluid" src="../../assets/img/img28.jpg"/>
+                                                    </div>
+                                                </div>
+                                                <nav class="nav nav-row mg-t-15">
+                                                    <a class="nav-link" href="#">
+                                                        Like
+                                                    </a>
+                                                    <a class="nav-link" href="#">
+                                                        Comment
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                            <!-- timeline-body -->
+                                        </div>
+                                        <!-- timeline-item -->
+                                        <div class="timeline-item">
+                                            <div class="timeline-time">
+                                                01:15pm
+                                            </div>
+                                            <div class="timeline-body">
+                                                <h6 class="mg-b-0">
+                                                    The Strange Persistence of First Languages
+                                                </h6>
+                                                <p>
+                                                    <a href="#">
+                                                        Elisse Joson
+                                                    </a>
+                                                    San Francisco, CA
+                                                </p>
+                                                <p>
+                                                    In this lesson, you create a layout in XML that includes a text field and a button. In the next lesson, your app responds when the world.
+                                                </p>
+                                                <nav class="nav nav-row mg-t-15">
+                                                    <a class="nav-link" href="#">
+                                                        Like
+                                                    </a>
+                                                    <a class="nav-link" href="#">
+                                                        Comment
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                            <!-- timeline-body -->
+                                        </div>
+                                        <!-- timeline-item -->
+                                        <div class="timeline-label">
+                                            March 21, 2019
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-time">
+                                                11:45am
+                                            </div>
+                                            <div class="timeline-body">
+                                                <h6 class="mg-b-0">
+                                                    How to Win Your Next Political Argument
+                                                </h6>
+                                                <p>
+                                                    <a href="#">
+                                                        Elisse Joson
+                                                    </a>
+                                                    San Francisco, CA
+                                                </p>
+                                                <p>
+                                                    Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.
+                                                </p>
+                                                <p>
+                                                    In this lesson, you create a layout in XML that includes a text field and a button. In the next lesson, your app responds when the world.
+                                                </p>
+                                                <nav class="nav nav-row mg-t-15">
+                                                    <a class="nav-link" href="#">
+                                                        Like
+                                                    </a>
+                                                    <a class="nav-link" href="#">
+                                                        Comment
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                            <!-- timeline-body -->
+                                        </div>
+                                        <!-- timeline-item -->
+                                    </div>
+                                    <!-- timeline-group -->
+                                </div>
+                                <!-- media-body -->
+                            </div>
+                            <!-- media -->
+                        </div>
+                        <!-- container -->
+                    </div>
+                </div>
+                <div class="tab-pane" id="live">
+                    <iframe id="i-live" src="#!" style="border:none;position:absolute;height:100%;width:100%;">
+                    </iframe>
+                </div>
+            </div>
+            <!-- tab-content -->
+        </div>
+        <!-- contact-content-body -->
+        <div class="contact-content-sidebar">
+            <div class="clearfix mg-b-25">
+                <div class="pos-relative float-left" id="contactAvatar">
+                    <div class="avatar avatar-xl">
+                        <span class="avatar-initial rounded-circle bg-gray-700 tx-normal">
+                            A
+                        </span>
+                    </div>
+                    <a class="contact-edit-photo" data-toggle="tooltip" href="" title="Upload Photo">
+                        <i data-feather="edit-2">
+                        </i>
+                    </a>
+                </div>
+            </div>
+            <h5 class="tx-18 tx-xl-20 mg-b-5" id="contactName">
+                Abigail Johnson
+            </h5>
+            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-10 d-none" id="l-link-teleconsulta">
+                Link Teleconsulta
+            </label>
+            <p class="tx-13 mg-b-0 d-none" id="p-link-teleconsulta">
+                <a href="#!" id="link-teleconsulta">
+                </a>
+            </p>
+            <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-15 notas d-none">
+                Notas
+            </label>
+            <p class="tx-13 mg-t-0 notas d-none">
+                <select class="form-control select2" multiple="multiple">
+                    <option value="Preindicacion">
+                        Preindicacion
+                    </option>
+                    <option value="Diagnostico">
+                        Diagnostico
+                    </option>
+                    <option value="Enfermedad">
+                        Enfermedad
+                    </option>
+                    <option value="Evolución">
+                        Evolución
+                    </option>
+                    <option value="Problema Actual">
+                        Problema Actual
+                    </option>
+                    <option value="Signos Vitales">
+                        Signos Vitales
+                    </option>
+                    <option value="Tratamiento">
+                        Tratamiento
+                    </option>
+                    <option value="Nota Simple">
+                        Nota Simple
+                    </option>
+                    <option value="Receta Farmacia">
+                        Receta Farmacia
+                    </option>
+                    <option value="Pedido de Laboratorio">
+                        Pedido de Laboratorio
+                    </option>
+                    <option value="Pedido de Imagen">
+                        Pedido de Imagen
+                    </option>
+                    <option value="Antecedentes Personales">
+                        Antecedentes Personales
+                    </option>
+                    <option value="Antecedentes Familiares">
+                        Antecedentes Familiares
+                    </option>
+                </select>
+            </p>
+            <p class="tx-13 mg-t-5 notas d-none">
+                <textarea class="form-control" placeholder="Notas" rows="6">
+                </textarea>
+            </p>
+            <hr class="mg-y-20">
+                <label class="tx-10 tx-medium tx-spacing-1 tx-color-03 tx-uppercase tx-sans mg-b-15">
+                    Opciones
+                </label>
+                <nav class="nav flex-column contact-content-nav mg-b-25">
+                    <a class="nav-link text-danger d-none close-zoom" href="#!">
+                        <i data-feather="slash">
+                        </i>
+                        Cerrar Teleconsulta
+                    </a>
+                    <a class="nav-link d-none" href="#!">
+                        <i data-feather="star">
+                        </i>
+                        Agregar a Favoritos
+                    </a>
+                </nav>
+            </hr>
+        </div>
+        <!-- contact-content-sidebar -->
+    </div>
+    <!-- contact-content -->
+</div>
+<!-- contact-wrapper -->
+<div aria-hidden="true" class="modal fade effect-scale" id="modalNewContact" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body pd-20 pd-sm-30">
+                <button aria-label="Close" class="close pos-absolute t-15 r-20" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">
+                        ×
+                    </span>
+                </button>
+                <h5 class="tx-18 tx-sm-20 mg-b-20">
+                    Create New Contact
+                </h5>
+                <p class="tx-13 tx-color-03 mg-b-30">
+                    You can add more information than what you see here, such as address and birthday by clicking
+                    <span class="tx-color-02">
+                        Add More Fields
+                    </span>
+                    button below to bring up more options.
+                </p>
+                <div class="d-sm-flex">
+                    <div class="mg-sm-r-30">
+                        <div class="pos-relative d-inline-block mg-b-20">
+                            <div class="avatar avatar-xxl">
+                                <span class="avatar-initial rounded-circle bg-gray-700 tx-normal">
+                                    <i class="icon ion-md-person">
+                                    </i>
+                                </span>
+                            </div>
+                            <a class="contact-edit-photo" href="">
+                                <i data-feather="edit-2">
+                                </i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- col -->
+                    <div class="flex-fill">
+                        <h6 class="mg-b-10">
+                            Personal Information
+                        </h6>
+                        <div class="form-group mg-b-10">
+                            <input class="form-control" placeholder="Firstname" type="text">
+                            </input>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group mg-b-10">
+                            <input class="form-control" placeholder="Lastname" type="text">
+                            </input>
+                        </div>
+                        <!-- form-group -->
+                        <h6 class="mg-t-20 mg-b-10">
+                            Contact Information
+                        </h6>
+                        <div class="form-group mg-b-10">
+                            <input class="form-control" placeholder="Phone number" type="text">
+                            </input>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group mg-b-10">
+                            <input class="form-control" placeholder="Email address" type="email">
+                            </input>
+                        </div>
+                        <!-- form-group -->
+                        <h6 class="mg-t-20 mg-b-10">
+                            Notes
+                        </h6>
+                        <textarea class="form-control" placeholder="Add notes" rows="2">
+                        </textarea>
+                    </div>
+                    <!-- col -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="wd-100p d-flex flex-column flex-sm-row justify-content-end">
+                    <div class="dropup mg-b-15 mg-sm-b-0 mg-sm-r-auto">
+                        <button class="btn btn-block bd bd-gray-300" data-toggle="dropdown" type="button">
+                            Add More Fields
+                            <i class="icon ion-ios-arrow-up mg-l-5">
+                            </i>
+                        </button>
+                        <div class="dropdown-menu tx-13">
+                            <a class="dropdown-item" href="">
+                                Email
+                            </a>
+                            <a class="dropdown-item" href="">
+                                Phone
+                            </a>
+                            <a class="dropdown-item" href="">
+                                Address
+                            </a>
+                            <a class="dropdown-item" href="">
+                                Custom
+                            </a>
+                        </div>
+                        <!-- dropdown-menu -->
+                    </div>
+                    <button class="btn btn-primary mg-b-5 mg-sm-b-0" type="button">
+                        Save Contact
+                    </button>
+                    <button class="btn btn-secondary mg-sm-l-5" data-dismiss="modal" type="button">
+                        Discard
+                    </button>
+                </div>
+            </div>
+            <!-- modal-footer -->
+        </div>
+        <!-- modal-content -->
+    </div>
+    <!-- modal-dialog -->
+</div>
+<!-- modal -->
+<div aria-hidden="true" class="modal fade effect-scale" id="modalEditContact" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body pd-20 pd-sm-30">
+                <button aria-label="Close" class="close pos-absolute t-15 r-20" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">
+                        ×
+                    </span>
+                </button>
+                <h5 class="tx-18 tx-sm-20 mg-b-20">
+                    Edit Contact
+                </h5>
+                <p class="tx-13 tx-color-03 mg-b-30">
+                    You can add more information than what you see here, such as address and birthday by clicking
+                    <span class="tx-color-02">
+                        Add More Fields
+                    </span>
+                    button below to bring up more options.
+                </p>
+                <div class="d-sm-flex">
+                    <div class="mg-sm-r-30">
+                        <div class="pos-relative d-inline-block mg-b-20">
+                            <div class="avatar avatar-xxl">
+                                <span class="avatar-initial rounded-circle bg-gray-700 tx-normal">
+                                    A
+                                </span>
+                            </div>
+                            <a class="contact-edit-photo" href="">
+                                <i data-feather="edit-2">
+                                </i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- col -->
+                    <div class="flex-fill">
+                        <h6 class="mg-b-10">
+                            Personal Information
+                        </h6>
+                        <div class="form-group mg-b-10">
+                            <input class="form-control" placeholder="Firstname" type="text" value="Abigail">
+                            </input>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group mg-b-10">
+                            <input class="form-control" placeholder="Lastname" type="text" value="Johnson">
+                            </input>
+                        </div>
+                        <!-- form-group -->
+                        <h6 class="mg-t-20 mg-b-10">
+                            Contact Information
+                        </h6>
+                        <div class="form-group mg-b-10">
+                            <input class="form-control" placeholder="Phone number" type="text" value="+1 234 567 8910">
+                            </input>
+                        </div>
+                        <!-- form-group -->
+                        <div class="form-group mg-b-10">
+                            <input class="form-control" placeholder="Email address" type="email" value="me@themepixels.me">
+                            </input>
+                        </div>
+                        <!-- form-group -->
+                        <h6 class="mg-t-20 mg-b-10">
+                            Notes
+                        </h6>
+                        <textarea class="form-control" placeholder="Add notes" rows="2">
+                        </textarea>
+                    </div>
+                    <!-- col -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="wd-100p d-flex flex-column flex-sm-row justify-content-end">
+                    <div class="dropup mg-b-15 mg-sm-b-0 mg-sm-r-auto">
+                        <button class="btn btn-block bd bd-gray-300" data-toggle="dropdown" type="button">
+                            Add More Fields
+                            <i class="icon ion-ios-arrow-up mg-l-5">
+                            </i>
+                        </button>
+                        <div class="dropdown-menu tx-13">
+                            <a class="dropdown-item" href="">
+                                Email
+                            </a>
+                            <a class="dropdown-item" href="">
+                                Phone
+                            </a>
+                            <a class="dropdown-item" href="">
+                                Address
+                            </a>
+                            <a class="dropdown-item" href="">
+                                Custom
+                            </a>
+                        </div>
+                        <!-- dropdown-menu -->
+                    </div>
+                    <button class="btn btn-primary mg-b-5 mg-sm-b-0" type="button">
+                        Save Changes
+                    </button>
+                    <button class="btn btn-secondary mg-sm-l-5" data-dismiss="modal" type="button">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+            <!-- modal-footer -->
+        </div>
+        <!-- modal-content -->
+    </div>
+    <!-- modal-dialog -->
+</div>
+<!-- modal -->
+<div aria-hidden="true" class="modal fade effect-scale" id="modalDeleteContact" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">
+                    Delete Contact
+                </h6>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">
+                        ×
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="mg-b-0">
+                    Do you really want to delete this contact?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">
+                    Cancel
+                </button>
+                <button class="btn btn-primary" type="button">
+                    Continue Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block appFooter %}
+{% include 'overall/footer' %}
+{% include 'pacientes/roles/1/templates' %}
+{% endblock %}
+{% block appScripts %}
+<script defer="" src="assets/dashforge/lib/perfect-scrollbar/perfect-scrollbar.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net/js/jquery.dataTables.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net-dt/js/dataTables.dataTables.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net-responsive/js/dataTables.responsive.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/select2/js/select2.min.js">
+</script>
+<script defer="" src="assets/dashforge/assets/js/dashforge.js">
+</script>
+<script defer="" src="assets/dashforge/assets/js/dashforge.contacts.js">
+</script>
+<script defer="" src="//mozilla.github.io/pdf.js/build/pdf.js">
+</script>
+<script defer="" src="dist/app/js/teleconsulta.js?{{ date().timestamp }}">
+</script>
+{% endblock %}

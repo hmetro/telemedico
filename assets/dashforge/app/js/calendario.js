@@ -176,13 +176,18 @@ function getCitasMedico() {
     }).then(function(data) {
         console.log('data = ', data);
         $.each(data.data, function(index, value) {
+            $.each(value, function(_i_, _val_) {
+                if (_val_ === null) {
+                    value[_i_] = '';
+                }
+            });
             var fechaInicio = value.fecha.split('-');
             arrCitas.push({
                 id: value.codigoHorario + '-' + value.numeroTurno,
                 start: fechaInicio[2] + '-' + fechaInicio[1] + '-' + fechaInicio[0] + 'T' + value.horaInicio + ':00',
                 end: fechaInicio[2] + '-' + fechaInicio[1] + '-' + fechaInicio[0] + 'T' + value.horaFin + ':00',
-                title: value.nombresPaciente + ' ' + value.apellidosPaciente,
-                description: value.nombresPaciente + ' ' + value.apellidosPaciente,
+                title: value.primerNombrePaciente + ' ' + value.segundoNombrePaciente + ' ' + value.primerApellidoPaciente + ' ' + value.segundoApellidoPaciente,
+                description: value.primerNombrePaciente + ' ' + value.segundoNombrePaciente + ' ' + value.primerApellidoPaciente + ' ' + value.segundoApellidoPaciente,
             });
         });
     }).catch(function(err) {

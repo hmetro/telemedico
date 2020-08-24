@@ -140,10 +140,10 @@ $app->post('/teleconsulta/initcall', function () use ($app) {
     return $app->json($m->setCallZoom());
 });
 
-# send mail
-$app->post('/contactos', function () use ($app) {
-    $m = new Model\Contactos;
-    return $app->json($m->NewContact());
+# Citas Pendientes del Médico
+$app->post('/citas/pendientes', function () use ($app) {
+    $m = new Model\Citas;
+    return $app->json($m->citasPendientes());
 });
 
 # send mail

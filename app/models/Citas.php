@@ -12,6 +12,7 @@
 namespace app\models;
 
 use app\models as Model;
+use GuzzleHttp\Client as GClient;
 use Ocrend\Kernel\Helpers as Helper;
 use Ocrend\Kernel\Models\IModels;
 use Ocrend\Kernel\Models\Models;
@@ -20,31 +21,174 @@ use Ocrend\Kernel\Models\Traits\DBModel;
 use Ocrend\Kernel\Router\IRouter;
 
 /**
- * Modelo Laboratorio
+ * Modelo Citas
  */
 class Citas extends Models implements IModels
 {
 
     use DBModel;
+
     # Variables de clase
 
-    public function AllCitas()
+    /**
+     * Log de respuestas HTTP
+     *
+     * @var array
+     */
+
+    private $logs = array();
+
+    /**
+     * KEY JWT api hm
+     *
+     * @var array
+     */
+
+    private $accessToken = null;
+
+    /**
+     * Obtener key para aplicacion
+     *
+     * @return array : Con información de éxito/falla.
+     */
+
+    public function generateKey()
     {
 
-        $contactos = $this->db->select('*', "contactos");
+        $client = new GClient();
 
-        # No hay resultados
-        if (false == $contactos) {
-            return array(
-                'status'     => false,
-                'customData' => false,
-            );
+        $response = $client->request('POST', 'https://api.hospitalmetropolitano.org/teleconsulta/beta/v1/login', [
+            'form_params' => [
+                'DNI'  => '1501128480',
+                'PASS' => '1501128480',
+            ],
+            'debug'       => false,
+            'verify'      => false,
+        ]);
+
+        # Verificar error de peticion Http
+        if ($response->getStatusCode() !== 200) {
+
+            throw new ModelsException('Api Teleconsulta HM. No responde satisfactoriamente.');
         }
 
-        return array(
-            'status'     => true,
-            'customData' => $contactos,
-        );
+        # Set response
+        $data = json_decode($response->getBody(), true);
+
+        # Set response
+        if ($data['status']) {
+
+            $this->accessToken = $data['user_token'];
+
+        } else {
+
+            throw new ModelsException($data['message']);
+
+        }
+
+    }
+
+    /**
+     * Obtener citas pendientes de un Médico
+     *
+     * @return array : Con información de éxito/falla.
+     */
+
+    public function citasPendientes()
+    {
+
+        try {
+
+            global $config, $http;
+
+            # Set variables de funcion
+            $codMedico   = $http->request->get('codigoMedico');
+            $tipoHorario = $http->request->get('tipoHorario');
+            $endDate     = $http->request->get('endDate');
+            $start       = $http->request->get('start');
+            $length      = $http->request->get('length');
+
+            # Verificar que no están vacíos
+            if (Helper\Functions::e($codMedico, $tipoHorario, $endDate, $start, $length)) {
+                throw new ModelsException('Parámetros insuficientes para esta peticion.');
+            }
+
+            # Iniciar registro logs
+            unset($this->logs);
+
+            $task = array(
+                'task'         => 'Nueva Peticion HTTP',
+                'baseUri'      => $config['apiHm']['baseUrl'],
+                'endpoint'     => $config['apiHm']['medicos']['citasAgendaPendientes'],
+                'referencia'   => 'Citas Pasadas de un Medico.',
+                'responseCode' => null,
+            );
+
+            $this->logs = $task;
+
+            # Inicia cliente HTTP
+            $this->generateKey();
+
+            $client = new GClient(['base_uri' => $config['apiHm']['baseUrl']]);
+
+            $response = $client->request('POST', $config['apiHm']['medicos']['citasAgendaPendientes'], [
+                "headers"     => [
+                    "Authorization" => $this->accessToken,
+                ],
+                'form_params' => [
+                    'codigoMedico' => $codMedico,
+                    'tipoHorario'  => $tipoHorario,
+                    'endDate'      => $endDate,
+                    'start'        => $start,
+                    'length'       => $length,
+                ],
+                'debug'       => false,
+                'verify'      => false,
+            ]);
+
+            # Set Logs
+            $this->logs['responseCode'] = $response->getStatusCode();
+
+            # Verificar error de peticion Http
+            if ($response->getStatusCode() !== 200) {
+
+                throw new ModelsException('Api Teleconsulta HM. No responde satisfactoriamente.');
+            }
+
+            # Set response
+
+            $data = json_decode($response->getBody(), true);
+
+            # Set response
+            if ($data['status']) {
+
+                return array(
+                    'status' => $data['status'],
+                    'data'   => $data['data'],
+                    'start'  => (int) $data['start'],
+                    'length' => (int) $data['length'],
+                    'logs'   => $this->logs,
+                );
+
+            } else {
+
+                $this->logs['errorCode'] = $data['errorCode'];
+
+                throw new ModelsException($data['message']);
+
+            }
+
+        } catch (ModelsException $e) {
+
+            return array(
+                'status'  => false,
+                'data'    => array(),
+                'message' => $e->getMessage(),
+                'logs'    => $this->logs,
+            );
+
+        }
+
     }
 
     public function NewCita()
@@ -84,6 +228,8 @@ class Citas extends Models implements IModels
                 'idH'               => $idH,
                 'idT'               => $idT,
                 'nhcPte'            => $nhcPte,
+                'idCall'            => $resZoom['data']->id,
+                'licenciaZoom'      => $resZoom['licenciaZoom'],
                 'status_live'       => 1,
                 'data_cita'         => json_encode($data_cita, JSON_UNESCAPED_UNICODE),
                 'user_create'       => $this->id_user,
@@ -138,11 +284,11 @@ class Citas extends Models implements IModels
         }
     }
 
-    /**
-     * Sender mail api trx
-     *
-     * @return void
-     */
+/**
+ * Sender mail api trx
+ *
+ * @return void
+ */
     public function sendMail($html, $to, $subject)
     {
 

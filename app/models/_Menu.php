@@ -88,6 +88,17 @@ class _Menu extends Models implements IModels
     );
 
     /**
+     * Paginas modulo Pacientes
+     *
+     * @var int
+     */
+
+    private $pacientes = array(
+        'pacientes' => 'Mis Pacientes',
+
+    );
+
+    /**
      * Paginas modulo Configuracion
      *
      * @var int

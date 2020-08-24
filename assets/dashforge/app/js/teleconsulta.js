@@ -39,6 +39,25 @@ $(function() {
         heightStyle: 'content'
     });
     $('[data-toggle="tooltip"]').tooltip();
+    $('.off-canvas-menu').on('click', function(e) {
+        e.preventDefault();
+        var target = $(this).attr('href');
+        $(target).addClass('show');
+    });
+    $('.off-canvas .close').on('click', function(e) {
+        e.preventDefault();
+        $(this).closest('.off-canvas').removeClass('show');
+    })
+    $(document).on('click touchstart', function(e) {
+        e.stopPropagation();
+        // closing of sidebar menu when clicking outside of it
+        if (!$(e.target).closest('.off-canvas-menu').length) {
+            var offCanvas = $(e.target).closest('.off-canvas').length;
+            if (!offCanvas) {
+                $('.off-canvas.show').removeClass('show');
+            }
+        }
+    });
 });
 
 function setInsertHistoriaClinica() {
@@ -299,12 +318,19 @@ function loadContactosPasados() {
         // Llamada creada
         if (data.status) {
             $.each(data.data, function(index, value) {
-                var timestamp = moment(moment(value.fecha + ' ' + value.horaInicio).format('DD-MM-YYYY HH:mm')).unix();
-                var timestampFin = moment(moment(value.fecha + ' ' + value.horaFin).format('DD-MM-YYYY HH:mm')).unix();
+                // Set valores null
+                $.each(value, function(_i_, _val_) {
+                    if (_val_ === null) {
+                        value[_i_] = '';
+                    }
+                });
+                var fecha = moment(value.fecha, 'DD-MM-YYYY').format('YYYY-MM-DD');
+                var timestamp = moment(fecha + 'T' + value.horaInicio + ':00').unix();
+                var timestampFin = moment(fecha + 'T' + value.horaFin + ':00').unix();
                 $('#allPtesRecientes').append(template($('#v-cita-pasada').html(), {
                     id: value.codigoPersonaPaciente,
-                    inicial: value.nombresPaciente.charAt(0),
-                    pte: value.nombresPaciente + ' ' + value.apellidosPaciente,
+                    inicial: value.primerNombrePaciente.charAt(0),
+                    pte: value.primerNombrePaciente + ' ' + value.segundoNombrePaciente + ' ' + value.primerApellidoPaciente + ' ' + value.segundoApellidoPaciente,
                     hora: value.horaInicio,
                     fecha: value.fecha,
                     horaFin: value.horaFin,
@@ -357,17 +383,24 @@ function loadContactos() {
         // Llamada creada
         if (data.status) {
             $.each(data.data.reverse(), function(index, value) {
-                moment.invalid();
+                // Set valores null
+                $.each(value, function(_i_, _val_) {
+                    if (_val_ === null) {
+                        value[_i_] = '';
+                    }
+                });
+                // moment.invalid();
                 // value.fecha = '04-08-2020';
-                if (value.fecha === '10-08-2020') {
+                if (value.fecha === '13-08-2020') {
                     // value.horaInicio = moment().format("HH:mm");
-                    var timestamp = moment(moment(value.fecha + ' ' + value.horaInicio).format('DD-MM-YYYY HH:mm')).unix();
-                    var timestampFin = moment(moment(value.fecha + ' ' + value.horaFin).format('DD-MM-YYYY HH:mm')).unix();
+                    var fecha = moment(value.fecha, 'DD-MM-YYYY').format('YYYY-MM-DD');
+                    var timestamp = moment(fecha + 'T' + value.horaInicio + ':00').unix();
+                    var timestampFin = moment(fecha + 'T' + value.horaFin + ':00').unix();
                     var timestampFinTemp = moment.unix(timestamp).add(1, 'minutes').unix();
                     $('#allPtesHoy').append(template($('#v-cita').html(), {
                         id: value.codigoPersonaPaciente,
-                        inicial: value.nombresPaciente.charAt(0),
-                        pte: value.nombresPaciente + ' ' + value.apellidosPaciente,
+                        inicial: value.primerNombrePaciente.charAt(0),
+                        pte: value.primerNombrePaciente + ' ' + value.segundoNombrePaciente + ' ' + value.primerApellidoPaciente + ' ' + value.segundoApellidoPaciente,
                         hora: value.horaInicio,
                         horaFin: value.horaFin,
                         fecha: value.fecha,
@@ -387,12 +420,14 @@ function loadContactos() {
                         $('#asistio-' + value.codigoHorario + '-' + value.numeroTurno).addClass(' avatar-offline').attr('title', 'Cita Pendiente o No Asistida.');
                     }
                 } else {
-                    var timestamp = moment(moment(value.fecha + ' ' + value.horaInicio).format('DD-MM-YYYY HH:mm')).unix();
-                    var timestampFin = moment(moment(value.fecha + ' ' + value.horaFin).format('DD-MM-YYYY HH:mm')).unix();
+                    var fecha = moment(value.fecha, 'DD-MM-YYYY').format('YYYY-MM-DD');
+                    var timestamp = moment(fecha + 'T' + value.horaInicio + ':00').unix();
+                    var timestampFin = moment(fecha + 'T' + value.horaFin + ':00').unix();
+                    var timestampFinTemp = moment.unix(timestamp).add(1, 'minutes').unix();
                     $('#allPtesHoy').append(template($('#v-cita').html(), {
                         id: value.codigoPersonaPaciente,
-                        inicial: value.nombresPaciente.charAt(0),
-                        pte: value.nombresPaciente + ' ' + value.apellidosPaciente,
+                        inicial: value.primerNombrePaciente.charAt(0),
+                        pte: value.primerNombrePaciente + ' ' + value.segundoNombrePaciente + ' ' + value.primerApellidoPaciente + ' ' + value.segundoApellidoPaciente,
                         hora: value.horaInicio,
                         fecha: value.fecha,
                         horaFin: value.horaFin,
@@ -437,6 +472,11 @@ function _loadPTE() {
     }).then(function(data) {
         console.log('data = ', data);
         $('#paciente').html('');
+        $.each(data.data[0], function(_i_, _val_) {
+            if (_val_ === null) {
+                data.data[0][_i_] = '';
+            }
+        });
         // Set datos de paciente
         localStorage.setItem('primerNombPte', data.data[0].primerNombre);
         localStorage.setItem('segundoNombPte', data.data[0].segundoNombre);
@@ -446,7 +486,7 @@ function _loadPTE() {
         var arrMediosContacto = data.data[0].mediosContacto;
         var textMediosContacto = '';
         $.each(arrMediosContacto, function(key, value) {
-            textMediosContacto += value.tipo + ' ' + value.valor + ' - ';
+            textMediosContacto += value.tipo + ': ' + value.valor + ' - ';
         });
         data.data[0]['textMediosContacto'] = textMediosContacto.slice(0, -2);
         // Set Direcciones
@@ -496,7 +536,7 @@ function _loadHistoriasClinicas() {
         $('#load-lists-hc').addClass('d-none');
         if (data.status) {
             $.each(data.data, function(index, value) {
-                if (value.esTeleconsulta == 'S') {
+                if (value.registraHistoriaClinica == 'S') {
                     $('#lists-hc').append(template($('#v-h-tel-clinicas').html(), value));
                 } else {
                     $('#lists-hc').append(template($('#v-h-clinicas').html(), value));
@@ -537,34 +577,34 @@ function setViewHC(json) {
     var textRevision = '';
     $.each(arrRevisionOrganos, function(key, value) {
         if (key == 'cardioVascular') {
-            textRevision += ' Cardiovascular: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+            textRevision += ' Cardiovascular: ' + ((value != '') ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
         }
         if (key == 'digestivo') {
-            textRevision += ' Digestivo: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+            textRevision += ' Digestivo: ' + ((value != '') ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
         }
         if (key == 'endocrino') {
-            textRevision += ' Endócrino: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+            textRevision += ' Endócrino: ' + ((value != '') ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
         }
         if (key == 'genital') {
-            textRevision += ' Genital: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+            textRevision += ' Genital: ' + ((value != '') ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
         }
         if (key == 'hemoLinfatico') {
-            textRevision += ' Hemolinfatico: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+            textRevision += ' Hemolinfatico: ' + ((value != '') ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
         }
         if (key == 'muscEsqueletico') {
-            textRevision += ' Musc. Esqueletico: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+            textRevision += ' Musc. Esqueletico: ' + ((value != '') ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
         }
         if (key == 'nervioso') {
-            textRevision += ' Nervioso: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+            textRevision += ' Nervioso: ' + ((value != '') ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
         }
         if (key == 'respiratorio') {
-            textRevision += ' Respiratorio: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+            textRevision += ' Respiratorio: ' + ((value != '') ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
         }
         if (key == 'sentidos') {
-            textRevision += ' Sentidos: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+            textRevision += ' Sentidos: ' + ((value != '') ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
         }
         if (key == 'urinario') {
-            textRevision += ' Uriniario: ' + ((value != null) ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+            textRevision += ' Uriniario: ' + ((value != '') ? value : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
         }
     });
     $('#organos').html(template($('#v-revision-organos').html(), {
@@ -575,34 +615,34 @@ function setViewHC(json) {
     var textAntecedentes = '';
     $.each(arrAntecedentesFamiliares, function(key, value) {
         if (key == 'cancer') {
-            textAntecedentes += ' Cáncer: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+            textAntecedentes += ' Cáncer: ' + ((value != '') ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
         }
         if (key == 'cardiopatia') {
-            textAntecedentes += ' Cardiopatía: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+            textAntecedentes += ' Cardiopatía: ' + ((value != '') ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
         }
         if (key == 'diabetes') {
-            textAntecedentes += ' Diabetes: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+            textAntecedentes += ' Diabetes: ' + ((value != '') ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
         }
         if (key == 'enfermedadInfecciosa') {
-            textAntecedentes += ' E. Infecciosas: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+            textAntecedentes += ' E. Infecciosas: ' + ((value != '') ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
         }
         if (key == 'enfermedadVascular') {
-            textAntecedentes += ' E. Vascular: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+            textAntecedentes += ' E. Vascular: ' + ((value != '') ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
         }
         if (key == 'enfermendadMental') {
-            textAntecedentes += ' E. Mental: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+            textAntecedentes += ' E. Mental: ' + ((value != '') ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
         }
         if (key == 'hipertension') {
-            textAntecedentes += ' Hipertensión: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+            textAntecedentes += ' Hipertensión: ' + ((value != '') ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
         }
         if (key == 'malformacion') {
-            textAntecedentes += ' Malformación: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+            textAntecedentes += ' Malformación: ' + ((value != '') ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
         }
         if (key == 'tuberculosis') {
-            textAntecedentes += ' Tuberculosis: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
+            textAntecedentes += ' Tuberculosis: ' + ((value != '') ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code></br>');
         }
         if (key == 'otro') {
-            textAntecedentes += ' Otros: ' + ((value != null) ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
+            textAntecedentes += ' Otros: ' + ((value != '') ? value + '</br>' : '<code><i class="icon ion-md-close-circle-outline"></i></code>');
         }
     });
     $('#ante').html(template($('#v-antecedentes').html(), {
@@ -668,6 +708,7 @@ function setViewHC(json) {
 
 function _loadHC() {
     $('#load-view-hc').removeClass('d-none');
+    $('.contact-content-body').scrollTop(0);
     var formData = new FormData();
     formData.append('numeroHistoriaClinica', localStorage.hcpte);
     formData.append('numeroAdmision', localStorage.adm);
@@ -682,17 +723,16 @@ function _loadHC() {
         console.log('data = ', json);
         if (json.status) {
             var primerNombPte, segundoNombPte, primerApePte, segundoApePte;
-            primerNombPte = json.data.primerNombrePaciente;
-            segundoNombPte = json.data.segundoNombrePaciente;
-            primerApePte = json.data.primerApellidoPaciente;
-            segundoApePte = json.data.segundoApellidoPaciente;
-            $('.contact-content-body').scrollTop(0);
+            primerNombPte = ((json.data.primerNombrePaciente !== null) ? json.data.primerNombrePaciente : '');
+            segundoNombPte = ((json.data.segundoNombrePaciente !== null) ? json.data.segundoNombrePaciente : '');
+            primerApePte = ((json.data.primerApellidoPaciente !== null) ? json.data.primerApellidoPaciente : '');
+            segundoApePte = ((json.data.segundoApellidoPaciente !== null) ? json.data.segundoApellidoPaciente : '');
             $('#navPacientes').addClass('d-none');
             $('#load-view-hc').addClass('d-none');
             $('#view-hc').removeClass('d-none');
             $('#view-hc').html(template($('#v-hc-detalle').html(), {}));
             $('#fechaHC').html('<b>FECHA:</b> ' + localStorage.fechaHC);
-            $('#nPaciente').html(' <b>PTE:</b> ' + ((primerNombPte !== null) ? primerNombPte : '') + ' ' + ((segundoNombPte !== null) ? segundoNombPte : '') + ' ' + ((primerApePte !== null) ? primerApePte : '') + ' ' + ((segundoApePte !== null) ? segundoApePte : ''));
+            $('#nPaciente').html(' <b>PTE:</b> ' + ((primerNombPte !== '') ? primerNombPte : '') + ' ' + ((segundoNombPte !== '') ? segundoNombPte : '') + ' ' + ((primerApePte !== '') ? primerApePte : '') + ' ' + ((segundoApePte !== '') ? segundoApePte : ''));
             $('#nhcPaciente').html(' <b>NHC:</b> ' + json.data.numeroHistoriaClinica);
             $('#admPaciente').html(' <b>ADM:</b> ' + json.data.numeroAdmision);
             setViewHC(json);
@@ -707,7 +747,20 @@ function _loadHC() {
                 $('#view-hc').addClass('d-none').html('');
             });
         } else {
-            resetRenderHC();
+            $('#navPacientes').addClass('d-none');
+            $('#load-view-hc').addClass('d-none');
+            $('#view-hc').removeClass('d-none');
+            $('#view-hc').html(template($('#v-not-results').html(), {}));
+            setTimeout(function() {
+                $('#navPacientes').removeClass('d-none');
+                $('.contact-sidebar').removeClass('d-none');
+                $('.contact-content').css('left', '340px');
+                $('.contact-content-header').css('right', '290px');
+                $('.contact-content-body').css('right', '290px');
+                $('#lists-hc').removeClass('d-none');
+                $('#view-hc').addClass('d-none').html('');
+                resetRenderHC();
+            }, 1200);
         }
     }).catch(function(err) {
         console.error(err);
@@ -754,6 +807,7 @@ function initViewHC() {
 }
 
 function resetCallZoom() {
+    $('#navPacientes').removeClass('d-none');
     $('.contact-sidebar').removeClass('d-none');
     $('.contact-content').css('left', '340px');
     $('.contact-content-header').css('right', '290px');
@@ -765,6 +819,7 @@ function resetCallZoom() {
 }
 
 function initCallZoom() {
+    $('#navPacientes').addClass('d-none');
     $('.contact-sidebar').addClass('d-none');
     $('.contact-content').css('left', '60px');
     $('.contact-content-header').css('right', '600px');
@@ -777,13 +832,18 @@ function initCallZoom() {
     $('#s-nhcPte').html('<b>NHC:</b>' + localStorage.hcpte);
     setInsertHistoriaClinica();
     _ini_new_cita();
-}
-// Updated 28 October 2011: Now allows 0, NaN, false, null and undefined in output. 
-function template(templateid, data) {
-    return templateid.replace(/%(\w*)%/g, // or /{(\w*)}/g for "{this} instead of %this%"
-        function(m, key) {
-            return data.hasOwnProperty(key) ? (data[key] != null) ? data[key] : '' : "";
-        });
+    $('.live-active').click(function(e) {
+        e.preventDefault();
+        $('#navPacientes').addClass('d-none');
+        $('.contact-sidebar').addClass('d-none');
+        $('.contact-content').css('left', '60px');
+        $('.contact-content-header').css('right', '600px');
+        $('.contact-content-body').css('right', '600px');
+        $('.contact-content-sidebar').css('width', '600px');
+        $('.contact-content-sidebar').removeClass('d-none');
+        $('.contact-content-header').removeClass('wd-100p');
+        $('.contact-content-body').removeClass('wd-100p');
+    });
 }
 
 function MaysPrimera(string) {
@@ -948,11 +1008,11 @@ function countDownCita() {
     var diffTime = eventTime - currentTime;
     var duration = moment.duration(diffTime * 1000, 'milliseconds');
     var interval = 1000;
+    $('#opcClose').removeClass('d-none');
     setInterval(function() {
         duration = moment.duration(duration - interval, 'milliseconds');
         console.log(duration.minutes());
         if (duration.hours() <= 0 && duration.minutes() <= 0 && duration.seconds() <= 0) {
-            $('#opcClose').removeClass('d-none');
             $('.countdown').text('00:00:00');
             throw "Teleconsulta Finalizada";
         } else {
@@ -990,13 +1050,19 @@ function searchContacts() {
                     // Llamada creada
                     if (data.status) {
                         $.each(data.data.reverse(), function(index, value) {
-                            moment.invalid();
-                            var timestamp = moment(moment(value.fecha + ' ' + value.horaInicio).format('DD-MM-YYYY HH:mm')).unix();
-                            var timestampFin = moment(moment(value.fecha + ' ' + value.horaFin).format('DD-MM-YYYY HH:mm')).unix();
+                            // Set valores null
+                            $.each(value, function(_i_, _val_) {
+                                if (_val_ === null) {
+                                    value[_i_] = '';
+                                }
+                            });
+                            var fecha = moment(value.fecha, 'DD-MM-YYYY').format('YYYY-MM-DD');
+                            var timestamp = moment(fecha + 'T' + value.horaInicio + ':00').unix();
+                            var timestampFin = moment(fecha + 'T' + value.horaFin + ':00').unix();
                             $('#allSearchPtes').append(template($('#v-cita').html(), {
                                 id: value.codigoPersonaPaciente,
-                                inicial: value.nombresPaciente.charAt(0),
-                                pte: value.nombresPaciente + ' ' + value.apellidosPaciente,
+                                inicial: value.primerNombrePaciente.charAt(0),
+                                pte: value.primerNombrePaciente + ' ' + value.segundoNombrePaciente + ' ' + value.primerApellidoPaciente + ' ' + value.segundoApellidoPaciente,
                                 hora: value.horaInicio,
                                 horaFin: value.horaFin,
                                 fecha: value.fecha,
@@ -1053,21 +1119,73 @@ function setPanelDiagnosticos() {
 
 function createHC() {
     var fechaHC = moment().format("DD-MM-YYYY HH:mm");
-    var jsonBody_ = '{"numeroHistoriaClinica":"' + localStorage.hcpte + '","numeroAdmision":"' + localStorage.numAdm + '","usuarioCrea":"GEMA","usuarioModifica":null,"primerApellidoPaciente":"' + localStorage.primerApePte + '","segundoApellidoPaciente":"' + localStorage.segundoApePte + '","primerNombrePaciente":"' + localStorage.primerNombPte + '","segundoNombrePaciente":"' + localStorage.segundoNombPte + '","motivoConsulta":{"motivoConsulta":"' + localStorage.hcmotivoConsulta + '","antecedentesPersonales":"' + localStorage.hcantecedentes + '","enfermedadActual":null},"revisionOrganos":{"sentidos":null,"cardioVascular":null,"genital":null,"muscEsqueletico":null,"hemoLinfatico":null,"respiratorio":null,"digestivo":null,"urinario":null,"endocrino":null,"nervioso":null},"antecedentesFamiliares":{"cardiopatia":null,"diabetes":null,"enfermedadVascular":null,"hipertension":null,"cancer":null,"tuberculosis":null,"enfermendadMental":null,"enfermedadInfecciosa":null,"malformacion":null,"otro":null},"signosVitales":[{"fecha":null,"temperaturaBucal":null,"temperaturaAxiliar":null,"temperaturaRectal":null,"taSistolica":null,"taDiastolica":null,"pulso":null,"frecuenciaRespiratoria":null,"perimetroCef":null,"peso":null,"talla":null,"imc":null}],"examenFisico":{"cabeza1R":null,"cuello2R":null,"torax3R":null,"abdomen4R":null,"pelvis5R":null,"extremidades6R":null,"planTratamiento":null},"diagnosticos":[{"numeroDiagnostico":"1","codigo":"V30","grupo":"V30-V39","descripcion":"' + localStorage.hcdiagnosticos + '","tipo":"PRESUNTIVO","clasificacionDiagnostico":"INGRESO","principal":"SI"},{"numeroDiagnostico":"2","codigo":"V31","grupo":"V30-V39","descripcion":"' + localStorage.hcdiagnosticos + '","tipo":"DEFINITIVO","clasificacionDiagnostico":"EGRESO","principal":"SI"}],"evoluciones":{"codigo":"1","descripcion":"' + localStorage.hcevoluciones + '"},"prescripciones":[{"codigo":"1","descripcion":"' + localStorage.hcpreescripciones + '"}]}';
-    var jsonBody = '{"numeroHistoriaClinica":"' + localStorage.hcpte + '","numeroAdmision":"' + localStorage.numAdm + '","usuarioCrea":"GEMA","usuarioModifica":null,"primerApellidoPaciente":"CHANG","segundoApellidoPaciente":"CHAVEZ","primerNombrePaciente":"MARTIN","segundoNombrePaciente":"FRANCISCO","motivoConsulta":{"motivoConsulta":"PRUEBA MOTIVO CONSULTA","antecedentesPersonales":"PRUEBA ANTECEDENTES PERSONALES","enfermedadActual":"PRUEBA ENFERMEDAD ACTUAL"},"revisionOrganos":{"sentidos":"PRUEBA 3 SENTIDOS","cardioVascular":"PRUEBA CARDIO VASCULAR","genital":"PRUEBA  GENITAL","muscEsqueletico":"PRUEBA MUSCULO ESQUELETICO","hemoLinfatico":"PRUEBA HEMO LINFATICO","respiratorio":"PRUEBA RESPIRATORIO","digestivo":"PRUEBA DIGESTIVO","urinario":"PRUEBA URINARIO","endocrino":"PRUEBA ENDOCRINO","nervioso":"PRUEBA NERVIOSO"},"antecedentesFamiliares":{"cardiopatia":"PRUEBA ANTECEDENTES CARDIOPATIA","diabetes":"PRUEBA ANTECEDENTES DIABETES","enfermedadVascular":"PRUEBA ANTECEDENTES VASCULAR","hipertension":"PRUEBA ANTECEDENTES HIPERTENSION","cancer":"PRUEBA ANTECEDENTES CANCER","tuberculosis":"PRUEBA ANTECEDENTES TUBERCULOSIS","enfermendadMental":"PRUEBA ANTECEDENTES ENFERMEDAD MENTAL","enfermedadInfecciosa":"PRUEBA ANTECEDENTES ENFERMEDAD INFECCIOSA","malformacion":"PRUEBA ANTECEDENTES MALFORMACION","otro":"PRUEBA ANTECEDENTES OTRO"},"signosVitales":[{"fecha":"15-07-2020 11:04","temperaturaBucal":"37","temperaturaAxiliar":"38","temperaturaRectal":"39","taSistolica":"120","taDiastolica":"80","pulso":"60","frecuenciaRespiratoria":"30","perimetroCef":"80","peso":"72","talla":"172","imc":"24,34"}],"examenFisico":{"cabeza1R":"PRUEBA EXAMEN CABEZA","cuello2R":"PRUEBA EXAMEN CUELLO","torax3R":"PRUEBA EXAMEN TORAX","abdomen4R":"PRUEBA EXAMEN ABDOMEN","pelvis5R":"PRUEBA EXAMEN PELVIS","extremidades6R":"PRUEBA EXAMEN EXTREMIDADES","planTratamiento":"PRUEBA EL PLAN DE TRATAMIENTO"},"diagnosticos":[{"numeroDiagnostico":"1","codigo":"V30","grupo":"V30-V39","descripcion":"PRUEBA DIAG","tipo":"PRESUNTIVO","clasificacionDiagnostico":"INGRESO","principal":"SI"},{"numeroDiagnostico":"2","codigo":"V31","grupo":"V30-V39","descripcion":"PRUEBA DIAG","tipo":"DEFINITIVO","clasificacionDiagnostico":"EGRESO","principal":"SI"}],"evoluciones":{"codigo":"1","descripcion":"PRUEBA DE PRIMERA NOTA DE EVOLUCION"},"prescripciones":[{"codigo":"1","descripcion":"PRUEBA DE PRESCRIPCION"}]}';
+    var _motivoConsulta_ = {
+        motivoConsulta: localStorage.hcmotivoConsulta,
+        antecedentesPersonales: localStorage.hcantecedentes,
+        enfermedadActual: '',
+    };
+    var _diagnosticos1_ = {
+        numeroDiagnostico: '1',
+        codigo: 'V30',
+        grupo: 'V30-V39',
+        descripcion: localStorage.hcdiagnosticos,
+        tipo: 'PRESUNTIVO',
+        clasificacionDiagnostico: 'INGRESO',
+        principal: 'SI'
+    };
+    var _diagnosticos2_ = {
+        numeroDiagnostico: '2',
+        codigo: 'V31',
+        grupo: 'V30-V39',
+        descripcion: localStorage.hcdiagnosticos,
+        tipo: 'DEFINITIVO',
+        clasificacionDiagnostico: 'EGRESO',
+        principal: 'SI'
+    };
+    var _evoluciones_ = {
+        codigo: '1',
+        descripcion: localStorage.hcevoluciones
+    };
+    var _prees_ = {
+        codigo: '1',
+        descripcion: localStorage.hcpreescripciones
+    };
+    var _jsonBody_ = {
+        numeroHistoriaClinica: localStorage.hcpte,
+        numeroAdmision: localStorage.numAdm,
+        usuarioCrea: 'GEMA',
+        usuarioModifica: '',
+        primerApellidoPaciente: localStorage.primerApePte,
+        segundoApellidoPaciente: localStorage.segundoApePte,
+        primerNombrePaciente: localStorage.primerNombPte,
+        segundoNombrePaciente: localStorage.segundoNombPte,
+        motivoConsulta: _motivoConsulta_,
+        revisionOrganos: {},
+        antecedentesFamiliares: {},
+        signosVitales: [],
+        examenFisico: {},
+        diagnosticos: [_diagnosticos1_, _diagnosticos2_],
+        evoluciones: _evoluciones_,
+        prescripciones: [_prees_]
+    };
+    // request
     fetch(epCrearHC, {
         headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
         },
         method: "POST",
-        body: JSON.stringify(JSON.parse(jsonBody))
+        body: JSON.stringify(_jsonBody_)
     }).then(function(response) {
         return response.json();
     }).then(function(data) {
         console.log('data = ', data);
         if (data.status) {
             _send_factura_zoom();
+        } else {
+            if (data.errorCode === 0) {
+                _send_factura_zoom();
+            }
         }
     }).catch(function(err) {
         console.error(err);

@@ -1,0 +1,409 @@
+{% extends 'overall/layout' %}
+{% block appMetaHead %}
+<title>
+    Pacientes | {{config.build.name}}
+</title>
+{% endblock %}
+{% block appHead %}
+<!-- DashForge CSS -->
+<link href="assets/dashforge/assets/css/dashforge.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.chat.css" rel="stylesheet"/>
+<style type="text/css">
+    .chat-msg-list .media .badge {
+        border-radius: 15% !important;
+    }
+    .custom-chat-header {
+        border-bottom: 1px solid rgba(72, 94, 144, 0.16) !important;
+    }
+    .custom-chat-header-active {
+        border-bottom: 0 !important;
+    }
+</style>
+{% endblock %}
+{% block appHeader %}
+{% include 'overall/header-pacientes' %}
+{% endblock %}
+{% block appBody %}
+<div class="chat-wrapper">
+    <div class="chat-navleft">
+        <nav class="nav flex-column">
+            <a class="nav-link misPacientes active" data-placement="right" data-toggle="tooltip" href="" title="Mis Pacientes">
+                <i data-feather="users">
+                </i>
+            </a>
+            <a class="nav-link" data-placement="right" data-toggle="tooltip" href="" title="Mi Teleconsulta">
+                <i data-feather="video">
+                </i>
+            </a>
+            <a class="nav-link" data-placement="right" data-toggle="tooltip" href="" title="Cerrar Teleconsulta">
+                <i data-feather="video-off">
+                </i>
+            </a>
+            <a class="nav-link" data-placement="right" data-toggle="tooltip" href="" title="Reagendar">
+                <i data-feather="calendar">
+                </i>
+            </a>
+            <a class="nav-link" data-placement="right" data-toggle="tooltip" href="" title="Reconectar Teleconsulta">
+                <i data-feather="help-circle">
+                </i>
+            </a>
+        </nav>
+    </div>
+    <!-- chat-navleft -->
+    <div class="chat-sidebar">
+        <div class="chat-sidebar-header">
+            <a class="dropdown-link" data-toggle="dropdown" href="#">
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-sm mg-r-8">
+                        <span class="avatar-initial rounded-circle iNombMedico">
+                        </span>
+                    </div>
+                    <span class="tx-10 tx-color-01 tx-semibold nombMedico">
+                    </span>
+                </div>
+                <span>
+                    <i data-feather="chevron-down">
+                    </i>
+                </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="">
+                    <i data-feather="calendar">
+                    </i>
+                    Pacientes de Hoy
+                </a>
+                <a class="dropdown-item" href="">
+                    <i data-feather="search">
+                    </i>
+                    Buscar pacientes
+                </a>
+                <a class="dropdown-item" href="">
+                    <i data-feather="bell">
+                    </i>
+                    Notificaciones
+                </a>
+                <div class="dropdown-divider">
+                </div>
+                <a class="dropdown-item" href="">
+                    <i data-feather="edit-3">
+                    </i>
+                    Mis Categorias
+                </a>
+            </div>
+            <!-- dropdown-menu -->
+        </div>
+        <!-- chat-sidebar-header -->
+        <!-- start sidebar body -->
+        <div class="chat-sidebar-body">
+            <div class="flex-fill pd-y-20 pd-x-10 d-none">
+                <div class="d-flex align-items-center justify-content-between pd-x-10 mg-b-10">
+                    <span class="tx-10 tx-uppercase tx-medium tx-color-03 tx-sans tx-spacing-1">
+                        Mis Categorias
+                    </span>
+                </div>
+                <nav class="nav flex-column nav-chat mg-b-20" id="allChannels">
+                    <a class="nav-link active" href="#general">
+                        # general
+                    </a>
+                    <a class="nav-link" href="#engineering">
+                        # engineering
+                    </a>
+                    <a class="nav-link" href="#products">
+                        # products
+                        <span class="badge badge-danger">
+                            2
+                        </span>
+                    </a>
+                </nav>
+            </div>
+            <div class="citasHoy">
+            </div>
+        </div>
+        <!-- chat-sidebar-body -->
+        <div class="chat-sidebar-footer">
+            <div class="d-flex align-items-center">
+                <a href="">
+                    <i data-feather="video">
+                    </i>
+                </a>
+                <a href="">
+                    <i data-feather="mic">
+                    </i>
+                </a>
+                <a href="">
+                    <i data-feather="wifi">
+                    </i>
+                </a>
+                <a href="">
+                    <i data-feather="settings">
+                    </i>
+                </a>
+                <a href="" title="Relog Actual">
+                    <i class="mg-r-4" data-feather="clock">
+                    </i>
+                    <span class="badge badge-grey tx-12" id="clockApp">
+                    </span>
+                </a>
+            </div>
+        </div>
+        <!-- chat-sidebar-footer -->
+    </div>
+    <!-- chat-sidebar -->
+    <div class="chat-content">
+        <div class="chat-content-header ">
+            <div class="d-none" id="pte">
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-sm avatar-online">
+                        <span class="avatar-initial rounded-circle" id="inombPte">
+                        </span>
+                    </div>
+                    <h6 class="mg-l-10 mg-b-0">
+                        <div id="nombPte" style="font-size: 17px;">
+                        </div>
+                        <nav>
+                            <div data-toggle="tooltip" id="nhcPte" style="font-size: 10.5px;" title="Número de Historia Clínica">
+                            </div>
+                            <div class="fechaHC mg-l-5 d-none" data-toggle="tooltip" title="Fecha de Admisión">
+                                <div id="fechaHC" style="font-size: 10.5px;">
+                                </div>
+                            </div>
+                            <div class="admPaciente mg-l-5 d-none" data-toggle="tooltip" title="Número de Admisión">
+                                <div id="admPaciente" style="font-size: 10.5px;">
+                                </div>
+                            </div>
+                        </nav>
+                    </h6>
+                </div>
+            </div>
+            <div class="d-flex">
+                <nav class="d-none" id="citaNav">
+                    <a class="tx-primary" data-toggle="tooltip" href="" id="t-initCallZoom" title="Iniciar Teleconsulta">
+                        <i class="tx-primary mg-r-5" data-feather="video">
+                        </i>
+                        Iniciar Teleconsulta
+                    </a>
+                    <a class="citaClose" data-toggle="tooltip" href="" title="Regresar">
+                        <i data-feather="arrow-left">
+                        </i>
+                        Regresar
+                    </a>
+                    <a class="reset-render-hc d-none" data-toggle="tooltip" href="" title="Regresar">
+                        <i data-feather="arrow-left">
+                        </i>
+                        Regresar
+                    </a>
+                    <a class="d-none" data-toggle="tooltip" href="" title="Teleconsulta de Emergencia">
+                        <i data-feather="flag">
+                        </i>
+                    </a>
+                </nav>
+            </div>
+        </div>
+        <!-- chat-content-header -->
+        <div class="chat-content-body bg-white">
+            <div class=" d-none" id="panelPte">
+                <nav class="nav nav-tabs">
+                    <a class="nav-link setTabs mg-l-10 mg-r-5 datosPte bg-white active" data-toggle="tab" href="#datosPte">
+                        <i class="wd-15 mg-r-5" data-feather="file">
+                        </i>
+                        Datos Personales
+                    </a>
+                    <a class="nav-link setTabs historialAtenciones bg-white mg-l-5 mg-r-5" data-toggle="tab" href="#hcPte">
+                        <i class="wd-15 mg-r-5" data-feather="activity">
+                        </i>
+                        Historial de Atenciones
+                    </a>
+                    <a class="nav-link setTabs bg-white mg-l-5 mg-r-5" data-toggle="tab" href="#labPte">
+                        <i class="wd-15 mg-r-5" data-feather="thermometer">
+                        </i>
+                        Laboratorio
+                    </a>
+                    <a class="nav-link setTabs bg-white mg-l-5 mg-r-5" data-toggle="tab" href="#imgPte">
+                        <i class="wd-15 mg-r-5" data-feather="image">
+                        </i>
+                        Imagen
+                    </a>
+                    <a class="nav-link setTabs bg-white mg-l-5 mg-r-5" data-toggle="tooltip" href="#logsPte">
+                        <i class="wd-15 mg-r-5" data-feather="info">
+                        </i>
+                        Historial de Actividad
+                    </a>
+                    <a class="nav-link setTabs bg-white mg-l-5 mg-r-5" data-toggle="tooltip" href="#configPte">
+                        <i class="wd-15 mg-r-5" data-feather="settings">
+                        </i>
+                        Ajustes
+                    </a>
+                </nav>
+                <div class="tab-content">
+                    <div class="tab-pane show active pd-20 pd-xl-25" id="datosPte">
+                        <div class="placeholder-paragraph">
+                            <div class="line">
+                            </div>
+                            <div class="line">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane pd-20 pd-xl-25" id="hcPte">
+                        <div class="placeholder-paragraph d-none" id="load-hcPte">
+                            <div class="line">
+                            </div>
+                            <div class="line">
+                            </div>
+                        </div>
+                        <div class="d-none" id="listas-hc">
+                        </div>
+                        <div class="placeholder-paragraph d-none" id="load-view-hc">
+                            <div class="line">
+                            </div>
+                            <div class="line">
+                            </div>
+                        </div>
+                        <div class="d-none" id="view-file-hc">
+                        </div>
+                    </div>
+                    <div class="tab-pane pd-20 pd-xl-25" id="labPte">
+                        <div class="placeholder-paragraph">
+                            <div class="line">
+                            </div>
+                            <div class="line">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="imgPte">
+                        <iframe id="i-live" src="https://imagen.hmetro.med.ec/zfp?Lights=off&mode=proxy#view&pid=59270601&un=WEBAPI&pw=lEcfvZxzlXTsfimMMonmVZZ15IqsgEcdV%2forI8EUrLY%3d" style="border:none;position:absolute;height:100%;width:100%;">
+                        </iframe>
+                    </div>
+                </div>
+                <!-- tab-content -->
+            </div>
+        </div>
+        <!-- chat-content-body -->
+        <div class="chat-sidebar-right">
+        </div>
+        <!-- chat-sidebar-right -->
+        <div class="chat-content-footer d-none">
+            <a class="chat-plus" data-toggle="tooltip" href="" title="Add File">
+                <i data-feather="plus">
+                </i>
+            </a>
+            <input class="form-control align-self-center bd-0" placeholder="Escribir..." type="text">
+                <nav>
+                    <a data-toggle="tooltip" href="" title="Add GIF">
+                        <i data-feather="image">
+                        </i>
+                    </a>
+                    <a data-toggle="tooltip" href="" title="Add Gift">
+                        <i data-feather="gift">
+                        </i>
+                    </a>
+                    <a data-toggle="tooltip" href="" title="Add Smiley">
+                        <i data-feather="smile">
+                        </i>
+                    </a>
+                </nav>
+            </input>
+        </div>
+        <!-- chat-content-footer -->
+    </div>
+    <!-- chat-content -->
+</div>
+<!-- chat-wrapper -->
+<div aria-hidden="true" class="modal fade effect-scale" id="modalCreateChannel" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body pd-20">
+                <button aria-label="Close" class="close pos-absolute t-15 r-15" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">
+                        <i class="wd-20" data-feather="x">
+                        </i>
+                    </span>
+                </button>
+                <h6 class="tx-uppercase tx-spacing-1 tx-semibold mg-b-20">
+                    Create Channel
+                </h6>
+                <input class="form-control" placeholder="Channel name" type="text" value="">
+                </input>
+            </div>
+            <div class="modal-footer pd-x-20 pd-b-20 pd-t-0 bd-t-0">
+                <button class="btn btn-secondary tx-13" data-dismiss="modal" type="button">
+                    Cancel
+                </button>
+                <button class="btn btn-primary tx-13" type="button">
+                    Create
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="true" class="modal fade effect-scale" id="modalInvitePeople" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body pd-20 pd-sm-30">
+                <button aria-label="Close" class="close pos-absolute t-20 r-20" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">
+                        <i class="wd-20" data-feather="x">
+                        </i>
+                    </span>
+                </button>
+                <h6 class="tx-18 tx-sm-20 mg-b-5">
+                    Invite People
+                </h6>
+                <p class="tx-color-03 mg-b-20">
+                    Share this link to your friend to grant access and join to this channel
+                </p>
+                <div class="input-group mg-b-5">
+                    <input class="form-control" readonly="" type="text" value="http://themepixels.me/dashforge">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-light" id="button-addon2" type="button">
+                                Copy
+                            </button>
+                        </div>
+                    </input>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block appFooter %}
+{% include 'overall/footer' %}
+{% include 'pacientes/v2/roles/1/templates' %}
+{% endblock %}
+{% block appScripts %}
+<script defer="" src="assets/dashforge/lib/perfect-scrollbar/perfect-scrollbar.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/select2/js/select2.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/moment/min/moment.min.js">
+</script>
+<script defer="" src="assets/dashforge/assets/js/dashforge.js">
+</script>
+<script defer="" src="assets/dashforge/assets/js/dashforge.chat.js">
+</script>
+<script type="text/javascript">
+    var epDatosMedico = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.datosMedico}}';
+    var epCitasAgendaPendientes = '{{config.api.url}}{{config.api.medicos.citasPendientes}}';
+    var epCitasAgendaPasadas = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.citasAgendaPasadas}}';
+    var epCitasNombres = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.citasNombres}}';
+    var epDatosPaciente = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.datosPaciente}}';
+    var epHistoriasClinicasAnteriores = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.historiasClinicasAnteriores}}';
+    var epHistoriasClinicasConsultar = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.historiasClinicasConsultar}}';
+    var epFacturarAtencion = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.facturarAtencion}}';
+    var epCrearHC = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.crearHC}}';
+    var apiCitas = '{{config.build.url}}{{config.api.citas}}';
+    var apiZoomEliminar = '{{config.build.url}}{{config.api.zoomEliminar}}';
+    var apiStatusPartcipantes = '{{config.build.url}}{{config.api.statusParticipantes}}';
+</script>
+<script defer="" src="dist/app/js/perfil.js?{{ date().timestamp }}">
+</script>
+<script defer="" src="dist/app/js/citas.js?{{ date().timestamp }}">
+</script>
+<script defer="" src="dist/app/js/datospaciente.js?{{ date().timestamp }}">
+</script>
+<script defer="" src="dist/app/js/atenciones.js?{{ date().timestamp }}">
+</script>
+<script defer="" src="dist/app/js/laboratorio.v2.js?{{ date().timestamp }}">
+</script>
+<script defer="" src="dist/app/js/pacientes.js?{{ date().timestamp }}">
+</script>
+{% endblock %}

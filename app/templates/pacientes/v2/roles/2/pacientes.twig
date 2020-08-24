@@ -36,9 +36,10 @@
 {% include 'overall/header-pacientes' %}
 {% endblock %}
 {% block appBody %}
+{{dump(owner_user)}}
 <div class="contact-wrapper">
     <div class="contact-navleft">
-        <nav class="nav flex-column" id="navPacientes">
+        <nav class="nav flex-column">
             <a class="nav-link active" data-panel="tabCitasHoy" data-toggle="tab" href="#tabCitasHoy">
                 <span data-panel="tabCitasHoy" data-placement="right" data-toggle="tooltip">
                     <i class="icon ion-md-calendar tx-22">
@@ -138,7 +139,7 @@
                     Paciente
                 </a>
                 <a class="nav-link" data-toggle="tab" href="#hc">
-                    Historial de Atenciones
+                    Historia Clínica
                 </a>
                 <a class="nav-link" data-toggle="tab" href="#lab">
                     Laboratorio
@@ -325,7 +326,7 @@
                     </div>
                 </div>
                 <h6 class="d-flex flex-row justify-content-between">
-                    Diagnóstico
+                    Diagnósticos
                     <div class="spinner-grow spinner-grow-sm mg-l-10 save-3 d-none" role="status" title="Guardando...">
                     </div>
                     <div class="check-3 d-none" title="Texto Guardado">
@@ -376,23 +377,6 @@
     <!-- contact-content -->
 </div>
 <!-- contact-wrapper -->
-<div class="off-canvas off-canvas-overlay off-canvas-right" id="offCanvas3">
-    <a class="close" href="#">
-        <i data-feather="x">
-        </i>
-    </a>
-    <div class="pd-25 ht-100p tx-13">
-        <h6 class="tx-inverse mg-t-50 mg-b-25">
-            What does royalty free mean?
-        </h6>
-        <p class="mg-b-25">
-            Royalty free means you just need to pay for rights to use the item once per end product. You don't need to pay additional or ongoing fees for each person who sees or uses it.
-        </p>
-        <a class="btn btn-primary btn-block" href="">
-            Learn More
-        </a>
-    </div>
-</div>
 {% endblock %}
 {% block appFooter %}
 {% include 'overall/footer' %}
@@ -422,8 +406,7 @@
 <script defer="" src="//mozilla.github.io/pdf.js/build/pdf.js">
 </script>
 <script type="text/javascript">
-    var epDatosMedico = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.datosMedico}}';
-    var epCitasAgendaPendientes = '{{config.api.url}}{{config.api.medicos.citasPendientes}}';
+    var epCitasAgendaPendientes = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.citasAgendaPendientes}}';
     var epCitasAgendaPasadas = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.citasAgendaPasadas}}';
     var epCitasNombres = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.citasNombres}}';
     var epDatosPaciente = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.datosPaciente}}';

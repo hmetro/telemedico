@@ -17,13 +17,16 @@ use Ocrend\Kernel\Helpers as Helper;
 use Ocrend\Kernel\Models\IModels;
 use Ocrend\Kernel\Models\Models;
 use Ocrend\Kernel\Models\ModelsException;
+use Ocrend\Kernel\Models\Traits\DBModel;
 use Ocrend\Kernel\Router\IRouter;
 
 /**
- * Modelo Laboratorio
+ * Modelo Teleconsulta
  */
 class Teleconsulta extends Models implements IModels
 {
+
+    use DBModel;
 
     # Variables de clase
     private $pstrSessionKey = 0;
@@ -45,14 +48,8 @@ class Teleconsulta extends Models implements IModels
     private $id_convenio    = null;
     private $name_convenio  = null;
     private $zoomToken      = null;
-
-    /**
-     * ROL MINIMO PARA MANIPULACION DEL USUARIO
-     *
-     * @var int
-     */
-
-    const ROL_USER = 4;
+    private $activeLicencia = null;
+    private $idCall         = null;
 
     public function setCallZoom()
     {
@@ -61,13 +58,16 @@ class Teleconsulta extends Models implements IModels
 
             global $config, $http;
 
+            # Extraer licencia activa
+            $this->getActiveLicencia();
+
             $getToken = new Model\Auth;
 
             $accessToken = $getToken->generateKey()['zoom_token'];
 
             $client = new GClient(['base_uri' => 'https://api.zoom.us']);
 
-            $response = $client->request('POST', '/v2/users/' . $config['zoom']['api_user'] . '/meetings', [
+            $response = $client->request('POST', '/v2/users/' . $this->activeLicencia . '/meetings', [
                 "headers" => [
                     "Authorization" => "Bearer $accessToken",
                 ],
@@ -85,7 +85,12 @@ class Teleconsulta extends Models implements IModels
 
             $data = json_decode($response->getBody());
 
-            return array('status' => true, 'message' => 'Proceso realizado con éxito', 'data' => $data);
+            return array(
+                'status'       => true,
+                'message'      => 'Proceso realizado con éxito',
+                'data'         => $data,
+                'licenciaZoom' => $this->activeLicencia,
+            );
 
         } catch (ModelsException $e) {
             return array('status' => false, 'message' => $e->getMessage());
@@ -120,6 +125,12 @@ class Teleconsulta extends Models implements IModels
                     "action" => 'end',
                 ],
             ]);
+
+            #Liberar licencia
+
+            $this->idCall = $id_call;
+
+            $this->setFreeLicencia();
 
             return array(
                 'status'        => true,
@@ -172,6 +183,60 @@ class Teleconsulta extends Models implements IModels
         }
     }
 
+    public function getActiveLicencia()
+    {
+
+        try {
+
+            $licencias = $this->db->select('*', "licenciasZoom", null, " status='0' ", 1);
+
+            # No hay resultados
+            if (false === $licencias) {
+                throw new ModelsException('No existe una licencia disponible.');
+            }
+
+            $this->activeLicencia = $licencias[0]['correo'];
+
+            # Ocupar licencia
+
+            $this->setActiveLicencia();
+
+        } catch (ModelsException $e) {
+            return array('status' => false, 'message' => $e->getMessage());
+        }
+    }
+
+    public function setActiveLicencia()
+    {
+
+        $this->db->update('licenciasZoom', array(
+            'status'          => 1,
+            'timestampStatus' => time(),
+        ), " correo='" . $this->activeLicencia . "' ", 1);
+
+    }
+
+    public function setFreeLicencia()
+    {
+
+        $query = $this->db->select("*",
+            'citas',
+            null,
+            " idCall='" . $this->idCall . "' ",
+            1
+        );
+
+        $this->activeLicencia = $query[0]['licenciaZoom'];
+
+        # liberar licencia
+
+        $this->db->update('licenciasZoom', array(
+            'status'          => 0,
+            'timestampStatus' => time(),
+        ), " correo='" . $this->activeLicencia . "' ", 1);
+
+    }
+
 /**
  * __construct()
  */
@@ -179,6 +244,7 @@ class Teleconsulta extends Models implements IModels
     public function __construct(IRouter $router = null)
     {
         parent::__construct($router);
+        $this->startDBConexion();
 
     }
 }

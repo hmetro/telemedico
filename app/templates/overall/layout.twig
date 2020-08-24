@@ -2,6 +2,12 @@
 <html lang="es">
     <head>
         {{ base_assets()|raw }}
+        <meta content="noindex" name="robots"/>
+        <meta content="max-age=0" http-equiv="cache-control"/>
+        <meta content="no-cache" http-equiv="cache-control"/>
+        <meta content="0" http-equiv="expires"/>
+        <meta content="Tue, 01 Jan 1980 1:00:00 GMT" http-equiv="expires"/>
+        <meta content="no-cache" http-equiv="pragma"/>
         <!-- Required meta tags -->
         <meta charset="utf-8"/>
         <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
@@ -16,7 +22,6 @@
         <!-- vendor css -->
         <link href="assets/dashforge/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet"/>
         <link href="assets/dashforge/lib/ionicons/css/ionicons.min.css" rel="stylesheet"/>
-        <link href="assets/dashforge/lib/select2/css/select2.min.css" rel="stylesheet"/>
         <!-- DashForge CSS -->
         <link href="assets/dashforge/assets/css/dashforge.css" rel="stylesheet"/>
         <!-- some additional css here -->
@@ -49,8 +54,6 @@
         <script defer="" src="assets/dashforge/lib/bootstrap/js/bootstrap.bundle.min.js">
         </script>
         <script defer="" src="assets/dashforge/lib/feather-icons/feather.min.js">
-        </script>
-        <script defer="" src="assets/dashforge/lib/jqueryui/jquery-ui.min.js">
         </script>
         {% block appScripts %}
         {% endblock %}

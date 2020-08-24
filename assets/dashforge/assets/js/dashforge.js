@@ -118,3 +118,10 @@ function loadPanelDatosMedico() {
         console.error(err);
     });
 }
+// Updated 28 October 2011: Now allows 0, NaN, false, '' and undefined in output. 
+function template(templateid, data) {
+    return templateid.replace(/%(\w*)%/g, // or /{(\w*)}/g for "{this} instead of %this%"
+        function(m, key) {
+            return data.hasOwnProperty(key) ? (data[key] !== null || data[key] !== '') ? data[key] : '' : "";
+        });
+}
