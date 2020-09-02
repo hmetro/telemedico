@@ -7,6 +7,7 @@ $(function() {
     loadCitas();
     getMisPacientes();
     startTime();
+    setActionTabs();
 });
 
 function startTime() {
@@ -50,4 +51,31 @@ function generateKey() {
     }).catch(function(err) {
         console.error(err);
     });
+}
+
+function setActionTabs() {
+    var Object_Tabs = {
+        datosPte: {
+            load: false,
+            view: false,
+        },
+        atenPte: {
+            load: false,
+            view: false,
+        },
+        labPte: {
+            load: false,
+            view: false,
+        },
+        imgPte: {
+            load: false,
+            view: false,
+        },
+        live: {
+            load: false,
+            view: false,
+        }
+    };
+    // Put the object into storage
+    localStorage.setItem('Object_Tabs', JSON.stringify(Object_Tabs));
 }

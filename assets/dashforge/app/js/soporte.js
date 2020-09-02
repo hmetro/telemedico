@@ -1,4 +1,4 @@
 $(function() {
     initDashforge();
-    loadPanelDatosMedico();
+    loadPerfilMedico();
 });

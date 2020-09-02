@@ -36,9 +36,9 @@ $app->get('/usuario', function () use ($app) {
     return $app->json($m->getUserById());
 });
 
-$app->get('/laboratorio/resultados/{hcpte}', function ($hcpte) use ($app) {
+$app->get('/laboratorio/resultados/{codPersona}', function ($codPersona) use ($app) {
     $m = new Model\Laboratorio;
-    return $app->json($m->getResultadosLab($hcpte));
+    return $app->json($m->getResultadosLab($codPersona));
 });
 
 $app->get('/laboratorio/resultado', function () use ($app) {
@@ -75,6 +75,11 @@ $app->get('/documentos/resultados/{filename}', function ($filename = 'dummy.pdf'
         // hrow new ModelsException('No existe el documento solicitado. => ' . $file);
     }
 
+});
+
+$app->get('/imagen/resultados/{hcpte}', function ($hcpte) use ($app) {
+    $m = new Model\Imagen;
+    return $app->json($m->getResultadosImg($hcpte));
 });
 
 /**

@@ -6,8 +6,15 @@
 {% endblock %}
 {% block appHead %}
 <!-- DashForge CSS -->
+<link href="assets/dashforge/lib/quill/quill.core.css" rel="stylesheet"/>
+<link href="assets/dashforge/lib/quill/quill.snow.css" rel="stylesheet"/>
+<link href="assets/dashforge/lib/quill/quill.bubble.css" rel="stylesheet"/>
+<link href="assets/dashforge/lib/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet"/>
+<link href="assets/dashforge/lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet"/>
+<link href="assets/dashforge/lib/select2/css/select2.min.css" rel="stylesheet"/>
 <link href="assets/dashforge/assets/css/dashforge.css" rel="stylesheet"/>
 <link href="assets/dashforge/assets/css/dashforge.chat.css" rel="stylesheet"/>
+<link href="assets/dashforge/assets/css/dashforge.profile.css" rel="stylesheet"/>
 <style type="text/css">
     .chat-msg-list .media .badge {
         border-radius: 15% !important;
@@ -17,6 +24,22 @@
     }
     .custom-chat-header-active {
         border-bottom: 0 !important;
+    }
+    .ui-accordion-content {
+        border: 0px !important;
+        padding: 0 0px 0px 0px !important;
+    }
+    .ql-tooltip ql-flip {
+        display: none !important;
+    }
+    .ql-tooltip-arrow {
+        display: none !important;
+    }
+    .ql-toolbar {
+        display: none !important;
+    }
+    .chat-navleft .nav-link.active-red {
+        color: #dc3545 !important;
     }
 </style>
 {% endblock %}
@@ -31,28 +54,24 @@
                 <i data-feather="users">
                 </i>
             </a>
-            <a class="nav-link" data-placement="right" data-toggle="tooltip" href="" title="Mi Teleconsulta">
+            <a class="nav-link d-none" data-placement="right" data-toggle="tooltip" href="" title="Mi Teleconsulta">
                 <i data-feather="video">
                 </i>
             </a>
-            <a class="nav-link" data-placement="right" data-toggle="tooltip" href="" title="Cerrar Teleconsulta">
+            <a class="nav-link nav-live closeLive d-none" data-placement="right" data-toggle="tooltip" href="" id="opcClose" title="Cerrar Teleconsulta">
                 <i data-feather="video-off">
                 </i>
             </a>
-            <a class="nav-link" data-placement="right" data-toggle="tooltip" href="" title="Reagendar">
-                <i data-feather="calendar">
-                </i>
-            </a>
-            <a class="nav-link" data-placement="right" data-toggle="tooltip" href="" title="Reconectar Teleconsulta">
-                <i data-feather="help-circle">
+            <a class="nav-link d-none" data-placement="right" data-toggle="tooltip" href="#!" title="Reconectar Teleconsulta">
+                <i data-feather="radio">
                 </i>
             </a>
         </nav>
     </div>
     <!-- chat-navleft -->
     <div class="chat-sidebar">
-        <div class="chat-sidebar-header">
-            <a class="dropdown-link" data-toggle="dropdown" href="#">
+        <div class="chat-sidebar-header d-none">
+            <a class="dropdown-link d-none" data-toggle="dropdown" href="#">
                 <div class="d-flex align-items-center">
                     <div class="avatar avatar-sm mg-r-8">
                         <span class="avatar-initial rounded-circle iNombMedico">
@@ -61,12 +80,12 @@
                     <span class="tx-10 tx-color-01 tx-semibold nombMedico">
                     </span>
                 </div>
-                <span>
+                <span class="d-none">
                     <i data-feather="chevron-down">
                     </i>
                 </span>
             </a>
-            <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-menu dropdown-menu-right d-none">
                 <a class="dropdown-item" href="">
                     <i data-feather="calendar">
                     </i>
@@ -94,7 +113,7 @@
         </div>
         <!-- chat-sidebar-header -->
         <!-- start sidebar body -->
-        <div class="chat-sidebar-body">
+        <div class="chat-sidebar-body mg-t-0 bd-t-0" style="position: revert;">
             <div class="flex-fill pd-y-20 pd-x-10 d-none">
                 <div class="d-flex align-items-center justify-content-between pd-x-10 mg-b-10">
                     <span class="tx-10 tx-uppercase tx-medium tx-color-03 tx-sans tx-spacing-1">
@@ -120,7 +139,7 @@
             </div>
         </div>
         <!-- chat-sidebar-body -->
-        <div class="chat-sidebar-footer">
+        <div class="chat-sidebar-footer d-none">
             <div class="d-flex align-items-center">
                 <a href="">
                     <i data-feather="video">
@@ -150,26 +169,18 @@
     </div>
     <!-- chat-sidebar -->
     <div class="chat-content">
-        <div class="chat-content-header ">
+        <div class="chat-content-header">
             <div class="d-none" id="pte">
                 <div class="d-flex align-items-center">
-                    <div class="avatar avatar-sm avatar-online">
-                        <span class="avatar-initial rounded-circle" id="inombPte">
+                    <div class="avatar avatar-sm">
+                        <span class="avatar-initial bg-dark rounded-circle" id="inombPte">
                         </span>
                     </div>
                     <h6 class="mg-l-10 mg-b-0">
                         <div id="nombPte" style="font-size: 17px;">
                         </div>
                         <nav>
-                            <div data-toggle="tooltip" id="nhcPte" style="font-size: 10.5px;" title="Número de Historia Clínica">
-                            </div>
-                            <div class="fechaHC mg-l-5 d-none" data-toggle="tooltip" title="Fecha de Admisión">
-                                <div id="fechaHC" style="font-size: 10.5px;">
-                                </div>
-                            </div>
-                            <div class="admPaciente mg-l-5 d-none" data-toggle="tooltip" title="Número de Admisión">
-                                <div id="admPaciente" style="font-size: 10.5px;">
-                                </div>
+                            <div data-toggle="tooltip" id="nhcPte" title="Número de Historia Clínica">
                             </div>
                         </nav>
                     </h6>
@@ -177,101 +188,233 @@
             </div>
             <div class="d-flex">
                 <nav class="d-none" id="citaNav">
-                    <a class="tx-primary" data-toggle="tooltip" href="" id="t-initCallZoom" title="Iniciar Teleconsulta">
+                    <a class="countdown tx-primary tx-20 d-none" data-control="1">
+                    </a>
+                    <a class="d-none" data-control="1" id="statusConnectPte" title="Status Paciente">
+                        <div id="s-statusConnectPte">
+                            <div class="spinner-grow spinner-grow-sm" role="status">
+                            </div>
+                            Esperando conexión de Paciente
+                        </div>
+                    </a>
+                    <a data-control="1" href="" id="t-initCallZoom">
                         <i class="tx-primary mg-r-5" data-feather="video">
                         </i>
-                        Iniciar Teleconsulta
+                        <span class="tx-primary">
+                            Iniciar Teleconsulta
+                        </span>
                     </a>
-                    <a class="citaClose" data-toggle="tooltip" href="" title="Regresar">
+                    <a class="reset-render-hc d-none" data-control="1" data-toggle="tooltip" href="" title="Regresar">
                         <i data-feather="arrow-left">
                         </i>
                         Regresar
                     </a>
-                    <a class="reset-render-hc d-none" data-toggle="tooltip" href="" title="Regresar">
+                    <a class="reset-render-lab d-none" data-control="1" data-toggle="tooltip" href="" title="Regresar">
                         <i data-feather="arrow-left">
                         </i>
                         Regresar
                     </a>
-                    <a class="d-none" data-toggle="tooltip" href="" title="Teleconsulta de Emergencia">
-                        <i data-feather="flag">
+                    <a class="reset-loader-img d-none" data-control="1" data-toggle="tooltip" href="" title="Recargar Sistema de Imagen">
+                        <i data-feather="refresh-cw">
                         </i>
+                    </a>
+                    <a class="citaClose" data-control="1" data-toggle="tooltip" href="" title="Cerrar Ficha de Paciente">
+                        <i data-feather="x-circle">
+                        </i>
+                        <span class="mg-t-5">
+                            Cerrar
+                        </span>
                     </a>
                 </nav>
             </div>
         </div>
         <!-- chat-content-header -->
         <div class="chat-content-body bg-white">
-            <div class=" d-none" id="panelPte">
+            <iframe id="news-paper" src="https://www.infobae.com/salud/" style="border:none;width:100%;height:1200px;">
+            </iframe>
+            <div class="d-none" id="panelPte">
                 <nav class="nav nav-tabs">
-                    <a class="nav-link setTabs mg-l-10 mg-r-5 datosPte bg-white active" data-toggle="tab" href="#datosPte">
+                    <a class="nav-link livePte mg-l-10 mg-r-5 bg-white nav-live d-none" data-control="1" data-toggle="tab" href="#livePte">
+                        <div class="tx-danger mg-r-5">
+                            <div class="spinner-grow spinner-grow-sm" role="status">
+                            </div>
+                        </div>
+                        <span class="badge badge-danger">
+                            VIVO
+                        </span>
+                    </a>
+                    <a class="nav-link setTabs mg-l-10 mg-r-5 datosPte bg-white active" data-control="1" data-tab="datosPte" data-toggle="tab" href="#datosPte">
                         <i class="wd-15 mg-r-5" data-feather="file">
                         </i>
                         Datos Personales
                     </a>
-                    <a class="nav-link setTabs historialAtenciones bg-white mg-l-5 mg-r-5" data-toggle="tab" href="#hcPte">
-                        <i class="wd-15 mg-r-5" data-feather="activity">
+                    <a class="nav-link setTabs atenPte bg-white mg-l-5 mg-r-5" data-control="1" data-tab="atenPte" data-toggle="tab" href="#hcPte">
+                        <i class="wd-15 mg-r-5" data-feather="file">
                         </i>
-                        Historial de Atenciones
+                        Datos Clínicos
                     </a>
-                    <a class="nav-link setTabs bg-white mg-l-5 mg-r-5" data-toggle="tab" href="#labPte">
+                    <a class="nav-link setTabs labPte bg-white mg-l-5 mg-r-5" data-control="1" data-tab="labPte" data-toggle="tab" href="#labPte">
                         <i class="wd-15 mg-r-5" data-feather="thermometer">
                         </i>
                         Laboratorio
                     </a>
-                    <a class="nav-link setTabs bg-white mg-l-5 mg-r-5" data-toggle="tab" href="#imgPte">
+                    <a class="nav-link setTabs imgPte bg-white mg-l-5 mg-r-5" data-control="1" data-tab="imgPte" data-toggle="tab" href="#imgPte">
                         <i class="wd-15 mg-r-5" data-feather="image">
                         </i>
                         Imagen
                     </a>
-                    <a class="nav-link setTabs bg-white mg-l-5 mg-r-5" data-toggle="tooltip" href="#logsPte">
+                    <a class="nav-link setTabs bg-white mg-l-5 mg-r-5 d-none" data-control="1" data-toggle="tooltip" href="#logsPte">
                         <i class="wd-15 mg-r-5" data-feather="info">
                         </i>
                         Historial de Actividad
                     </a>
-                    <a class="nav-link setTabs bg-white mg-l-5 mg-r-5" data-toggle="tooltip" href="#configPte">
+                    <a class="nav-link setTabs bg-white mg-l-5 mg-r-5 d-none" data-control="1" data-toggle="tooltip" href="#configPte">
                         <i class="wd-15 mg-r-5" data-feather="settings">
                         </i>
                         Ajustes
                     </a>
                 </nav>
                 <div class="tab-content">
-                    <div class="tab-pane show active pd-20 pd-xl-25" id="datosPte">
-                        <div class="placeholder-paragraph">
-                            <div class="line">
+                    <div class="tab-pane tab-live d-none" id="livePte">
+                        <div class="d-flex align-items-start">
+                            <div class="zoomLive col-sm-5 col-lg-5 pd-l-0 pd-r-0">
+                                <iframe class="wd-100p" id="zoomLive" onload="resizeIframe(this)" src="#!" style="border:none;">
+                                </iframe>
                             </div>
-                            <div class="line">
+                            <div class="col-sm-7 col-lg-7 pd-l-0 pd-r-0" id="createHC">
+                                <div class="accordion bd-0d">
+                                    <h6 class="d-flex bd-t-0 flex-row justify-content-between" data-control="1">
+                                        Motivo Consulta
+                                        <div class="spinner-grow spinner-grow-sm mg-l-10 save-1 d-none" role="status" title="Guardando...">
+                                        </div>
+                                        <div class="check-1 d-none" title="Texto Guardado">
+                                            <i class="wd-15 ht-auto" data-feather="check-circle">
+                                            </i>
+                                        </div>
+                                    </h6>
+                                    <div class="pos-relative d-panelHC">
+                                        <div class="pos-relative ht-100p mn-ht-100p bd overflow-hidden" id="scrolling-container-motivoConsulta">
+                                            <div class="ht-auto" id="motivoConsulta">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h6 class="d-flex flex-row justify-content-between" data-control="1">
+                                        Antecedentes Familiares
+                                        <div class="spinner-grow spinner-grow-sm mg-l-10 save-2 d-none" role="status" title="Guardando...">
+                                        </div>
+                                        <div class="check-2 d-none" title="Texto Guardado">
+                                            <i class="wd-15 ht-auto" data-feather="check-circle">
+                                            </i>
+                                        </div>
+                                    </h6>
+                                    <div class="pos-relative d-panelHC">
+                                        <div class="pos-relative ht-100p mn-ht-100p bd overflow-hidden" id="scrolling-container-antecedentes">
+                                            <div class="ht-auto" id="antecedentes">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h6 class="d-flex flex-row justify-content-between" data-control="1">
+                                        Diagnóstico
+                                        <div class="spinner-grow spinner-grow-sm mg-l-10 save-3 d-none" role="status" title="Guardando...">
+                                        </div>
+                                        <div class="check-3 d-none" title="Texto Guardado">
+                                            <i class="wd-15 ht-auto" data-feather="check-circle">
+                                            </i>
+                                        </div>
+                                    </h6>
+                                    <div class="pos-relative d-panelHC">
+                                        <div class="pos-relative ht-100p mn-ht-100p bd overflow-hidden" id="scrolling-container-diagnosticos">
+                                            <div class="mg-l-5 pd-y-5 pd-y-5">
+                                                <select class="form-control select-diag" multiple="" tabindex="-1">
+                                                </select>
+                                            </div>
+                                            <div class="ht-auto" id="diagnosticos">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h6 class="d-flex flex-row justify-content-between" data-control="1">
+                                        Evoluciones
+                                        <div class="spinner-grow spinner-grow-sm mg-l-10 save-4 d-none" role="status" title="Guardando...">
+                                        </div>
+                                        <div class="check-4 d-none" title="Texto Guardado">
+                                            <i class="wd-15 ht-auto" data-feather="check-circle">
+                                            </i>
+                                        </div>
+                                    </h6>
+                                    <div class="pos-relative d-panelHC">
+                                        <div class="pos-relative ht-100p mn-ht-100p bd overflow-hidden" id="scrolling-container-evoluciones">
+                                            <div class="ht-auto" id="evoluciones">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h6 class="d-flex flex-row justify-content-between" data-control="1">
+                                        Preescripciones
+                                        <div class="spinner-grow spinner-grow-sm mg-l-10 save-5 d-none" role="status" title="Guardando...">
+                                        </div>
+                                        <div class="check-5 d-none" title="Texto Guardado">
+                                            <i class="wd-15 ht-auto" data-feather="check-circle">
+                                            </i>
+                                        </div>
+                                    </h6>
+                                    <div class="pos-relative d-panelHC">
+                                        <div class="pos-relative ht-100p mn-ht-100p bd overflow-hidden" id="scrolling-container-preescripciones">
+                                            <div class="ht-auto" id="preescripciones">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="tab-pane show active pd-20 pd-xl-25" id="datosPte">
                     </div>
                     <div class="tab-pane pd-20 pd-xl-25" id="hcPte">
-                        <div class="placeholder-paragraph d-none" id="load-hcPte">
-                            <div class="line">
-                            </div>
-                            <div class="line">
-                            </div>
-                        </div>
-                        <div class="d-none" id="listas-hc">
-                        </div>
-                        <div class="placeholder-paragraph d-none" id="load-view-hc">
-                            <div class="line">
-                            </div>
-                            <div class="line">
-                            </div>
-                        </div>
-                        <div class="d-none" id="view-file-hc">
-                        </div>
                     </div>
                     <div class="tab-pane pd-20 pd-xl-25" id="labPte">
-                        <div class="placeholder-paragraph">
-                            <div class="line">
+                        <div class="d-none" id="load-labPte">
+                            <div class="placeholder-paragraph pd-y-25 pd-x-20">
+                                <div class="line">
+                                </div>
+                                <div class="line">
+                                </div>
                             </div>
-                            <div class="line">
-                            </div>
+                        </div>
+                        <div class="d-none" id="table-labPte">
+                            <table class="table table-sm table-hover" id="table-resultados-lab" width="100%">
+                            </table>
+                        </div>
+                        <div class="d-none" id="view-resultado-lab">
                         </div>
                     </div>
                     <div class="tab-pane" id="imgPte">
-                        <iframe id="i-live" src="https://imagen.hmetro.med.ec/zfp?Lights=off&mode=proxy#view&pid=59270601&un=WEBAPI&pw=lEcfvZxzlXTsfimMMonmVZZ15IqsgEcdV%2forI8EUrLY%3d" style="border:none;position:absolute;height:100%;width:100%;">
-                        </iframe>
+                        <div class="d-none" id="load-imgPte">
+                            <div class="placeholder-paragraph pd-y-25 pd-x-20">
+                                <div class="line">
+                                </div>
+                                <div class="line">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-none">
+                            <iframe id="zfpImg" src="blank" style="border:none;position:absolute;height:100%;width:100%;">
+                            </iframe>
+                        </div>
+                    </div>
+                    <div class="tab-pane pd-20 pd-xl-25" id="logsPte">
+                        <div class="placeholder-paragraph">
+                            <div class="line">
+                            </div>
+                            <div class="line">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane pd-20 pd-xl-25" id="settingPte">
+                        <div class="placeholder-paragraph">
+                            <div class="line">
+                            </div>
+                            <div class="line">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- tab-content -->
@@ -281,7 +424,7 @@
         <div class="chat-sidebar-right">
         </div>
         <!-- chat-sidebar-right -->
-        <div class="chat-content-footer d-none">
+        <div class="chat-content-footer bg-white d-none">
             <a class="chat-plus" data-toggle="tooltip" href="" title="Add File">
                 <i data-feather="plus">
                 </i>
@@ -370,11 +513,23 @@
 {% include 'pacientes/v2/roles/1/templates' %}
 {% endblock %}
 {% block appScripts %}
+<script defer="" src="//mozilla.github.io/pdf.js/build/pdf.js">
+</script>
 <script defer="" src="assets/dashforge/lib/perfect-scrollbar/perfect-scrollbar.min.js">
 </script>
 <script defer="" src="assets/dashforge/lib/select2/js/select2.min.js">
 </script>
 <script defer="" src="assets/dashforge/lib/moment/min/moment.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net/js/jquery.dataTables.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net-dt/js/dataTables.dataTables.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net-responsive/js/dataTables.responsive.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js">
+</script>
+<script defer="" src="assets/dashforge/lib/quill/quill.min.js">
 </script>
 <script defer="" src="assets/dashforge/assets/js/dashforge.js">
 </script>
@@ -391,18 +546,25 @@
     var epFacturarAtencion = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.facturarAtencion}}';
     var epCrearHC = '{{config.apiHm.baseUrl}}{{config.apiHm.medicos.crearHC}}';
     var apiCitas = '{{config.build.url}}{{config.api.citas}}';
+    var apiReporte002 = '{{config.build.url}}{{config.api.medicos.reportesGema002}}';
     var apiZoomEliminar = '{{config.build.url}}{{config.api.zoomEliminar}}';
     var apiStatusPartcipantes = '{{config.build.url}}{{config.api.statusParticipantes}}';
+    var zfpImgLink = 'https://imagen.hmetro.med.ec/zfp?Lights=on&mode=proxy#view&pid=37450401';
+    var zfpToken = '&un=WEBAPI&pw=lEcfvZxzlXTsfimMMonmVZZ15IqsgEcdV%2forI8EUrLY%3d';
 </script>
 <script defer="" src="dist/app/js/perfil.js?{{ date().timestamp }}">
-</script>
-<script defer="" src="dist/app/js/citas.js?{{ date().timestamp }}">
 </script>
 <script defer="" src="dist/app/js/datospaciente.js?{{ date().timestamp }}">
 </script>
 <script defer="" src="dist/app/js/atenciones.js?{{ date().timestamp }}">
 </script>
 <script defer="" src="dist/app/js/laboratorio.v2.js?{{ date().timestamp }}">
+</script>
+<script defer="" src="dist/app/js/imagen.js?{{ date().timestamp }}">
+</script>
+<script defer="" src="dist/app/js/zoom.js?{{ date().timestamp }}">
+</script>
+<script defer="" src="dist/app/js/citas.js?{{ date().timestamp }}">
 </script>
 <script defer="" src="dist/app/js/pacientes.js?{{ date().timestamp }}">
 </script>

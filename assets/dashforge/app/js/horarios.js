@@ -1,6 +1,6 @@
 $(function() {
     initDashforge();
-    loadPanelDatosMedico();
+    loadPerfilMedico();
     getHorariosMedico();
 });
 
@@ -10,6 +10,9 @@ function getHorariosMedico() {
     var formData = new FormData();
     formData.append('codigoMedico', _codMedico_);
     fetch(epHorariosMedicos, {
+        headers: {
+            'Authorization': localStorage.accessToken
+        },
         method: "POST",
         body: formData,
         contentType: false,

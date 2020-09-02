@@ -1,7 +1,7 @@
 $(function() {
     'use strict'
     initDashforge();
-    loadPanelDatosMedico();
+    loadPerfilMedico();
     // Initialize tooltip
     $('[data-toggle="tooltip"]').tooltip();
     // Sidebar calendar
@@ -165,8 +165,11 @@ function getCitasMedico() {
     formData.append('endDate', '31-12-2030');
     formData.append('tipoHorario', 2);
     formData.append('start', 0);
-    formData.append('length', 100);
+    formData.append('length', 1000);
     fetch(epCitasAgendaPendientes, {
+        headers: {
+            'Authorization': localStorage.accessToken
+        },
         method: "POST",
         body: formData,
         contentType: false,

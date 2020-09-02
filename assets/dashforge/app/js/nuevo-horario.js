@@ -1,6 +1,6 @@
 $(function() {
     initDashforge();
-    loadPanelDatosMedico();
+    loadPerfilMedico();
     // Select2
     setOptionCombo('#dia-desde', 0, 31, 'Día');
     setOptionCombo('#mes-desde', 0, 12, 'Mes');
@@ -92,6 +92,9 @@ function _ini_nuevo_horario() {
     formData.append('domingo', dias[6]);
     formData.append('duracion', moment().format("DD-MM-YYYY") + ' 00:' + $('#dura').val());
     fetch(epNuevoHorarioMedico, {
+        headers: {
+            'Authorization': localStorage.accessToken
+        },
         method: "POST",
         body: formData,
         contentType: false,

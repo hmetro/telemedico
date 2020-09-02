@@ -363,6 +363,18 @@ class Citas extends Models implements IModels
         }
     }
 
+    public function downloadRecurso()
+    {
+        $url = "https://reportes.hmetro.med.ec/reports/rwservlet?server=rep_proyectodesarro&report=g_hicli_9_msp.rep&userid=gema/gemad15@desnew&desformat=pdf&destype=localfile&pn_institucion=1&pn_paciente=47810301&pn_admision=76";
+
+        $destination = 'downloads/' . time() . '.pdf';
+
+        $source = file_get_contents($url);
+        file_put_contents($destination, $source);
+        return true;
+
+    }
+
 /**
  * __construct()
  */

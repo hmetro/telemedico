@@ -1,12 +1,12 @@
-function tableLaboratorio() {
+function _tableResultadosLab() {
+    $('#table-labPte').removeClass('d-none');
     $.fn.dataTable.ext.errMode = 'none';
-    var table = $('#resultados-lab').DataTable({
+    var table = $('#table-resultados-lab').DataTable({
         "ajax": {
-            url: "api/laboratorio/resultados/" + localStorage.hcpte,
+            url: "api/laboratorio/resultados/37628501",
             dataSrc: "customData",
             serverSide: true,
         },
-        processing: true,
         serverSide: true,
         responsive: false,
         dom: 'tp',
@@ -81,7 +81,7 @@ function tableLaboratorio() {
             aTargets: [4]
         }, {
             mRender: function(data, type, full) {
-                return template($('#btn-table-opc').html(), {
+                return template($('#btn-table-opc-lab').html(), {
                     id: full.ID_RESULTADO,
                     fecha: full.FECHA_RES,
                     pdf: full.PDF,
@@ -121,25 +121,17 @@ function tableLaboratorio() {
                 localStorage.setItem('Object_td', JSON.stringify(Object_td));
                 getDocumentoLab(id_resultado);
             });
-            $('.dataTables_length select').select2({
-                minimumResultsForSearch: Infinity
-            });
         },
         "order": [
             [0, 'Desc']
         ],
-    }).on('xhr.dt', function(e, settings, json, xhr) {
-        // Do some staff here...
-        $('#loader').hide();
-        $('#v-v-table').show();
-    });
-    $('.dataTables_length select').select2({
-        minimumResultsForSearch: Infinity
     });
     return table;
 }
 
 function getDocumentoLab(id_documento) {
+    $('#load-labPte').removeClass('d-none');
+    $('#table-labPte').addClass('d-none');
     var retrievedObject_td = JSON.parse(localStorage.getItem('Object_td'));
     fetch('api/laboratorio/resultado', {
         method: "GET",
@@ -150,30 +142,170 @@ function getDocumentoLab(id_documento) {
     }).then(function(response) {
         return response.json();
     }).then(function(data) {
+        if (data.status) {
+            var _td = $('#' + retrievedObject_td.id_resultado);
+            _td.removeAttr('disabled', 'disabled');
+            _td.html('<i class="icon ion-md-document"></i> Ver').removeClass('pos-absolute');
+            // Set cabeceras
+            $('#load-labPte').addClass('d-none');
+            $('#table-labPte').addClass('d-none');
+            $('#view-resultado-lab').removeClass('d-none').html(template($('#v-ver-resultado').html(), {}));
+            loadPdfLab(retrievedObject_td.pdf);
+            localStorage.setItem('sts', 3);
+            var retrievedObject_Tabs = JSON.parse(localStorage.getItem('Object_Tabs'));
+            retrievedObject_Tabs.labPte.view = true;
+            localStorage.setItem('Object_Tabs', JSON.stringify(retrievedObject_Tabs));
+            $('.reset-loader-img').addClass('d-none');
+            $('.reset-render-hc').addClass('d-none');
+            $('.reset-render-lab').removeClass('d-none');
+            $('.reset-render-lab').click(function(e) {
+                e.preventDefault();
+                localStorage.setItem('sts', 0);
+                var retrievedObject_Tabs = JSON.parse(localStorage.getItem('Object_Tabs'));
+                retrievedObject_Tabs.labPte.view = false;
+                localStorage.setItem('Object_Tabs', JSON.stringify(retrievedObject_Tabs));
+                $('#view-resultado-lab').html('').addClass('d-none');
+                $('#table-labPte').removeClass('d-none');
+                $('.reset-render-lab').addClass('d-none');
+            });
+        } else {
+            var _td = $('#' + retrievedObject_td.id_resultado);
+            _td.removeAttr('disabled', 'disabled');
+            _td.html('<i class="icon ion-md-document"></i> Ver').removeClass('pos-absolute');
+            // Set cabeceras
+            $('#load-labPte').addClass('d-none');
+            $('#table-labPte').addClass('d-none');
+            $('#view-resultado-lab').removeClass('d-none').html(template($('#v-not-results').html(), {}));
+            localStorage.setItem('sts', 3);
+            var retrievedObject_Tabs = JSON.parse(localStorage.getItem('Object_Tabs'));
+            retrievedObject_Tabs.labPte.view = true;
+            localStorage.setItem('Object_Tabs', JSON.stringify(retrievedObject_Tabs));
+            $('.reset-loader-img').addClass('d-none');
+            $('.reset-render-hc').addClass('d-none');
+            $('.reset-render-lab').removeClass('d-none');
+            $('.reset-render-lab').click(function(e) {
+                e.preventDefault();
+                localStorage.setItem('sts', 0);
+                var retrievedObject_Tabs = JSON.parse(localStorage.getItem('Object_Tabs'));
+                retrievedObject_Tabs.labPte.view = false;
+                localStorage.setItem('Object_Tabs', JSON.stringify(retrievedObject_Tabs));
+                $('#view-resultado-lab').html('').addClass('d-none');
+                $('#table-labPte').removeClass('d-none');
+                $('.reset-render-lab').addClass('d-none');
+            });
+        }
         console.log('data = ', data);
-        var _td = $('#' + retrievedObject_td.id_resultado);
-        _td.removeAttr('disabled', 'disabled');
-        _td.html('<i class="icon ion-md-document"></i> Ver').removeClass('pos-absolute');
-        $('#navPacientes').addClass('d-none');
-        $('#d-resultados-lab').hide();
-        $('#d-view-resultado').removeClass('d-none');
-        $('.contact-sidebar').addClass('d-none');
-        $('.contact-content').css('left', '60px');
-        $('.contact-content-header').css('right', '300px');
-        $('.contact-content-body').css('right', '300px');
-        loadPdf(retrievedObject_td.pdf);
-        $('.reset-render-lab').click(function(e) {
-            e.preventDefault();
-            $('#navPacientes').removeClass('d-none');
-            $('.contact-sidebar').removeClass('d-none');
-            $('.contact-content').css('left', '340px');
-            $('.contact-content-header').css('right', '290px');
-            $('.contact-content-body').css('right', '290px');
-            $('#d-resultados-lab').show();
-            $('#d-view-resultado').addClass('d-none');
-        });
     }).catch(function(err) {
         console.error(err);
+    });
+}
+
+function loadPdfLab(url) {
+    // If absolute URL from the remote server is provided, configure the CORS
+    // Loaded via <script> tag, create shortcut to access PDF.js exports.
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+    // The workerSrc property shall be specified.
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+    var pdfDoc = null,
+        pageNum = 1,
+        pageRendering = false,
+        pageNumPending = null,
+        scale = 1.75,
+        canvas = document.getElementById('render-resultado-lab'),
+        ctx = canvas.getContext('2d');
+    /**
+     * Get page info from document, resize canvas accordingly, and render page.
+     * @param num Page number.
+     */
+    function renderPage(num) {
+        pageRendering = true;
+        // Using promise to fetch the page
+        pdfDoc.getPage(num).then(function(page) {
+            var viewport = page.getViewport({
+                scale: scale
+            });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            // Render PDF page into canvas context
+            var renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            var renderTask = page.render(renderContext);
+            // Wait for rendering to finish
+            renderTask.promise.then(function() {
+                pageRendering = false;
+                if (pageNumPending !== null) {
+                    // New page rendering is pending
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+            });
+        });
+        // Update page counters
+        // document.getElementsByClassName('page_num').textContent = num;
+        $('.page_num').text(num);
+    }
+    /**
+     * If another page rendering in progress, waits until the rendering is
+     * finised. Otherwise, executes rendering immediately.
+     */
+    function queueRenderPage(num) {
+        if (pageRendering) {
+            pageNumPending = num;
+        } else {
+            renderPage(num);
+        }
+    }
+    /**
+     * Displays previous page.
+     */
+    function onPrevPage() {
+        if (pageNum <= 1) {
+            return;
+        }
+        pageNum--;
+        queueRenderPage(pageNum);
+    }
+    /*
+    document.getElementsByClassName('prev').onclick = function(e) {
+        e.preventDefault();
+        onPrevPage();
+    };
+    */
+    $('.prev').click(function(e) {
+        e.preventDefault();
+        onPrevPage();
+    });
+    /**
+     * Displays next page.
+     */
+    function onNextPage() {
+        if (pageNum >= pdfDoc.numPages) {
+            return;
+        }
+        pageNum++;
+        queueRenderPage(pageNum);
+    }
+    /*
+    document.getElementsByClassName('next').onclick = function(e) {
+        e.preventDefault();
+        onNextPage();
+    };
+    */
+    $('.next').click(function(e) {
+        e.preventDefault();
+        onNextPage();
+    });
+    /**
+     * Asynchronously downloads PDF.
+     */
+    pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+        pdfDoc = pdfDoc_;
+        $('.page_count').text(pdfDoc.numPages);
+        // document.getElementsByClassName('page_count').textContent = pdfDoc.numPages;
+        // Initial/first page rendering
+        renderPage(pageNum);
     });
 }
 
@@ -220,7 +352,8 @@ function loadPdf(url) {
             });
         });
         // Update page counters
-        document.getElementById('page_num').textContent = num;
+        // document.getElementsByClassName('page_num').textContent = num;
+        $('.page_num').text(num);
     }
     /**
      * If another page rendering in progress, waits until the rendering is
@@ -243,10 +376,16 @@ function loadPdf(url) {
         pageNum--;
         queueRenderPage(pageNum);
     }
-    document.getElementById('prev').onclick = function(e) {
+    /*
+    document.getElementsByClassName('prev').onclick = function(e) {
         e.preventDefault();
         onPrevPage();
     };
+    */
+    $('.prev').click(function(e) {
+        e.preventDefault();
+        onPrevPage();
+    });
     /**
      * Displays next page.
      */
@@ -257,16 +396,23 @@ function loadPdf(url) {
         pageNum++;
         queueRenderPage(pageNum);
     }
-    document.getElementById('next').onclick = function(e) {
+    /*
+    document.getElementsByClassName('next').onclick = function(e) {
         e.preventDefault();
         onNextPage();
     };
+    */
+    $('.next').click(function(e) {
+        e.preventDefault();
+        onNextPage();
+    });
     /**
      * Asynchronously downloads PDF.
      */
     pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
         pdfDoc = pdfDoc_;
-        document.getElementById('page_count').textContent = pdfDoc.numPages;
+        $('.page_count').text(pdfDoc.numPages);
+        // document.getElementsByClassName('page_count').textContent = pdfDoc.numPages;
         // Initial/first page rendering
         renderPage(pageNum);
     });

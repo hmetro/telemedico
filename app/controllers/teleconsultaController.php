@@ -59,7 +59,7 @@ class teleconsultaController extends Controllers implements IControllers
 
                     $this->template->display($this->name_template, array(
                         'appBodyClass' => 'app-calendar',
-                        'teleconsulta' => 'active',
+                        'calendario'   => 'active',
                         'calendario'   => '#0168fa',
                     ));
 

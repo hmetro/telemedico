@@ -1,6 +1,6 @@
 $(function() {
     initDashforge();
-    loadPanelDatosMedico();
+    loadPerfilMedico();
     // Select2
     getHorario();
 });
@@ -32,6 +32,9 @@ function _ini_eliminar_horario() {
     formData.append('fechaInicio', desdeHorario.replace(/\//g, "-").split(' ')[0]);
     formData.append('fechaFin', hastaHorario.replace(/\//g, "-").split(' ')[0]);
     fetch(epEliminarHorarioMedico, {
+        headers: {
+            'Authorization': localStorage.accessToken
+        },
         method: "POST",
         body: formData,
         contentType: false,

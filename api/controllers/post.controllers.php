@@ -173,16 +173,6 @@ $app->post('/zoom/participantes', function () use ($app) {
 });
 
 /**
- * Resultados de laboratorio
- *
- * @return json
- */
-$app->post('/laboratorio/resultados', function () use ($app) {
-    $m = new Model\Laboratorio;
-    return $app->json($m->getResultadosLab());
-});
-
-/**
  * Crea una nueva categoría de pacientes por userMedico
  *
  * @return json
@@ -225,4 +215,17 @@ $app->post('/live', function () use ($app) {
 $app->post('/medicos/agendas/nueva', function () use ($app) {
     $u = new Model\Agendas;
     return $app->json($u->statusCita());
+});
+
+/**
+ *
+ * getReporte002
+ *
+ * @return json
+ *
+ */
+
+$app->post('/reportes/gema/002', function () use ($app) {
+    $u = new Model\GEMAReportes;
+    return $app->json($u->getReporte002());
 });

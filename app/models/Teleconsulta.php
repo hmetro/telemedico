@@ -72,9 +72,9 @@ class Teleconsulta extends Models implements IModels
                     "Authorization" => "Bearer $accessToken",
                 ],
                 'json'    => [
-                    "topic"    => "API Test Teleconsulta " . time(),
+                    "topic"    => "Telecosnulta HM Id: " . time(),
                     "type"     => 1,
-                    "duration" => 15,
+                    "duration" => 30,
                     "password" => "123456",
                     "timezone" => "America/Bogota",
                     'settings' => [

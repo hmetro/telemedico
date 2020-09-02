@@ -1,11 +1,34 @@
 $(document).ready(function() {
-    getInfoCita();
+    generateKey();
 });
 
 function statusLive() {
     setInterval(function() {
         getLive();
     }, 1100);
+}
+
+function generateKey() {
+    var formData = new FormData();
+    formData.append('DNI', '1501128480');
+    formData.append('PASS', '1501128480');
+    fetch('https://api.hospitalmetropolitano.org/teleconsulta/beta/v1/login', {
+        method: "POST",
+        body: formData,
+        contentType: false,
+        processData: false,
+    }).then(function(response) {
+        return response.json();
+    }).then(function(json) {
+        if (json.status) {
+            localStorage.setItem('accessToken', json.user_token);
+            getInfoCita();
+        } else {
+            console.error(json.message);
+        }
+    }).catch(function(err) {
+        console.error(err);
+    });
 }
 
 function getLive() {
@@ -35,6 +58,9 @@ function getInfoCita() {
     formData.append('codigoHorario', idH);
     formData.append('numeroTurno', idT);
     fetch('https://api.hospitalmetropolitano.org/teleconsulta/beta/v1/citas/detalle', {
+        headers: {
+            'Authorization': localStorage.accessToken
+        },
         method: "POST",
         body: formData,
         contentType: false,

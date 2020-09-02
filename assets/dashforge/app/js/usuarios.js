@@ -1,6 +1,6 @@
 $(function() {
     initDashforge();
-    loadPanelDatosMedico();
+    loadPerfilMedico();
     table();
     // Select2
 });

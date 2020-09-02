@@ -1,6 +1,6 @@
 $(function() {
     getPagosMedico();
-    loadPanelDatosMedico();
+    loadPerfilMedico();
     // Select2
 });
 
@@ -11,6 +11,9 @@ function getPagosMedico() {
     formData.append('codigoMedico', _codMedico_);
     formData.append('numeroMes', _mes_);
     fetch(epFacturacion, {
+        headers: {
+            'Authorization': localStorage.accessToken
+        },
         method: "POST",
         body: formData,
         contentType: false,

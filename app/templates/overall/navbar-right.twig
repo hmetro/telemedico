@@ -3,7 +3,7 @@
         <i data-feather="search">
         </i>
     </a>
-    <div class="dropdown dropdown-notification">
+    <div class="dropdown dropdown-notification d-none">
         <a class="dropdown-link new-indicator" data-toggle="dropdown" href="">
             <i data-feather="bell">
             </i>
@@ -29,16 +29,17 @@
     <div class="dropdown dropdown-profile">
         <a class="dropdown-link" data-display="static" data-toggle="dropdown" href="">
             <div class="avatar avatar-sm">
-                <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
+                <span class="avatar-initial rounded-circle iNombMedico">
+                </span>
             </div>
         </a>
         <!-- dropdown-link -->
         <div class="dropdown-menu dropdown-menu-right tx-13">
             <div class="avatar avatar-lg mg-b-15">
-                <img alt="" class="rounded-circle" src="https://via.placeholder.com/500"/>
+                <span class="avatar-initial rounded-circle iNombMedico">
+                </span>
             </div>
-            <h6 class="tx-semibold mg-b-5">
-                Telemédico
+            <h6 class="tx-semibold mg-b-5 nombMedico">
             </h6>
             <p class="mg-b-25 tx-12 tx-color-03">
                 Hospital Metropolitano
@@ -50,10 +51,10 @@
             </a>
             <div class="dropdown-divider">
             </div>
-            <a class="dropdown-item off-canvas-menu" href="#offCanvas3">
+            <a class="dropdown-item" href="{{config.build.url}}configuracion">
                 <i data-feather="info">
                 </i>
-                Logs
+                Configuración
             </a>
             <a class="dropdown-item" href="{{config.build.url}}soporte">
                 <i data-feather="help-circle">
